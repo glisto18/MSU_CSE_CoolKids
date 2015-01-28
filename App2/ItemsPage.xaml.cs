@@ -20,6 +20,7 @@ using Windows.UI.Xaml.Navigation;
 
 
 // This is a test comment to test the testing of testing... Also Github.
+// Jourdan's comment 
 
 
 namespace App2
