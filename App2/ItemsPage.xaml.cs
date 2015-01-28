@@ -21,6 +21,7 @@ using Windows.UI.Xaml.Navigation;
 
 // This is a test comment to test the testing of testing... Also Github.
 // Jourdan's comment 
+// This is a test comment to test the testing of testing.
 
 
 namespace App2
