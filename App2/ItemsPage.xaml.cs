@@ -19,6 +19,8 @@ using Windows.UI.Xaml.Navigation;
 // The Items Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234233
 
 
+// This is a test comment to test the testing of testing... Also Github.
+// Jourdan's comment 
 // This is a test comment to test the testing of testing.
 
 
