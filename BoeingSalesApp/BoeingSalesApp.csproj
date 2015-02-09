@@ -105,7 +105,11 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="DataAccess\Database.cs" />
     <Compile Include="DataAccess\Entities\TestClass.cs" />
+    <Compile Include="DataAccess\IDatabase.cs" />
+    <Compile Include="DataAccess\Repository\ITestClassRepository.cs" />
+    <Compile Include="DataAccess\Repository\TestClassRepository.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
