@@ -34,24 +34,30 @@ namespace BoeingSalesApp
         }
         
         private TestClass _testClass;
-        private ITestClassRepository _testClassRepository;
+        private IRepository _testClassRepository;
+        private Category _category;
+        private Test_Category _testCategory;
 
         protected async override void OnNavigatedTo(NavigationEventArgs e)
         {
             InitializeTestClass();
+           
+
             await InitializeDatabase();
             await UpdateTestClasses();
         }
 
         private void InitializeTestClass()
         {
+            _category = new Category();
             _testClass = new TestClass();
-            CurrentTestClass.DataContext = _testClass;
+            _testCategory = new Test_Category();
+            CurrentTestClass.DataContext = _testCategory;
         }
 
         private async Task InitializeDatabase()
         {
-            string databasePath = Windows.Storage.ApplicationData.Current.LocalFolder.Path + "\\testClasses.db";
+            string databasePath = Windows.Storage.ApplicationData.Current.LocalFolder.Path + "\\Categories.db";
             Database database = new Database(databasePath);
             await database.Initialize();
             _testClassRepository = new TestClassRepository(database);

@@ -106,10 +106,20 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="DataAccess\Database.cs" />
+    <Compile Include="DataAccess\Entities\Artifact.cs" />
+    <Compile Include="DataAccess\Entities\Category.cs" />
     <Compile Include="DataAccess\Entities\TestClass.cs" />
+    <Compile Include="DataAccess\Entities\Test_Category.cs" />
     <Compile Include="DataAccess\IDatabase.cs" />
-    <Compile Include="DataAccess\Repository\ITestClassRepository.cs" />
+    <Compile Include="DataAccess\Repository\ArtifactRepository.cs" />
+    <Compile Include="DataAccess\Repository\CategoryRepository.cs" />
+    <Compile Include="DataAccess\Repository\IArtifactRepository.cs" />
+    <Compile Include="DataAccess\Repository\ICategoryRepository.cs" />
+    <Compile Include="DataAccess\Repository\IRepository.cs" />
     <Compile Include="DataAccess\Repository\TestClassRepository.cs" />
+    <Compile Include="DBTest.xaml.cs">
+      <DependentUpon>DBTest.xaml</DependentUpon>
+    </Compile>
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
@@ -135,6 +145,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="DBTest.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

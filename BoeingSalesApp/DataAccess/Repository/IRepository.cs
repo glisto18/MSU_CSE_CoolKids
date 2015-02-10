@@ -7,7 +7,7 @@ using BoeingSalesApp.DataAccess.Entities;
 
 namespace BoeingSalesApp.DataAccess.Repository
 {
-    interface ITestClassRepository
+    interface IRepository
     {
         Task SaveAsync(TestClass testClass);
 
