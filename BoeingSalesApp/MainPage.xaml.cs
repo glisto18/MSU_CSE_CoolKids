@@ -12,6 +12,11 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
+using BoeingSalesApp.DataAccess;
+using BoeingSalesApp.DataAccess.Entities;
+using BoeingSalesApp.DataAccess.Repository;
+using SQLite;
+using System.Threading.Tasks;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234238
 // hello world
