@@ -32,7 +32,7 @@ namespace BoeingSalesApp
         {
             this.InitializeComponent();
         }
-
+        
 
         private void onMeetingsRect_Tapped(object sender, RoutedEventArgs e)
         {
@@ -43,5 +43,5 @@ namespace BoeingSalesApp
         {
             this.Frame.Navigate(typeof(ArtifactsCatView));
         }
-    }
+        }
 }

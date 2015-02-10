@@ -8,7 +8,7 @@ using SQLite;
 
 namespace BoeingSalesApp.DataAccess.Repository
 {
-    class TestClassRepository : ITestClassRepository
+    class TestClassRepository : IRepository
     {
         private readonly SQLiteAsyncConnection _database;
 
