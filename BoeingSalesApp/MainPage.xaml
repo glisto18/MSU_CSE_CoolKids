@@ -24,5 +24,6 @@
             </ListView>
             <TextBlock Name="Status" FontSize="16" Foreground="GreenYellow"></TextBlock>
         </StackPanel>
+        <HyperlinkButton Content="Click to go to DBTest" Click="HyperlinkButton_Click"/>
     </Grid>
 </Page>

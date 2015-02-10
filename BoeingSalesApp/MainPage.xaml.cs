@@ -33,66 +33,15 @@ namespace BoeingSalesApp
             this.InitializeComponent();
         }
         
-        private TestClass _testClass;
-        private IRepository _testClassRepository;
-        private Category _category;
-        private Test_Category _testCategory;
 
-        protected async override void OnNavigatedTo(NavigationEventArgs e)
+        private void onMeetingsRect_Tapped(object sender, RoutedEventArgs e)
         {
-            InitializeTestClass();
-           
-
-            await InitializeDatabase();
-            await UpdateTestClasses();
+            this.Frame.Navigate(typeof(MeetingsView));
         }
 
-        private void InitializeTestClass()
+        private void onArt_Tap(object sender, RoutedEventArgs e)
         {
-            _category = new Category();
-            _testClass = new TestClass();
-            _testCategory = new Test_Category();
-            CurrentTestClass.DataContext = _testCategory;
+            this.Frame.Navigate(typeof(ArtifactsCatView));
         }
-
-        private async Task InitializeDatabase()
-        {
-            string databasePath = Windows.Storage.ApplicationData.Current.LocalFolder.Path + "\\Categories.db";
-            Database database = new Database(databasePath);
-            await database.Initialize();
-            _testClassRepository = new TestClassRepository(database);
         }
-
-        private async Task UpdateTestClasses()
-        {
-            TestClasses.ItemsSource = await _testClassRepository.GetAllAsync();
-            var foo = TestClasses.Items;
-        }
-
-        private async void Save_Click(object sender, RoutedEventArgs e)
-        {
-            await _testClassRepository.SaveAsync(_testClass);
-            await UpdateTestClasses();
-            Status.Text = string.Format("{0} has been saved to your database.", _testClass);
-        }
-
-        private async void Delete_Click(object sender, RoutedEventArgs e)
-        {
-            string mTest_Name = _testClass.ToString();
-            await _testClassRepository.DeleteAsync(_testClass);
-            await UpdateTestClasses();
-            InitializeTestClass();
-
-            Status.Text = string.Format("{0} has been removed from your contacts.", mTest_Name);
-        }
-
-        private void TestClasses_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (e.AddedItems.Count <= 0) return;
-            _testClass = e.AddedItems[0] as TestClass;
-            CurrentTestClass.DataContext = _testClass;
-        }
-    }
-
-
 }
