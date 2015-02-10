@@ -7,7 +7,14 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
-    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-
+    <Grid Background="White">
+        <Rectangle Tapped="onMeetingsRect_Tapped" Fill="White" StrokeThickness="10" HorizontalAlignment="Left" Height="216" Margin="75,330,0,0" Stroke="#005DAB" VerticalAlignment="Top" Width="329"/>
+        <Rectangle Fill="White" StrokeThickness="10" HorizontalAlignment="Left" Height="216" Margin="469,330,0,0" Stroke="#005DAB" VerticalAlignment="Top" Width="329"/>
+        <Rectangle Tapped="onArt_Tap" Fill="White" StrokeThickness="10" HorizontalAlignment="Left" Height="216" Margin="868,330,0,0" Stroke="#005DAB" VerticalAlignment="Top" Width="329"/>
+        <TextBlock Foreground="#005DAB" HorizontalAlignment="Left" FontSize="40" Margin="538,412,0,0" TextWrapping="Wrap" Text="Sales Bags" VerticalAlignment="Top" Height="55" Width="191"/>
+        <TextBlock Foreground="#005DAB" HorizontalAlignment="Left" FontSize="40" Margin="956,412,0,0" TextWrapping="Wrap" Text="Artifacts" VerticalAlignment="Top" Height="55" Width="169"/>
+        <TextBlock Foreground="#005DAB" HorizontalAlignment="Left" FontSize="40" Margin="167,412,0,0" TextWrapping="Wrap" Text="Meetings" VerticalAlignment="Top" Height="55" Width="169"/>
+        <Image Source="Assets/BoeingLogo.png" HorizontalAlignment="Center" Height="151" Margin="309,115,348,0" Width="709" VerticalAlignment="Top"/>
+       
     </Grid>
 </Page>
