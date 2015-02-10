@@ -43,5 +43,10 @@ namespace BoeingSalesApp
         {
             this.Frame.Navigate(typeof(ArtifactsCatView));
         }
+
+        private void DBTestLink_Click(object sender, RoutedEventArgs e)
+        {
+            this.Frame.Navigate(typeof(DBTest));
         }
+    }
 }

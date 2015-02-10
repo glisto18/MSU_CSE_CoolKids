@@ -16,5 +16,7 @@ namespace BoeingSalesApp.DataAccess.Entities
         public string Name { get; set; }
 
         public bool Active { get; set; }
+
+
     }
 }

@@ -8,7 +8,7 @@ using BoeingSalesApp.DataAccess.Entities;
 
 namespace BoeingSalesApp.DataAccess.Repository
 {
-    class ArtifactRepository
+    class ArtifactRepository : IArtifactRepository
     {
 
         private readonly SQLiteAsyncConnection _database;

@@ -19,6 +19,8 @@ namespace BoeingSalesApp.DataAccess.Entities
 
         public string FileType { get; set; }
 
+        public string FileName { get; set; }
+
         public DateTime DateAdded { get; set; }
 
         public DateTime DateDeleted { get; set; }
