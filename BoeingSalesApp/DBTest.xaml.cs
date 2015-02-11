@@ -77,10 +77,14 @@ namespace BoeingSalesApp
         private async void Save_Click(object sender, RoutedEventArgs e)
         {
             var seeder = new BoeingSalesApp.Utility.FakeSeeder();
-            await seeder.FakeSeedArtifacts();
-            await FetchCategories();
-            await seeder.FakeSeedCategories();
-            await FetchCategories();
+            await seeder.CreateTestArtifactCategoryRelationsip();
+
+            //await seeder.FakeSeedArtifacts();
+            //await FetchCategories();
+            //await seeder.FakeSeedCategories();
+            //await FetchCategories();
+
+            
 
             //await _categoryRepository.SaveAsync(_category);
             //await FetchCategories();

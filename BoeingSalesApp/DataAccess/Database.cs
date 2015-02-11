@@ -23,6 +23,12 @@ namespace BoeingSalesApp.DataAccess
 
             await _dbConnection.CreateTableAsync<Category>();
             await _dbConnection.CreateTableAsync<Artifact>();
+            await _dbConnection.CreateTableAsync<Artifact_Category>();
+            await _dbConnection.CreateTableAsync<Meeting>();
+            await _dbConnection.CreateTableAsync<Note>();
+            await _dbConnection.CreateTableAsync<SalesBag>();
+            await _dbConnection.CreateTableAsync<SalesBag_Artifact>();
+            
         }
 
         public SQLiteAsyncConnection GetAsyncConnection()

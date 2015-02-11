@@ -33,5 +33,17 @@ namespace BoeingSalesApp.DataAccess.Repository
             return artifact_categories;
         }
 
+        public async Task AddRelationship(Artifact artifact, Category category)
+        {
+
+            var newRelationship = new Artifact_Category
+            {
+                ArtifactID = artifact.ID,
+                CategoryID = category.ID
+            };
+
+            await SaveAsync(newRelationship);
+        }
+
     }
 }

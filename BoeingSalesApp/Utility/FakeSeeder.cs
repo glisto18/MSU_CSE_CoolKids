@@ -102,5 +102,31 @@ namespace BoeingSalesApp.Utility
             }
 
         }
+
+        public async Task CreateTestArtifactCategoryRelationsip()
+        {
+            await InitDb();
+
+            var artifact = new Artifact
+            {
+                Path = "testRelationshipPath",
+                Title = "testRelationshipArtifact",
+                FileName = "testrel.pdf",
+                FileType = "pdf",
+                DateAdded = DateTime.Now,
+                Active = true
+            };
+
+            var category = new Category
+            {
+                Name = "TestRelationship Category",
+                Active = true
+            };
+
+            var artifactCategory = new Artifact_CategoryRepository(_db);
+            await artifactCategory.AddRelationship(artifact, category);
+
+
+        }
     }
 }

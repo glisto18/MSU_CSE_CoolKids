@@ -13,6 +13,6 @@ namespace BoeingSalesApp.DataAccess.Repository
 
         Task DeleteAsync(SalesBag bag);
 
-        Task<List<Note>> GetAllAsync();
+        Task<List<SalesBag>> GetAllAsync();
     }
 }

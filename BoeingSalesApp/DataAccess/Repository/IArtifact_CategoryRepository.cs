@@ -14,5 +14,8 @@ namespace BoeingSalesApp.DataAccess.Repository
         Task DeleteAsync(Artifact_Category artifact_category);
 
         Task<List<Artifact_Category>> GetAllAsync();
+
+        Task AddRelationship(Artifact artifact, Category category);
+
     }
 }
