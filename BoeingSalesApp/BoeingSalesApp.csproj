@@ -112,6 +112,9 @@
     <Compile Include="Common\ObservableDictionary.cs" />
     <Compile Include="Common\RelayCommand.cs" />
     <Compile Include="Common\SuspensionManager.cs" />
+    <Compile Include="DataAccess\Entities\Artifact_Category.cs" />
+    <Compile Include="DataAccess\Repository\Artifact_CategoryRepository.cs" />
+    <Compile Include="DataAccess\Repository\IArtifact_CategoryRepository.cs" />
     <Compile Include="launchMeeting.xaml.cs">
       <DependentUpon>launchMeeting.xaml</DependentUpon>
     </Compile>
@@ -139,6 +142,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SQLite.cs" />
     <Compile Include="SQLiteAsync.cs" />
+    <Compile Include="Utility\FakeSeeder.cs" />
+    <Compile Include="Utility\TempSettings.cs" />
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">

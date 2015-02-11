@@ -26,8 +26,9 @@ namespace BoeingSalesApp
     /// </summary>
     public sealed partial class DBTest : Page
     {
-        private Category _newCategory;
+        private Category _category;
         private ICategoryRepository _categoryRepository;
+        private IArtifactRepository _artifactsRepository;
 
         public DBTest()
         {
@@ -37,46 +38,71 @@ namespace BoeingSalesApp
 
         protected async override void OnNavigatedTo(NavigationEventArgs e)
         {
-            _newCategory = new Category();
-            uxCategoryPanel.DataContext = _newCategory;
+            InitializeCategory();
 
             await InitializeDatabase();
 
-            FetchCategories();
+            await FetchCategories();
 
             
+        }
+
+        private void InitializeCategory()
+        {
+            _category = new Category();
+            uxCategoryPanel.DataContext = _category;
+
+           
         }
 
         private async Task FetchCategories()
         {
             uxCategoryList.ItemsSource = await _categoryRepository.GetAllAsync();
             var foo = uxCategoryList.Items;
+
+
+            uxArtifactsList.ItemsSource = await _artifactsRepository.GetAllAsync();
+            var d = uxArtifactsList.Items;
         }
 
         private async Task InitializeDatabase()
         {
-            string databasePath = Windows.Storage.ApplicationData.Current.LocalFolder.Path + "\\Categories.db";
+            string databasePath = Windows.Storage.ApplicationData.Current.LocalFolder.Path + "\\" + BoeingSalesApp.Utility.TempSettings.DbName;
             Database database = new Database(databasePath);
             await database.Initialize();
             _categoryRepository = new CategoryRepository(database);
+            _artifactsRepository = new ArtifactRepository(database);
         }
 
         private async void Save_Click(object sender, RoutedEventArgs e)
         {
-            await _categoryRepository.SaveAsync(_newCategory);
+            //var seeder = new BoeingSalesApp.Utility.FakeSeeder();
+            //await seeder.FakeSeedArtifacts();
+            //await FetchCategories();
+            //await seeder.FakeSeedCategories();
+            //await FetchCategories();
+
+            await _categoryRepository.SaveAsync(_category);
             await FetchCategories();
 
-            Status.Text = string.Format("{0} has been saved to your database.", _newCategory.Name);
+            Status.Text = string.Format("Name: {0} has been saved to your database.", _category.Name);
         }
 
-        private void Delete_Click(object sender, RoutedEventArgs e)
+        private async void Delete_Click(object sender, RoutedEventArgs e)
         {
-
+            await _categoryRepository.DeleteAsync(_category);
+            await FetchCategories();
+            InitializeCategory();
+            Status.Text = "category has been saved to your database.";
         }
 
-        private void CategoryList_OnSelectionChanged(object sender, RoutedEventArgs e)
+        private void CategoryList_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-
+            if (e.AddedItems.Count <= 0) return;
+            
+            _category = e.AddedItems[0] as Category;
+            uxCategoryPanel.DataContext = _category;
+            
         }
     }
 }

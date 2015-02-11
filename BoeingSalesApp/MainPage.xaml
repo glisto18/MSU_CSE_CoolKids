@@ -15,6 +15,6 @@
         <TextBlock Foreground="#005DAB" HorizontalAlignment="Left" FontSize="40" Margin="956,412,0,0" TextWrapping="Wrap" Text="Artifacts" VerticalAlignment="Top" Height="55" Width="169"/>
         <TextBlock Foreground="#005DAB" HorizontalAlignment="Left" FontSize="40" Margin="167,412,0,0" TextWrapping="Wrap" Text="Meetings" VerticalAlignment="Top" Height="55" Width="169"/>
         <Image Source="Assets/BoeingLogo.png" HorizontalAlignment="Center" Height="151" Margin="309,115,348,0" Width="709" VerticalAlignment="Top"/>
-       
+        <HyperlinkButton Content="Click for DBTest page" Click="DBTestLink_Click" HorizontalAlignment="Left" VerticalAlignment="Bottom"/>
     </Grid>
 </Page>

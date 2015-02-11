@@ -8,21 +8,36 @@
     mc:Ignorable="d">
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-        <StackPanel Name="uxCategoryPanel" Margin="10">
-            <TextBlock>Test Name</TextBlock>
-            <TextBox Name="uxTextBox" Text="{Binding Name, Mode=TwoWay}"></TextBox>
-            <Button Name="Save" Click="Save_Click">Save</Button>
-            <Button Name="Delete" Click="Delete_Click">Delete</Button>
-            <ListView Name="uxCategoryList" ItemsSource="{Binding}" SelectionChanged="CategoryList_OnSelectionChanged">
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <StackPanel Orientation="Horizontal" Margin="4">
-                            <TextBlock Text="{Binding Name}"></TextBlock>
-                        </StackPanel>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
-            <TextBlock Name="Status" FontSize="16" Foreground="GreenYellow"></TextBlock>
-        </StackPanel>
+        <Border BorderThickness="2" BorderBrush="Aqua" Width="300" HorizontalAlignment="Left">
+            <StackPanel Name="uxCategoryPanel" Margin="10" Width="300" HorizontalAlignment="Left" >
+                <TextBlock Text="Category StackPanel"></TextBlock>
+                <TextBlock>Insert a Category Name</TextBlock>
+                <TextBox Name="uxTextBox" Text="{Binding Name, Mode=TwoWay}"></TextBox>
+                <Button Name="Save" Click="Save_Click">Save</Button>
+                <Button Name="Delete" Click="Delete_Click">Delete</Button>
+                <TextBlock Text="Categories"></TextBlock>
+                <ListView Name="uxCategoryList" ItemsSource="{Binding}" SelectionChanged="CategoryList_OnSelectionChanged">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal" Margin="4">
+                                
+                                <TextBlock Text="{Binding Name}"></TextBlock>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+                <TextBlock Text="Artifacts"></TextBlock>
+                <ListView Name="uxArtifactsList" ItemsSource="{Binding}">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal" Margin="4">
+                                <TextBlock Text="{Binding Title}"></TextBlock>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+                <TextBlock Name="Status" FontSize="16" Foreground="GreenYellow"></TextBlock>
+            </StackPanel>
+        </Border>
         </Grid>
 </Page>
