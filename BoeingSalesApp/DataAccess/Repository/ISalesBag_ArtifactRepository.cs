@@ -15,5 +15,7 @@ namespace BoeingSalesApp.DataAccess.Repository
         Task DeleteAsync(SalesBag_Artifact salesbagArtifact);
 
         Task<List<SalesBag_Artifact>> GetAllAsync();
+
+        Task AddRelationship(Artifact artifact, SalesBag salesbag);
     }
 }

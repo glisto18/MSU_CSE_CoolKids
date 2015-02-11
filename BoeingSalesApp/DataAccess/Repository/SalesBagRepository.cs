@@ -12,6 +12,19 @@ namespace BoeingSalesApp.DataAccess.Repository
     {
         private readonly SQLiteAsyncConnection _database;
 
+        /// <summary>
+        /// Initializes DB with default DB
+        /// </summary>
+        public SalesBagRepository()
+        {
+            var db = new Database(BoeingSalesApp.Utility.TempSettings.DbPath);
+            _database = db.GetAsyncConnection();
+        }
+
+        /// <summary>
+        /// Initializes DB with specified DB
+        /// </summary>
+        /// <param name="database"></param>
         public SalesBagRepository(IDatabase database)
         {
             _database = database.GetAsyncConnection();
@@ -31,6 +44,27 @@ namespace BoeingSalesApp.DataAccess.Repository
         {
             var bags = await _database.Table<SalesBag>().ToListAsync();
             return bags;
+        }
+
+        /// <summary>
+        /// Gets the salesbag specified by the bagId
+        /// </summary>
+        /// <param name="bagId"></param>
+        /// <returns></returns>
+        public async Task<SalesBag> Get(Guid bagId)
+        {
+            return await _database.GetAsync<SalesBag>(bagId);
+        }
+
+        /// <summary>
+        /// Returns true an entitie is found with the specified Id
+        /// </summary>
+        /// <param name="salesbagId"></param>
+        /// <returns></returns>
+        public async Task<bool> DoesExist(Guid bagId)
+        {
+            var salesbagIdCount = await _database.Table<SalesBag>().Where(x => x.ID == bagId).CountAsync();
+            return salesbagIdCount > 0;
         }
     }
 }

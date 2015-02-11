@@ -29,6 +29,7 @@ namespace BoeingSalesApp
         private Category _category;
         private ICategoryRepository _categoryRepository;
         private IArtifactRepository _artifactsRepository;
+        private IDatabase _database;
 
         public DBTest()
         {
@@ -68,24 +69,42 @@ namespace BoeingSalesApp
         private async Task InitializeDatabase()
         {
             string databasePath = Windows.Storage.ApplicationData.Current.LocalFolder.Path + "\\" + BoeingSalesApp.Utility.TempSettings.DbName;
-            Database database = new Database(databasePath);
-            await database.Initialize();
-            _categoryRepository = new CategoryRepository(database);
-            _artifactsRepository = new ArtifactRepository(database);
+            _database = new Database(databasePath);
+            await _database.Initialize();
+            _categoryRepository = new CategoryRepository(_database);
+            _artifactsRepository = new ArtifactRepository(_database);
         }
 
         private async void Save_Click(object sender, RoutedEventArgs e)
         {
+            //var artifactRepo = new ArtifactRepository(_database);
+            //var newArtifact = new Artifact{
+            //    Active = true,
+            //    Title = "a new artifact",
+            //    DateAdded = DateTime.Now
+            //};
+            //await artifactRepo.SaveAsync(newArtifact);
+            //var test = await artifactRepo.Get(newArtifact.ID);
+            
+            //Status.Text = test.Title;
+
+
             var seeder = new BoeingSalesApp.Utility.FakeSeeder();
-            await seeder.CreateTestArtifactCategoryRelationsip();
+            //await seeder.CreateArtifactCategory();
+            //Status.Text = "done creating acr table";
+            await seeder.CreateTestArtifactSalesBagRelationship();
+            Status.Text = "Artifact Salesbag relationship should have been added";
 
             //await seeder.FakeSeedArtifacts();
             //await FetchCategories();
             //await seeder.FakeSeedCategories();
             //await FetchCategories();
 
-            
 
+            var acr = new Artifact_CategoryRepository();
+            var foo = await acr.GetAllAsync();
+
+            var bar = 1;
             //await _categoryRepository.SaveAsync(_category);
             //await FetchCategories();
 
@@ -97,7 +116,7 @@ namespace BoeingSalesApp
             await _categoryRepository.DeleteAsync(_category);
             await FetchCategories();
             InitializeCategory();
-            Status.Text = "category has been saved to your database.";
+            Status.Text = "category has been deleted to your database.";
         }
 
         private void CategoryList_OnSelectionChanged(object sender, SelectionChangedEventArgs e)

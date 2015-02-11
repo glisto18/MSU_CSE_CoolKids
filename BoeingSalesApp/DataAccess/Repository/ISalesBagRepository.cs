@@ -14,5 +14,9 @@ namespace BoeingSalesApp.DataAccess.Repository
         Task DeleteAsync(SalesBag bag);
 
         Task<List<SalesBag>> GetAllAsync();
+
+        Task<bool> DoesExist(Guid bagId);
+
+        Task<SalesBag> Get(Guid bagId);
     }
 }

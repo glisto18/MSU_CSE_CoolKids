@@ -12,6 +12,12 @@ namespace BoeingSalesApp.DataAccess.Repository
     {
          private readonly SQLiteAsyncConnection _database;
 
+         public Artifact_CategoryRepository()
+         {
+             var db = new Database(BoeingSalesApp.Utility.TempSettings.DbPath);
+             _database = db.GetAsyncConnection(); 
+         }
+
          public Artifact_CategoryRepository(IDatabase database)
         {
             _database = database.GetAsyncConnection();
@@ -35,6 +41,17 @@ namespace BoeingSalesApp.DataAccess.Repository
 
         public async Task AddRelationship(Artifact artifact, Category category)
         {
+            var artifactRepo = new ArtifactRepository();
+            var categoryRepo = new CategoryRepository();
+            if (!await artifactRepo.DoesExist(artifact.ID))
+            {
+                await artifactRepo.SaveAsync(artifact);
+            }
+
+            if (!await categoryRepo.DoesExist(category.ID))
+            {
+                await categoryRepo.SaveAsync(category);
+            }
 
             var newRelationship = new Artifact_Category
             {

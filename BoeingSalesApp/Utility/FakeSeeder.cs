@@ -22,9 +22,16 @@ namespace BoeingSalesApp.Utility
 
         private async Task InitDb()
         {
-            _dbPath = Windows.Storage.ApplicationData.Current.LocalFolder.Path + "\\" + TempSettings.DbName;
-            _db = new Database(_dbPath);
+            _db = new Database(TempSettings.DbPath);
             await _db.Initialize();
+        }
+
+        public async Task CreateArtifactCategory()
+        {
+            await InitDb();
+            var acr = new Artifact_CategoryRepository();
+            var newRelationship = new Artifact_Category();
+            await acr.SaveAsync(newRelationship);
         }
        
         public async Task FakeSeedCategories()
@@ -103,6 +110,30 @@ namespace BoeingSalesApp.Utility
 
         }
 
+        public async Task CreateTestArtifactSalesBagRelationship()
+        {
+            await InitDb();
+
+            var artifact = new Artifact
+            {
+                Path = "test salesbag relationship",
+                Title = "artfact for salesbag",
+                FileName = "something.pdf",
+                FileType = "pdf",
+                DateAdded = DateTime.Now,
+                Active = true
+            };
+
+            var salesbag = new SalesBag
+            {
+                Name = "Im a salesbag!"
+            };
+
+            var salesbagArtifact = new SalesBag_ArtifactRepository();
+            await salesbagArtifact.AddRelationship(artifact, salesbag);
+            
+        }
+
         public async Task CreateTestArtifactCategoryRelationsip()
         {
             await InitDb();
@@ -125,8 +156,6 @@ namespace BoeingSalesApp.Utility
 
             var artifactCategory = new Artifact_CategoryRepository(_db);
             await artifactCategory.AddRelationship(artifact, category);
-
-
         }
     }
 }

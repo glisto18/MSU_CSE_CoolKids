@@ -7,7 +7,7 @@ using SQLite;
 
 namespace BoeingSalesApp.DataAccess.Entities
 {
-    [Table("Artifact")]
+    [Table("SalesBag")]
     class SalesBag
     {
         [PrimaryKey, Unique, AutoIncrement]

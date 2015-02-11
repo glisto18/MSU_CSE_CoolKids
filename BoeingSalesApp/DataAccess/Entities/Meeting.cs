@@ -37,6 +37,7 @@ namespace BoeingSalesApp.DataAccess.Entities
 
         public DateTime TimeOfMeeting { get; set; }
 
-        public TimeZoneInfo TimeZone { get; set; }
+        // sqlite didnt like the timezone type
+        public string TimeZone { get; set; }
     }
 }

@@ -8,6 +8,8 @@ namespace BoeingSalesApp.Utility
 {
     static class TempSettings
     {
-        public static string DbName = "NewTestConnection";
+        public static string DbName = "DB_test_1";
+
+        public static string DbPath = Windows.Storage.ApplicationData.Current.LocalFolder.Path + "\\" + DbName;
     }
 }
