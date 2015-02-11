@@ -76,16 +76,16 @@ namespace BoeingSalesApp
 
         private async void Save_Click(object sender, RoutedEventArgs e)
         {
-            //var seeder = new BoeingSalesApp.Utility.FakeSeeder();
-            //await seeder.FakeSeedArtifacts();
-            //await FetchCategories();
-            //await seeder.FakeSeedCategories();
-            //await FetchCategories();
-
-            await _categoryRepository.SaveAsync(_category);
+            var seeder = new BoeingSalesApp.Utility.FakeSeeder();
+            await seeder.FakeSeedArtifacts();
+            await FetchCategories();
+            await seeder.FakeSeedCategories();
             await FetchCategories();
 
-            Status.Text = string.Format("Name: {0} has been saved to your database.", _category.Name);
+            //await _categoryRepository.SaveAsync(_category);
+            //await FetchCategories();
+
+            //Status.Text = string.Format("Name: {0} has been saved to your database.", _category.Name);
         }
 
         private async void Delete_Click(object sender, RoutedEventArgs e)

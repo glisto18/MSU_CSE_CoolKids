@@ -8,6 +8,6 @@ namespace BoeingSalesApp.Utility
 {
     static class TempSettings
     {
-        public static string DbName = "db_version0.1";
+        public static string DbName = "NewTestConnection";
     }
 }
