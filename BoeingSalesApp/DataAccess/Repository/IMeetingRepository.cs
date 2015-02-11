@@ -7,12 +7,12 @@ using BoeingSalesApp.DataAccess.Entities;
 
 namespace BoeingSalesApp.DataAccess.Repository
 {
-    interface IArtifact_CategoryRepository
+    interface IMeetingRepository
     {
-        Task SaveAsync(Artifact_Category artifact_category);
+        Task SaveAsync(Meeting meeting);
 
-        Task DeleteAsync(Artifact_Category artifact_category);
+        Task DeleteAsync(Meeting meeting);
 
-        Task<List<Artifact_Category>> GetAllAsync();
+        Task<List<Meeting>> GetAllAsync();
     }
 }

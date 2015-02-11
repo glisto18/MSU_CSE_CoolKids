@@ -113,8 +113,14 @@
     <Compile Include="Common\RelayCommand.cs" />
     <Compile Include="Common\SuspensionManager.cs" />
     <Compile Include="DataAccess\Entities\Artifact_Category.cs" />
+    <Compile Include="DataAccess\Entities\Meeting.cs" />
+    <Compile Include="DataAccess\Entities\Note.cs" />
     <Compile Include="DataAccess\Repository\Artifact_CategoryRepository.cs" />
+    <Compile Include="DataAccess\Repository\INoteRepository.cs" />
+    <Compile Include="DataAccess\Repository\NoteRepository.cs" />
     <Compile Include="DataAccess\Repository\IArtifact_CategoryRepository.cs" />
+    <Compile Include="DataAccess\Repository\IMeetingRepository.cs" />
+    <Compile Include="DataAccess\Repository\MeetingRepository.cs" />
     <Compile Include="launchMeeting.xaml.cs">
       <DependentUpon>launchMeeting.xaml</DependentUpon>
     </Compile>
