@@ -17,5 +17,11 @@ namespace BoeingSalesApp.DataAccess.Repository
 
         Task AddRelationship(Artifact artifact, Category category);
 
+        Task RemoveArtifactFromCategory(Artifact artifact, Category category);
+
+        Task<List<Artifact>> GetAllArtifactsForCategory(Category category);
+
+        Task<bool> DoesExist(Artifact artifact, Category category);
+
     }
 }

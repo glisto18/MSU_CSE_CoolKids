@@ -92,19 +92,40 @@ namespace BoeingSalesApp
             var seeder = new BoeingSalesApp.Utility.FakeSeeder();
             //await seeder.CreateArtifactCategory();
             //Status.Text = "done creating acr table";
-            await seeder.CreateTestArtifactSalesBagRelationship();
-            Status.Text = "Artifact Salesbag relationship should have been added";
+            //await seeder.CreateTestArtifactSalesBagRelationship();
+            //Status.Text = "Artifact Salesbag relationship should have been added";
 
             //await seeder.FakeSeedArtifacts();
             //await FetchCategories();
             //await seeder.FakeSeedCategories();
             //await FetchCategories();
 
+            //Status.Text = "Seeded artifacts and categories";
 
-            var acr = new Artifact_CategoryRepository();
-            var foo = await acr.GetAllAsync();
 
-            var bar = 1;
+            var artifactRepo = new ArtifactRepository();
+            var duckDocs = await artifactRepo.GetArtifactsByTitle("Duck");
+            var duckDoc = duckDocs[0];
+            var blueTrucks = await artifactRepo.GetArtifactsByTitle("Blue Truck");
+            var blueTruck = blueTrucks[0];
+
+            var categoryRepo = new CategoryRepository();
+            var planeCats = await categoryRepo.GetCategoriesByName("Planes");
+            var planCat = planeCats[0];
+            Status.Text = string.Format("Name: {0} ", planCat.Name);
+
+            var artifactsCategories = new Artifact_CategoryRepository();
+            //await artifactsCategories.AddRelationship(duckDoc, planCat);
+            //await artifactsCategories.AddRelationship(blueTruck, planCat);
+            await artifactsCategories.RemoveArtifactFromCategory(duckDoc, planCat);
+
+            var planeArtifacts = await artifactsCategories.GetAllArtifactsForCategory(planCat);
+
+            foreach (var artifact in planeArtifacts)
+            {
+                Status.Text += "  Title: " + artifact.Title;
+            }
+
             //await _categoryRepository.SaveAsync(_category);
             //await FetchCategories();
 

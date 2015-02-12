@@ -49,5 +49,11 @@ namespace BoeingSalesApp.DataAccess.Repository
             var countById = await _database.Table<Category>().Where(x => x.ID == categoryId).CountAsync();
             return countById > 0;
         }
+
+       public async Task<List<Category>> GetCategoriesByName(string title)
+       {
+           return await _database.Table<Category>().Where(x => x.Name == title).ToListAsync();
+       }
+
     }
 }

@@ -18,5 +18,7 @@ namespace BoeingSalesApp.DataAccess.Repository
         Task<Category> Get(Guid categoryId);
 
         Task<bool> DoesExist(Guid categoryId);
+
+        Task<List<Category>> GetCategoriesByName(string title);
     }
 }
