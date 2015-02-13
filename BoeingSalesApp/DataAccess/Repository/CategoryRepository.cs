@@ -12,6 +12,12 @@ namespace BoeingSalesApp.DataAccess.Repository
     {
         private readonly SQLiteAsyncConnection _database;
 
+        public CategoryRepository() 
+        {   
+            var db = new Database(BoeingSalesApp.Utility.TempSettings.DbPath);
+             _database = db.GetAsyncConnection(); 
+        }
+
         public CategoryRepository(IDatabase database)
         {
             _database = database.GetAsyncConnection();
@@ -32,5 +38,22 @@ namespace BoeingSalesApp.DataAccess.Repository
             var categories = await _database.Table<Category>().ToListAsync();
             return categories;
         }
+
+        public async Task<Category> Get(Guid categoryId)
+        {
+            return await _database.GetAsync<Category>(categoryId);
+        }
+
+       public async Task<bool> DoesExist(Guid categoryId)
+        {
+            var countById = await _database.Table<Category>().Where(x => x.ID == categoryId).CountAsync();
+            return countById > 0;
+        }
+
+       public async Task<List<Category>> GetCategoriesByName(string title)
+       {
+           return await _database.Table<Category>().Where(x => x.Name == title).ToListAsync();
+       }
+
     }
 }

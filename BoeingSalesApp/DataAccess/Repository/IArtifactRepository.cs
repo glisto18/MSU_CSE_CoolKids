@@ -14,5 +14,11 @@ namespace BoeingSalesApp.DataAccess.Repository
         Task DeleteAsync(Artifact artifact);
 
         Task<List<Artifact>> GetAllAsync();
+
+        Task<Artifact> Get(Guid artifactId);
+
+        Task<bool> DoesExist(Guid artifactId);
+
+        Task<List<Artifact>> GetArtifactsByTitle(string title);
     }
 }

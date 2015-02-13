@@ -29,6 +29,7 @@ namespace BoeingSalesApp
         private Category _category;
         private ICategoryRepository _categoryRepository;
         private IArtifactRepository _artifactsRepository;
+        private IDatabase _database;
 
         public DBTest()
         {
@@ -68,24 +69,67 @@ namespace BoeingSalesApp
         private async Task InitializeDatabase()
         {
             string databasePath = Windows.Storage.ApplicationData.Current.LocalFolder.Path + "\\" + BoeingSalesApp.Utility.TempSettings.DbName;
-            Database database = new Database(databasePath);
-            await database.Initialize();
-            _categoryRepository = new CategoryRepository(database);
-            _artifactsRepository = new ArtifactRepository(database);
+            _database = new Database(databasePath);
+            await _database.Initialize();
+            _categoryRepository = new CategoryRepository(_database);
+            _artifactsRepository = new ArtifactRepository(_database);
         }
 
         private async void Save_Click(object sender, RoutedEventArgs e)
         {
-            //var seeder = new BoeingSalesApp.Utility.FakeSeeder();
+            //var artifactRepo = new ArtifactRepository(_database);
+            //var newArtifact = new Artifact{
+            //    Active = true,
+            //    Title = "a new artifact",
+            //    DateAdded = DateTime.Now
+            //};
+            //await artifactRepo.SaveAsync(newArtifact);
+            //var test = await artifactRepo.Get(newArtifact.ID);
+            
+            //Status.Text = test.Title;
+
+
+            var seeder = new BoeingSalesApp.Utility.FakeSeeder();
+            //await seeder.CreateArtifactCategory();
+            //Status.Text = "done creating acr table";
+            //await seeder.CreateTestArtifactSalesBagRelationship();
+            //Status.Text = "Artifact Salesbag relationship should have been added";
+
             //await seeder.FakeSeedArtifacts();
             //await FetchCategories();
             //await seeder.FakeSeedCategories();
             //await FetchCategories();
 
-            await _categoryRepository.SaveAsync(_category);
-            await FetchCategories();
+            //Status.Text = "Seeded artifacts and categories";
 
-            Status.Text = string.Format("Name: {0} has been saved to your database.", _category.Name);
+
+            var artifactRepo = new ArtifactRepository();
+            var duckDocs = await artifactRepo.GetArtifactsByTitle("Duck");
+            var duckDoc = duckDocs[0];
+            var blueTrucks = await artifactRepo.GetArtifactsByTitle("Blue Truck");
+            var blueTruck = blueTrucks[0];
+
+            var categoryRepo = new CategoryRepository();
+            var planeCats = await categoryRepo.GetCategoriesByName("Planes");
+            var planCat = planeCats[0];
+            Status.Text = string.Format("Name: {0} ", planCat.Name);
+
+            var artifactsCategories = new Artifact_CategoryRepository();
+            //await artifactsCategories.AddRelationship(duckDoc, planCat);
+            //await artifactsCategories.AddRelationship(blueTruck, planCat);
+            await artifactsCategories.RemoveArtifactFromCategory(duckDoc, planCat);
+
+            var planeArtifacts = await artifactsCategories.GetAllArtifactsForCategory(planCat);
+
+            foreach (var artifact in planeArtifacts)
+            {
+                Status.Text += "  Title: " + artifact.Title;
+            }
+
+            //await _categoryRepository.SaveAsync(_category);
+            //await FetchCategories();
+
+            //Status.Text = string.Format("Name: {0} has been saved to your database.", _category.Name);
         }
 
         private async void Delete_Click(object sender, RoutedEventArgs e)
@@ -93,7 +137,7 @@ namespace BoeingSalesApp
             await _categoryRepository.DeleteAsync(_category);
             await FetchCategories();
             InitializeCategory();
-            Status.Text = "category has been saved to your database.";
+            Status.Text = "category has been deleted to your database.";
         }
 
         private void CategoryList_OnSelectionChanged(object sender, SelectionChangedEventArgs e)

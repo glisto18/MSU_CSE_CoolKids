@@ -13,6 +13,12 @@ namespace BoeingSalesApp.DataAccess.Repository
 
         private readonly SQLiteAsyncConnection _database;
 
+        public ArtifactRepository()
+        {
+            var db = new Database(BoeingSalesApp.Utility.TempSettings.DbPath);
+            _database = db.GetAsyncConnection();
+        }
+
         public ArtifactRepository(IDatabase database)
         {
             _database = database.GetAsyncConnection();
@@ -32,6 +38,22 @@ namespace BoeingSalesApp.DataAccess.Repository
         {
             var artifacts = await _database.Table<Artifact>().ToListAsync();
             return artifacts;
+        }
+
+        public async Task<Artifact> Get(Guid artifactId)
+        {
+            return await _database.GetAsync<Artifact>(artifactId);
+        }
+
+        public async Task<bool> DoesExist(Guid artifactId)
+        {
+            var artifactIdCount = await _database.Table<Artifact>().Where(x => x.ID == artifactId).CountAsync();
+            return artifactIdCount > 0;
+        }
+
+        public async Task<List<Artifact>> GetArtifactsByTitle(string title)
+        {
+            return await _database.Table<Artifact>().Where(x => x.Title  == title).ToListAsync();
         }
 
     }

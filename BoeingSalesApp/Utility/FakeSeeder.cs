@@ -22,9 +22,16 @@ namespace BoeingSalesApp.Utility
 
         private async Task InitDb()
         {
-            _dbPath = Windows.Storage.ApplicationData.Current.LocalFolder.Path + "\\" + TempSettings.DbName;
-            _db = new Database(_dbPath);
+            _db = new Database(TempSettings.DbPath);
             await _db.Initialize();
+        }
+
+        public async Task CreateArtifactCategory()
+        {
+            await InitDb();
+            var acr = new Artifact_CategoryRepository();
+            var newRelationship = new Artifact_Category();
+            await acr.SaveAsync(newRelationship);
         }
        
         public async Task FakeSeedCategories()
@@ -101,6 +108,54 @@ namespace BoeingSalesApp.Utility
                 await artifactRepository.SaveAsync(artifact);
             }
 
+        }
+
+        public async Task CreateTestArtifactSalesBagRelationship()
+        {
+            await InitDb();
+
+            var artifact = new Artifact
+            {
+                Path = "test salesbag relationship",
+                Title = "artfact for salesbag",
+                FileName = "something.pdf",
+                FileType = "pdf",
+                DateAdded = DateTime.Now,
+                Active = true
+            };
+
+            var salesbag = new SalesBag
+            {
+                Name = "Im a salesbag!"
+            };
+
+            var salesbagArtifact = new SalesBag_ArtifactRepository();
+            await salesbagArtifact.AddRelationship(artifact, salesbag);
+            
+        }
+
+        public async Task CreateTestArtifactCategoryRelationsip()
+        {
+            await InitDb();
+
+            var artifact = new Artifact
+            {
+                Path = "testRelationshipPath",
+                Title = "testRelationshipArtifact",
+                FileName = "testrel.pdf",
+                FileType = "pdf",
+                DateAdded = DateTime.Now,
+                Active = true
+            };
+
+            var category = new Category
+            {
+                Name = "TestRelationship Category",
+                Active = true
+            };
+
+            var artifactCategory = new Artifact_CategoryRepository(_db);
+            await artifactCategory.AddRelationship(artifact, category);
         }
     }
 }

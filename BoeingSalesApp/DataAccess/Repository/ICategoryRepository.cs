@@ -14,5 +14,11 @@ namespace BoeingSalesApp.DataAccess.Repository
         Task DeleteAsync(Category category);
 
         Task<List<Category>> GetAllAsync();
+
+        Task<Category> Get(Guid categoryId);
+
+        Task<bool> DoesExist(Guid categoryId);
+
+        Task<List<Category>> GetCategoriesByName(string title);
     }
 }
