@@ -130,7 +130,7 @@ namespace BoeingSalesApp.Utility
             };
 
             var salesbagArtifact = new SalesBag_ArtifactRepository();
-            await salesbagArtifact.AddRelationship(artifact, salesbag);
+            //add relationship here
             
         }
 
@@ -158,27 +158,6 @@ namespace BoeingSalesApp.Utility
             await artifactCategory.AddRelationship(artifact, category);
         }
 
-        public async Task CreateSalesbag()
-        {
-            var sampleSalesbag = new SalesBag
-            {
-                Name = " a new salesbag",
-                DateCreated = DateTime.Now,
-            };
-
-            var salesbagRepository = new SalesBagRepository();
-
-            await salesbagRepository.SaveAsync(sampleSalesbag);
-
-            var sampleArtifact = new Artifact
-            {
-                Title = "sample Artifact",
-                Path = "some path"
-            };
-
-            var salesbagArtifactRepo = new SalesBag_ArtifactRepository();
-
-            await salesbagArtifactRepo.AddRelationship(sampleArtifact, sampleSalesbag);
-        }
+      
     }
 }
