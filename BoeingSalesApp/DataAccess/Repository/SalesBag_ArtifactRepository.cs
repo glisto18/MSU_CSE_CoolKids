@@ -48,28 +48,75 @@ namespace BoeingSalesApp.DataAccess.Repository
         /// <param name="artifact"></param>
         /// <param name="salesbag"></param>
         /// <returns></returns>
-        public async Task AddRelationship(Artifact artifact, SalesBag salesbag)
+        public async Task AddArtifactToSalesbag(Artifact artifact, SalesBag salesbag)
         {
-            var artifactRepo = new ArtifactRepository();
-            var salesbagRepo = new SalesBagRepository();
-
-            if (!await artifactRepo.DoesExist(artifact.ID))
+            if (!await DoesExist(artifact, salesbag))
             {
-                await artifactRepo.SaveAsync(artifact);
+                var artifactRepo = new ArtifactRepository();
+                var salesbagRepo = new SalesBagRepository();
+
+                if (!await artifactRepo.DoesExist(artifact.ID))
+                {
+                    await artifactRepo.SaveAsync(artifact);
+                }
+                if (!await salesbagRepo.DoesExist(salesbag.ID))
+                {
+                    await salesbagRepo.SaveAsync(salesbag);
+                }
+
+                var newRelationship = new SalesBag_Artifact
+                {
+                    Artifact = artifact.ID,
+                    SalesBag = salesbag.ID
+                };
+
+                await SaveAsync(newRelationship);
             }
-            if (!await salesbagRepo.DoesExist(salesbag.ID))
+        }
+
+        /// <summary>
+        /// Get all the Artifacts for a specified salesbag
+        /// </summary>
+        /// <param name="salesbag"></param>
+        /// <returns></returns>
+        public async Task<List<Artifact>> GetAllSalesBagArtifacts(SalesBag salesbag)
+        {
+            var relationships = await _database.Table<SalesBag_Artifact>().Where(x => x.SalesBag == salesbag.ID).ToListAsync();
+            var artifacts = new List<Artifact>();
+            foreach (var relationship in relationships)
             {
-                await salesbagRepo.SaveAsync(salesbag);
+                artifacts.Add(await _database.FindAsync<Artifact>(relationship.Artifact));
             }
 
-            var newRelationship = new SalesBag_Artifact
-            {
-                Artifact = artifact.ID,
-                SalesBag = salesbag.ID
-            };
+            return artifacts;
+        }
 
-            await SaveAsync(newRelationship);
-           
+        /// <summary>
+        /// Remove an artifact from a salesbag
+        /// </summary>
+        /// <param name="salesbag"></param>
+        /// <param name="salesbag"></param>
+        /// <returns></returns>
+        public async Task RemoveArtifactFromSalesBag(Artifact artifact, SalesBag salesbag)
+        {
+            var relationships = await _database.Table<SalesBag_Artifact>().Where(x => (x.Artifact == artifact.ID) && (x.SalesBag == salesbag.ID)).ToListAsync();
+
+            foreach (var relationship in relationships)
+            {
+                await _database.DeleteAsync(relationship);
+            }
+        }
+
+        /// <summary>
+        /// Checks if the artifact is already contained withinthe salesbag.
+        /// </summary>
+        /// <param name="artifact"></param>
+        /// <param name="salesbag"></param>
+        /// <returns></returns>
+        public async Task<bool> DoesExist(Artifact artifact, SalesBag salesbag)
+        {
+            var relationships = await _database.Table<SalesBag_Artifact>().Where(x => (x.Artifact == artifact.ID) && (x.SalesBag == salesbag.ID)).CountAsync();
+            return relationships > 0;
         }
     }
 }

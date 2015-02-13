@@ -16,6 +16,12 @@ namespace BoeingSalesApp.DataAccess.Repository
 
         Task<List<SalesBag_Artifact>> GetAllAsync();
 
-        Task AddRelationship(Artifact artifact, SalesBag salesbag);
+        Task AddArtifactToSalesbag(Artifact artifact, SalesBag salesbag);
+
+        Task<List<Artifact>> GetAllSalesBagArtifacts(SalesBag salesbag);
+
+        Task RemoveArtifactFromSalesBag(Artifact artifact, SalesBag salesbag);
+
+        Task<bool> DoesExist(Artifact artifact, SalesBag salesbag);
     }
 }
