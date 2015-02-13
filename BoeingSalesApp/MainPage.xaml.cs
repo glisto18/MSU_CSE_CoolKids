@@ -34,14 +34,19 @@ namespace BoeingSalesApp
         }
         
 
-        private void onMeetingsRect_Tapped(object sender, RoutedEventArgs e)
+        private void onMeetings(object sender, RoutedEventArgs e)
         {
             this.Frame.Navigate(typeof(MeetingsView));
         }
 
-        private void onArt_Tap(object sender, RoutedEventArgs e)
+        private void onArtifacts(object sender, RoutedEventArgs e)
         {
             this.Frame.Navigate(typeof(ArtifactsCatView));
+        }
+
+        private void onSalesBags(object sender, RoutedEventArgs e)
+        {
+            this.Frame.Navigate(typeof(SalesBagsView));
         }
 
         private void DBTestLink_Click(object sender, RoutedEventArgs e)

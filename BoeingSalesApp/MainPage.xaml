@@ -8,13 +8,22 @@
     mc:Ignorable="d">
 
     <Grid Background="White">
-        <Rectangle Tapped="onMeetingsRect_Tapped" Fill="White" StrokeThickness="10" HorizontalAlignment="Left" Height="216" Margin="75,330,0,0" Stroke="#005DAB" VerticalAlignment="Top" Width="329"/>
-        <Rectangle Fill="White" StrokeThickness="10" HorizontalAlignment="Left" Height="216" Margin="469,330,0,0" Stroke="#005DAB" VerticalAlignment="Top" Width="329"/>
-        <Rectangle Tapped="onArt_Tap" Fill="White" StrokeThickness="10" HorizontalAlignment="Left" Height="216" Margin="868,330,0,0" Stroke="#005DAB" VerticalAlignment="Top" Width="329"/>
-        <TextBlock Foreground="#005DAB" HorizontalAlignment="Left" FontSize="40" Margin="538,412,0,0" TextWrapping="Wrap" Text="Sales Bags" VerticalAlignment="Top" Height="55" Width="191"/>
-        <TextBlock Foreground="#005DAB" HorizontalAlignment="Left" FontSize="40" Margin="956,412,0,0" TextWrapping="Wrap" Text="Artifacts" VerticalAlignment="Top" Height="55" Width="169"/>
-        <TextBlock Foreground="#005DAB" HorizontalAlignment="Left" FontSize="40" Margin="167,412,0,0" TextWrapping="Wrap" Text="Meetings" VerticalAlignment="Top" Height="55" Width="169"/>
-        <Image Source="Assets/BoeingLogo.png" HorizontalAlignment="Center" Height="151" Margin="309,115,348,0" Width="709" VerticalAlignment="Top"/>
+        <Canvas Margin="345,475,663,98">
+            <Rectangle Tapped="onArtifacts" Fill="White" StrokeThickness="10" HorizontalAlignment="Left" Height="195" Stroke="#005DAB" VerticalAlignment="Top" Width="245" Canvas.Left="51"/>
+            <TextBlock Tapped="onArtifacts" Foreground="#005DAB" HorizontalAlignment="Left" FontSize="40" TextWrapping="Wrap" Text="Artifacts" VerticalAlignment="Top" Height="55" Width="169" Canvas.Left="106" Canvas.Top="117"/>
+            <Image Source="Assets/Artifacts.png" HorizontalAlignment="Center" Height="97" Width="358" VerticalAlignment="Top" Canvas.Top="20"/>
+        </Canvas>
+        <Canvas Margin="397,180,724,333">
+            <Rectangle Tapped="onMeetings" Fill="White" StrokeThickness="10" HorizontalAlignment="Left" Height="195" Stroke="#005DAB" VerticalAlignment="Top" Width="245" Canvas.Top="60"/>
+            <TextBlock Tapped="onMeetings" Foreground="#005DAB" HorizontalAlignment="Left" FontSize="40" TextWrapping="Wrap" Text="Meetings" VerticalAlignment="Top" Height="55" Width="169" Canvas.Left="46" Canvas.Top="177"/>
+            <Image Tapped="onMeetings" Source="Assets/Meetings.png" HorizontalAlignment="Center" Height="97" Width="241" VerticalAlignment="Top" Canvas.Top="87"/>
+        </Canvas>
+        <Image Source="Assets/BoeingLogo.png" HorizontalAlignment="Center" Height="97" Margin="85,43,923,0" Width="358" VerticalAlignment="Top"/>
+        <Canvas Margin="647,240,361,333">
+            <Rectangle Tapped="onSalesBags" Fill="White" StrokeThickness="10" HorizontalAlignment="Left" Height="195" Stroke="#005DAB" VerticalAlignment="Top" Width="245" Canvas.Left="66"/>
+            <TextBlock Tapped="onSalesBags" Foreground="#005DAB" HorizontalAlignment="Left" FontSize="40" TextWrapping="Wrap" Text="Sales Bags" VerticalAlignment="Top" Height="55" Width="191" Canvas.Left="99" Canvas.Top="117"/>
+            <Image Source="Assets/SalesBag.png" HorizontalAlignment="Center" Height="97" Width="358" VerticalAlignment="Top" Canvas.Top="20"/>
+        </Canvas>
         <HyperlinkButton Content="Click for DBTest page" Click="DBTestLink_Click" HorizontalAlignment="Left" VerticalAlignment="Bottom"/>
     </Grid>
 </Page>
