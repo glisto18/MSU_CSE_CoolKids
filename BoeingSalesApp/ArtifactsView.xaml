@@ -32,64 +32,53 @@
         * Row 1 contains the rest of the page layout
     -->
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-        <Grid.ChildrenTransitions>
-            <TransitionCollection>
-                <EntranceThemeTransition/>
-            </TransitionCollection>
-        </Grid.ChildrenTransitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="140"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
 
-        <!-- Horizontal scrolling grid. This is Row 1-->
-        <GridView
-            x:Name="itemGridView"
-            AutomationProperties.AutomationId="ItemGridView"
-            AutomationProperties.Name="Grouped Items"
-            Grid.RowSpan="2"
-            Padding="116,137,40,46"
-            SelectionMode="None"
-            IsSwipeEnabled="false">
-            <GridView.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <ItemsWrapGrid GroupPadding="0,0,70,0"/>
-                </ItemsPanelTemplate>
-            </GridView.ItemsPanel>
-            <GridView.GroupStyle>
-                <GroupStyle>
-                    <GroupStyle.HeaderTemplate>
-                        <DataTemplate>
-                            <Grid Margin="0,0,0,2">
-                                <Button Foreground="{ThemeResource ApplicationHeaderForegroundThemeBrush}"
-                                    AutomationProperties.Name="Group Title"
-                                    Style="{StaticResource TextBlockButtonStyle}" >
-                                    <StackPanel Orientation="Horizontal">
-                                        <TextBlock Text="{Binding Title}" Margin="0,-11,10,10" Style="{StaticResource SubheaderTextBlockStyle}" TextWrapping="NoWrap" />
-                                        <TextBlock Text="{StaticResource ChevronGlyph}" FontFamily="Segoe UI Symbol" Margin="0,-11,0,10" Style="{StaticResource SubheaderTextBlockStyle}" TextWrapping="NoWrap" />
-                                    </StackPanel>
-                                </Button>
-                            </Grid>
-                        </DataTemplate>
-                    </GroupStyle.HeaderTemplate>
-                </GroupStyle>
-            </GridView.GroupStyle>
-        </GridView>
-
-        <!-- Back button and page title -->
-        <Grid>
+        <Grid Grid.Row="0">
+            <Grid.RowDefinitions>
+                <RowDefinition />
+            </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="120"/>
-                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
-            <Button x:Name="backButton" Margin="39,59,39,0" Command="{Binding NavigationHelper.GoBackCommand, ElementName=pageRoot}"
+            <Button x:Name="backButton" Command="{Binding NavigationHelper.GoBackCommand, ElementName=pageRoot}"
                         Style="{StaticResource NavigationBackButtonNormalStyle}"
-                        VerticalAlignment="Top"
+                        VerticalAlignment="Center"
                         AutomationProperties.Name="Back"
                         AutomationProperties.AutomationId="BackButton"
-                        AutomationProperties.ItemType="Navigation Button" RequestedTheme="Dark"/>
-            <TextBlock x:Name="pageTitle" Text="Artifacts" Style="{StaticResource HeaderTextBlockStyle}" Grid.Column="1" 
-                        IsHitTestVisible="false" TextWrapping="NoWrap" VerticalAlignment="Bottom" Margin="0,0,30,40"/>
+                        AutomationProperties.ItemType="Navigation Button" RequestedTheme="Dark" Margin="30"/>
+            <TextBlock Grid.Column="1" Text="Artifacts" Style="{StaticResource HeaderTextBlockStyle}" 
+                        IsHitTestVisible="false" TextWrapping="NoWrap" VerticalAlignment="Center" />
         </Grid>
+        <Grid Grid.Row="1" Background="#FFEAE5E5">
+            <Grid.RowDefinitions>
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition Width="4*" />
+            </Grid.ColumnDefinitions>
+
+            <Canvas Grid.Column="0" Background="#FFB6B0B0" />
+
+            <GridView Grid.Column="1">
+                <Rectangle Height="100" Width="100" Fill="Blue" />
+                <Rectangle Height="100" Width="100" Fill="Red" />
+                <Rectangle Height="100" Width="100" Fill="Yellow" />
+                <Rectangle Height="100" Width="100" Fill="Green" />
+                <Rectangle Height="100" Width="100" Fill="Gray" />
+                <Rectangle Height="100" Width="100" Fill="LightBlue" />
+                <Rectangle Height="100" Width="100" Fill="Pink" />
+                <Rectangle Height="100" Width="100" Fill="YellowGreen" />
+            </GridView>
+        </Grid>
+
     </Grid>
 </Page>
