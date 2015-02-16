@@ -41,7 +41,7 @@ namespace BoeingSalesApp
 
         private void onArtifacts(object sender, RoutedEventArgs e)
         {
-            this.Frame.Navigate(typeof(ArtifactsCatView));
+            this.Frame.Navigate(typeof(ArtifactsView));
         }
 
         private void onSalesBags(object sender, RoutedEventArgs e)

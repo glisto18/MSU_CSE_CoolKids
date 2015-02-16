@@ -21,7 +21,7 @@ namespace BoeingSalesApp
     /// <summary>
     /// A page that displays a grouped collection of items.
     /// </summary>
-    public sealed partial class ArtifactsCatView : Page
+    public sealed partial class ArtifactsView : Page
     {
         private NavigationHelper navigationHelper;
         private ObservableDictionary defaultViewModel = new ObservableDictionary();
@@ -46,12 +46,23 @@ namespace BoeingSalesApp
             }
         }
 
-        public ArtifactsCatView()
+        public ArtifactsView()
         {
             this.InitializeComponent();
             this.navigationHelper = new NavigationHelper(this);
             this.navigationHelper.LoadState += navigationHelper_LoadState;
+
+            /// This code adds 5 items to the Artifacts Grid View. The layout template for the  
+            /// gridview is given in App.xaml.cs and then referenced in "ArtifactsView.xaml"
+            GridView gridView = (GridView)this.FindName("ArtifactsGridView");
+            List<int> myList = new List<int>(new int[] { 1, 2, 3, 4, 5 });
+            gridView.ItemsSource = myList;
+
+            ListView listView = (ListView)this.FindName("CategoryList");
+            List<int> myList2 = new List<int>(new int[] { 1, 2, 3});
+            listView.ItemsSource = myList2;
         }
+
 
         /// <summary>
         /// Populates the page with content passed during navigation.  Any saved state is also
@@ -69,7 +80,14 @@ namespace BoeingSalesApp
             // TODO: Assign a collection of bindable groups to this.DefaultViewModel["Groups"]
         }
 
-        #region NavigationHelper registration
+        private void onCategoryTapped(object sender, RoutedEventArgs e)
+        {
+            Border border = (Border)this.FindName("allBorder");
+            //border.Background = System.Drawing.Color.Red;
+           
+        }
+        
+#region NavigationHelper registration
 
         /// The methods provided in this section are simply used to allow
         /// NavigationHelper to respond to the page's navigation methods.
@@ -91,6 +109,5 @@ namespace BoeingSalesApp
         }
 
         #endregion
-
     }
 }

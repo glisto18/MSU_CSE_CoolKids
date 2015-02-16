@@ -62,6 +62,9 @@ namespace BoeingSalesApp
          *      Microsoft.Office.Interop.Outlook.NameSpace mapiNamespace= oApp.GetNamespace("MAPI");
          *      Microsoft.Office.Interop.Outlook.MAPIFolder CalendarFolder= mapiNamespace.GetDefaultFolder(Microsoft.Office.Interop.Outlook.OlDefaultFolders.olFolderCalendar);
          *      Microsoft.Office.Interop.Outlook.Items outlookCalendarItems = CalendarFolder.Items;
+         *      
+         * // foreach (Outlook.AppointmentItem item in outlookCalendarItems)
+         * 
          * }
          * */
     }
