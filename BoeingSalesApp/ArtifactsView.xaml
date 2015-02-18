@@ -83,18 +83,29 @@
                     <TextBlock Canvas.Left="6" TextWrapping="Wrap" Text="USAF, 4/4/91" Canvas.Top="419" Foreground="#FF131212" FontSize="24" Margin="0,0,0,10" />
                     <TextBlock Canvas.Left="6" TextWrapping="Wrap" Text="Delta, 8/26/91" Canvas.Top="419" Foreground="#FF131212" FontSize="24" />
                 </StackPanel>
-                <Button Content="Button" Canvas.Left="30" Canvas.Top="584"/>
 
             </Canvas>
 
-            <GridView x:Name="ArtifactsGridView" Grid.Column="1" ItemTemplate="{StaticResource ArtifactTemplate}" >
-                <GridView.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <ItemsWrapGrid MaximumRowsOrColumns="7"/>
-                    </ItemsPanelTemplate>   
-                </GridView.ItemsPanel>
-            </GridView>
+            <SemanticZoom x:Name="semanticZoom" VerticalAlignment="Center" Grid.Column="1" Margin="67,139,578,353" Height="175">
+                <SemanticZoom.ZoomedOutView>
+                    <GridView x:Name="ArtifactsGridView" Grid.Column="1" ItemTemplate="{StaticResource ArtifactTemplate}" Height="152" VerticalAlignment="Bottom" BorderBrush="Black" BorderThickness="6">
+                        <GridView.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <ItemsWrapGrid MaximumRowsOrColumns="7"/>
+                            </ItemsPanelTemplate>
+                        </GridView.ItemsPanel>
+                    </GridView>
+                </SemanticZoom.ZoomedOutView>
+                <SemanticZoom.ZoomedInView>
+                    <GridView x:Name="ArtifactDetailGridView" Grid.Column="1" ItemTemplate="{StaticResource ArtifactTemplate}" Height="152" VerticalAlignment="Bottom" Margin="0,0,0,2" BorderBrush="Black" BorderThickness="6">
+                        <GridView.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <ItemsWrapGrid MaximumRowsOrColumns="7"/>
+                            </ItemsPanelTemplate>
+                        </GridView.ItemsPanel>
+                    </GridView>
+                </SemanticZoom.ZoomedInView>
+            </SemanticZoom>
         </Grid>
-
     </Grid>
 </Page>

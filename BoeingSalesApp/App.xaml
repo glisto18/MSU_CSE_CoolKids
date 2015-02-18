@@ -23,6 +23,12 @@
                     <TextBlock Text="{Binding Name}" Foreground="#FF060606" FontSize="24" Margin="0,0,0,10" />
                 </StackPanel>
             </DataTemplate>
+            
+            <DataTemplate x:Key="ArtifactDetail">
+                <StackPanel Orientation="Horizontal" Width="250" Height="125">
+                    <Border Width="90" Height="100" Margin="10"
+                </StackPanel>
+            </DataTemplate>
         </ResourceDictionary>
     </Application.Resources>
     
