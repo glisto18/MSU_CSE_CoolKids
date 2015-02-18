@@ -65,6 +65,7 @@ namespace BoeingSalesApp
                  this.Frame.Navigate(typeof(FailPage));
              }
          }
+        //save appoointment based on select fields (there are others) to default folder, need xaml text fields
          private void addAppointment(DateTime strt, DateTime endx, string location, string body, string subject)
          {
              try
@@ -83,6 +84,13 @@ namespace BoeingSalesApp
              {
                  this.Frame.Navigate(typeof(FailPage));
              }
+         }
+        //Display available appointments, slected appointemnt is connected to index number, delete based on that value "ind"
+        private void deleteAppointment(int ind)
+         {
+             Outlook.Application outlookapp = new Outlook.Application();
+             Outlook.MAPIFolder calender = outlookapp.Session.GetDefaultFolder(Outlook.OlDefaultFolders.olFolderCalendar);
+             Outlook.Items calendarItems = calender.Items; //.Delete()
          }
     }
 }

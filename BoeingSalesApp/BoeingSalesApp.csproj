@@ -108,6 +108,9 @@
     <Compile Include="ArtifactsView.xaml.cs">
       <DependentUpon>ArtifactsView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="DataAccess\Entities\FolderToken.cs" />
+    <Compile Include="DataAccess\Repository\FolderTokenRepository.cs" />
+    <Compile Include="DataAccess\Repository\IFolderTokenRepository.cs" />
     <Compile Include="FailPage.xaml.cs">
       <DependentUpon>FailPage.xaml</DependentUpon>
     </Compile>
@@ -161,7 +164,7 @@
     <Compile Include="SQLite.cs" />
     <Compile Include="SQLiteAsync.cs" />
     <Compile Include="Utility\FakeSeeder.cs" />
-    <Compile Include="Utility\FileUploadManager.cs" />
+    <Compile Include="Utility\FileStore.cs" />
     <Compile Include="Utility\TempSettings.cs" />
   </ItemGroup>
   <ItemGroup>

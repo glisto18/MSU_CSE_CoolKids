@@ -64,6 +64,11 @@ namespace BoeingSalesApp
 
             uxArtifactsList.ItemsSource = await _artifactsRepository.GetAllAsync();
             var d = uxArtifactsList.Items;
+
+
+
+            var artifacts = await _artifactsRepository.GetAllAsync();
+            uxTestGrid.ItemsSource = artifacts;
         }
 
         private async Task InitializeDatabase()
@@ -137,11 +142,11 @@ namespace BoeingSalesApp
 
             //Status.Text = string.Format("Name: {0} has been saved to your database.", _category.Name);
 
-            var fileUploader = new Utility.FileUploadManager();
+            var fileUploader = new Utility.FileStore();
             await fileUploader.CreateTestFile();
             Status.Text = "done";
         }
-
+        
         private async void Delete_Click(object sender, RoutedEventArgs e)
         {
             await _categoryRepository.DeleteAsync(_category);
