@@ -83,6 +83,7 @@
                     <TextBlock Canvas.Left="6" TextWrapping="Wrap" Text="USAF, 4/4/91" Canvas.Top="419" Foreground="#FF131212" FontSize="24" Margin="0,0,0,10" />
                     <TextBlock Canvas.Left="6" TextWrapping="Wrap" Text="Delta, 8/26/91" Canvas.Top="419" Foreground="#FF131212" FontSize="24" />
                 </StackPanel>
+                <Button Content="Button" Canvas.Left="30" Canvas.Top="584"/>
 
             </Canvas>
 
@@ -93,8 +94,6 @@
                     </ItemsPanelTemplate>   
                 </GridView.ItemsPanel>
             </GridView>
-
-
         </Grid>
 
     </Grid>

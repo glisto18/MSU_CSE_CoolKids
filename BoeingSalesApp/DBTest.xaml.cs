@@ -90,6 +90,8 @@ namespace BoeingSalesApp
 
 
             var seeder = new BoeingSalesApp.Utility.FakeSeeder();
+            await seeder.FakeSeedArtifacts();
+            await seeder.FakeSeedCategories();
             //await seeder.FakeSeedArtifacts();
             //await seeder.FakeSeedCategories();
             //await seeder.CreateTestArtifactSalesBagRelationship();
@@ -143,7 +145,7 @@ namespace BoeingSalesApp
             await _categoryRepository.DeleteAsync(_category);
             await FetchCategories();
             InitializeCategory();
-            Status.Text = "category has been deleted to your database.";
+            Status.Text = "category has been deleted from your database.";
         }
 
         private void CategoryList_OnSelectionChanged(object sender, SelectionChangedEventArgs e)

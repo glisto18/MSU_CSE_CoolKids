@@ -14,6 +14,7 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
+using System.Threading.Tasks;
 
 // The Blank Application template is documented at http://go.microsoft.com/fwlink/?LinkId=234227
 
@@ -34,12 +35,20 @@ namespace BoeingSalesApp
             this.Suspending += OnSuspending;
         }
 
+        private async Task populate()
+        {
+             // Populate database with fake values
+            /*var seeder = new BoeingSalesApp.Utility.FakeSeeder();
+            await seeder.FakeSeedArtifacts();
+            await seeder.FakeSeedCategories();*/
+        }
+
         /// <summary>
         /// Invoked when the application is launched normally by the end user.  Other entry points
         /// will be used such as when the application is launched to open a specific file.
         /// </summary>
         /// <param name="e">Details about the launch request and process.</param>
-        protected override void OnLaunched(LaunchActivatedEventArgs e)
+        protected async override void OnLaunched(LaunchActivatedEventArgs e)
         {
 
 #if DEBUG
@@ -55,6 +64,8 @@ namespace BoeingSalesApp
             // just ensure that the window is active
             if (rootFrame == null)
             {
+                //await populate();
+
                 // Create a Frame to act as the navigation context and navigate to the first page
                 rootFrame = new Frame();
                 // Set the default language
