@@ -4,6 +4,9 @@ using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using BoeingSalesApp.Common;
+using BoeingSalesApp.DataAccess;
+using BoeingSalesApp.DataAccess.Entities;
+using BoeingSalesApp.DataAccess.Repository;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
@@ -13,6 +16,7 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
+using System.Threading.Tasks;
 
 // The Grouped Items Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234231
 
@@ -23,6 +27,16 @@ namespace BoeingSalesApp
     /// </summary>
     public sealed partial class ArtifactsView : Page
     {
+        //
+        // Member variables for DB interaction
+        //
+        //private CategoryRepository _categoryRepository;
+        private CategoryRepository _categoryRepository;
+        private ArtifactRepository _artifactsRepository;
+
+        //
+        // I'm not sure what these members do yet ... - JW
+        //
         private NavigationHelper navigationHelper;
         private ObservableDictionary defaultViewModel = new ObservableDictionary();
 
@@ -52,17 +66,32 @@ namespace BoeingSalesApp
             this.navigationHelper = new NavigationHelper(this);
             this.navigationHelper.LoadState += navigationHelper_LoadState;
 
-            /// This code adds 5 items to the Artifacts Grid View. The layout template for the  
-            /// gridview is given in App.xaml.cs and then referenced in "ArtifactsView.xaml"
-            GridView gridView = (GridView)this.FindName("ArtifactsGridView");
-            List<int> myList = new List<int>(new int[] { 1, 2, 3, 4, 5 });
-            gridView.ItemsSource = myList;
-
-            ListView listView = (ListView)this.FindName("CategoryList");
-            List<int> myList2 = new List<int>(new int[] { 1, 2, 3});
-            listView.ItemsSource = myList2;
+            _artifactsRepository = new ArtifactRepository();
+            _categoryRepository = new CategoryRepository();
         }
 
+        /// <summary>
+        /// Get categories from backend and bind to frontend
+        /// </summary>
+        /// <returns></returns>
+        private async Task FetchArtifacts()
+        {
+            var artifacts = await _artifactsRepository.GetAllAsync();
+            GridView gridView = (GridView)this.FindName("ArtifactsGridView");
+            gridView.ItemsSource = artifacts;
+        }
+
+        /// <summary>
+        /// Get categories from backend and bind to frontend
+        /// </summary>
+        /// <returns></returns>
+        private async Task FetchCategories()
+        {
+            
+            var categories = await _categoryRepository.GetAllAsync();
+            ListView listView = (ListView)this.FindName("CategoryList");
+            listView.ItemsSource = categories;
+        }
 
         /// <summary>
         /// Populates the page with content passed during navigation.  Any saved state is also
@@ -83,8 +112,6 @@ namespace BoeingSalesApp
         private void onCategoryTapped(object sender, RoutedEventArgs e)
         {
             Border border = (Border)this.FindName("allBorder");
-            //border.Background = System.Drawing.Color.Red;
-           
         }
         
 #region NavigationHelper registration
@@ -98,9 +125,11 @@ namespace BoeingSalesApp
         /// The navigation parameter is available in the LoadState method 
         /// in addition to page state preserved during an earlier session.
 
-        protected override void OnNavigatedTo(NavigationEventArgs e)
+        protected async override void OnNavigatedTo(NavigationEventArgs e)
         {
             navigationHelper.OnNavigatedTo(e);
+            await FetchCategories();
+            await FetchArtifacts();
         }
 
         protected override void OnNavigatedFrom(NavigationEventArgs e)

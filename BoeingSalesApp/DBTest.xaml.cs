@@ -146,13 +146,13 @@ namespace BoeingSalesApp
             await fileUploader.CheckForNewArtifacts();
             Status.Text = "done";
         }
-        
+
         private async void Delete_Click(object sender, RoutedEventArgs e)
         {
             await _categoryRepository.DeleteAsync(_category);
             await FetchCategories();
             InitializeCategory();
-            Status.Text = "category has been deleted to your database.";
+            Status.Text = "category has been deleted from your database.";
         }
 
         private void CategoryList_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
