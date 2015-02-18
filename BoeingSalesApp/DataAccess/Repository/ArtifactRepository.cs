@@ -56,5 +56,11 @@ namespace BoeingSalesApp.DataAccess.Repository
             return await _database.Table<Artifact>().Where(x => x.Title  == title).ToListAsync();
         }
 
+        public async Task<bool> DoesExist(string fileName)
+        {
+            var artifactCount = await _database.Table<Artifact>().Where(x => x.FileName == fileName).CountAsync();
+            return artifactCount > 0;
+        }
+
     }
 }
