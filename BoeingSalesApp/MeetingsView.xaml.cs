@@ -12,7 +12,8 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
-//using Microsoft.Office.Interop.Outlook
+using Outlook = Microsoft.Office.Interop.Outlook;
+using System.Runtime.InteropServices;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -36,36 +37,60 @@ namespace BoeingSalesApp
         {
             this.Frame.Navigate(typeof(launchMeeting));
         }
-        /* 
-         * If returned false load page or dialogue  box to say outlook is not installed
-        public static bool IsOutlookInstalled()
-        {
-            try
-            {
-                Type type = Type.GetTypeFromCLSID(new Guid("0006F03A-0000-0000-C000-000000000046")); //Outlook.Application
-                if (type == null) return false;
-                object obj = Activator.CreateInstance(type);
-                System.Runtime.InteropServices.Marshal.ReleaseComObject(obj);
-                return true;
-            }
-            catch (COMException)
-            {
-                return false;
-            }
-        }
-         * function to be called by "import meetings" button
-         * private void onImport()
-         * {
-         *      if(IsOutlookInstalled()) this.Frame.Navigate(typeof(SuccessPage));
-         *      else this.Frame.Navigate(typeof(FailPage));
-         *      Microsoft.Office.Interop.Outlook.Application oApp = new Microsoft.Office.Interop.Outlook.Application();
-         *      Microsoft.Office.Interop.Outlook.NameSpace mapiNamespace= oApp.GetNamespace("MAPI");
-         *      Microsoft.Office.Interop.Outlook.MAPIFolder CalendarFolder= mapiNamespace.GetDefaultFolder(Microsoft.Office.Interop.Outlook.OlDefaultFolders.olFolderCalendar);
-         *      Microsoft.Office.Interop.Outlook.Items outlookCalendarItems = CalendarFolder.Items;
-         *      
-         * // foreach (Outlook.AppointmentItem item in outlookCalendarItems)
-         * 
-         * }
-         * */
+
+         //function to be called by "import meetings" button
+         private void onImport()
+         {
+             DateTime strt, endx; string location, body, subject;
+             try
+             {
+                 Outlook.Application outlookapp = new Outlook.Application();
+                 //Outlook.NameSpace mapiNamespace = outlookapp.GetNamespace("MAPI");
+                 //Outlook.MAPIFolder calender = mapiNamespace.GetDefaultFolder(Outlook.OlDefaultFolders.olFolderCalendar);
+                 Outlook.MAPIFolder calender = outlookapp.Session.GetDefaultFolder(Outlook.OlDefaultFolders.olFolderCalendar);
+                 Outlook.Items outlookCalendarItems = calender.Items;
+                 foreach(Outlook.AppointmentItem meeting in outlookCalendarItems)
+                 {
+                     //display meetings somehow
+                     strt = meeting.Start;
+                     endx = meeting.End;
+                     location = meeting.Location;
+                     body = meeting.Body;
+                     subject = meeting.Subject;
+                     //add to database somehow, but only selected how do i tell if they are selected?
+                 }
+             }
+             catch (System.Exception)
+             {
+                 this.Frame.Navigate(typeof(FailPage));
+             }
+         }
+        //save appoointment based on select fields (there are others) to default folder, need xaml text fields
+         private void addAppointment(DateTime strt, DateTime endx, string location, string body, string subject)
+         {
+             try
+             {
+                 Outlook.Application outlookapp = new Outlook.Application();
+                 Outlook.AppointmentItem newAppointment = outlookapp.CreateItem(Microsoft.Office.Interop.Outlook.OlItemType.olAppointmentItem);
+                 newAppointment.Start = strt; //DateTime.Parse("6/11/2007 12:00 AM");
+                 newAppointment.End = endx;
+                 newAppointment.Location = location;
+                 newAppointment.Body = body;
+                 newAppointment.Subject = subject;
+                 newAppointment.Save();
+                 newAppointment.Display(true);
+             }
+             catch (System.Exception)
+             {
+                 this.Frame.Navigate(typeof(FailPage));
+             }
+         }
+        //Display available appointments, slected appointemnt is connected to index number, delete based on that value "ind"
+        private void deleteAppointment(int ind)
+         {
+             Outlook.Application outlookapp = new Outlook.Application();
+             Outlook.MAPIFolder calender = outlookapp.Session.GetDefaultFolder(Outlook.OlDefaultFolders.olFolderCalendar);
+             Outlook.Items calendarItems = calender.Items; //.Delete()
+         }
     }
 }

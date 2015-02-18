@@ -39,5 +39,14 @@
                 <TextBlock Name="Status" FontSize="16" Foreground="GreenYellow"></TextBlock>
             </StackPanel>
         </Border>
+        <GridView x:Name="uxTestGrid" HorizontalAlignment="Right">
+            <GridView.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel>
+                        <TextBlock Text="{Binding FileName}"></TextBlock>
+                    </StackPanel>
+                </DataTemplate>
+            </GridView.ItemTemplate>
+        </GridView>
         </Grid>
 </Page>

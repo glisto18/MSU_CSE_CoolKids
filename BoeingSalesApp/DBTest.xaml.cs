@@ -64,6 +64,11 @@ namespace BoeingSalesApp
 
             uxArtifactsList.ItemsSource = await _artifactsRepository.GetAllAsync();
             var d = uxArtifactsList.Items;
+
+
+
+            var artifacts = await _artifactsRepository.GetAllAsync();
+            uxTestGrid.ItemsSource = artifacts;
         }
 
         private async Task InitializeDatabase()
@@ -89,9 +94,7 @@ namespace BoeingSalesApp
             //Status.Text = test.Title;
 
 
-            var seeder = new BoeingSalesApp.Utility.FakeSeeder();
-            await seeder.FakeSeedArtifacts();
-            await seeder.FakeSeedCategories();
+           // var seeder = new BoeingSalesApp.Utility.FakeSeeder();
             //await seeder.FakeSeedArtifacts();
             //await seeder.FakeSeedCategories();
             //await seeder.CreateTestArtifactSalesBagRelationship();
@@ -138,6 +141,10 @@ namespace BoeingSalesApp
             //await FetchCategories();
 
             //Status.Text = string.Format("Name: {0} has been saved to your database.", _category.Name);
+
+            var fileUploader = new Utility.FileStore();
+            await fileUploader.CreateTestFile();
+            Status.Text = "done";
         }
 
         private async void Delete_Click(object sender, RoutedEventArgs e)
