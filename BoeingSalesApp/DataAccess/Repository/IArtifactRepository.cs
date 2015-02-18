@@ -19,6 +19,8 @@ namespace BoeingSalesApp.DataAccess.Repository
 
         Task<bool> DoesExist(Guid artifactId);
 
+        Task<bool> DoesExist(string fileName);
+
         Task<List<Artifact>> GetArtifactsByTitle(string title);
     }
 }

@@ -143,7 +143,7 @@ namespace BoeingSalesApp
             //Status.Text = string.Format("Name: {0} has been saved to your database.", _category.Name);
 
             var fileUploader = new Utility.FileStore();
-            await fileUploader.CreateTestFile();
+            await fileUploader.CheckForNewArtifacts();
             Status.Text = "done";
         }
 

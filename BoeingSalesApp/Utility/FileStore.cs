@@ -8,6 +8,7 @@ using System.Threading;
 using Windows.Storage.Pickers;
 using Windows.Storage.AccessCache;
 using BoeingSalesApp.DataAccess.Repository;
+using BoeingSalesApp.DataAccess.Entities;
 
 namespace BoeingSalesApp.Utility
 {
@@ -19,66 +20,132 @@ namespace BoeingSalesApp.Utility
 
         private IFolderTokenRepository _tokenRepo;
 
+        private IArtifactRepository _artifactRepo;
+
+        private StorageFolder _artifactFolder;
+
         public  FileStore()
         {
             _directoryPath = TempSettings.ArtifactsContainingFolderPath;
             _tokenRepo = new FolderTokenRepository();
+            _artifactRepo = new ArtifactRepository();
 
             //CreateArtifactFolder();
         }
 
-        public async Task ConfigureDownloadsFolder()
-        {
-
-
-            if (_token == string.Empty)
-            {
-                var picker = new FolderPicker();
-                picker.FileTypeFilter.Add("*");
-                var folder = await picker.PickSingleFolderAsync();
-                //foreach (var file in await folder.GetFilesAsync())
-                //{
-                //    // do something with each file
-                //}
-
-
-                _token = StorageApplicationPermissions.MostRecentlyUsedList.Add(folder);
-
-                
-                await _tokenRepo.Put(_token);
-            }
-           
-
-            
-            
-        }
-
-        public async Task CreateTestFile()
+        /// <summary>
+        /// Checks if any new Artifacts have been inserted into the monitored folder for insert into the DB.
+        /// </summary>
+        public async Task CheckForNewArtifacts()
         {
 
             var folderToken = await _tokenRepo.Get();
             if (folderToken != null)
             {
-                _token = folderToken.ToString();
+                _token = folderToken.Token;
             }
             
-            //await CreateArtifactFolder();
-           // await folder.CreateFileAsync("I'm another file!");
+            
+            if (_token == string.Empty) 
+            {
+                // user needs to pick a folder
+                _artifactFolder = await UserSelectFolder();
+                
+                if (_artifactFolder != null)
+                {
+                    // save folder in app storage
+                    _token = StorageApplicationPermissions.MostRecentlyUsedList.Add(_artifactFolder);
+                    // save token for later use
+                    await _tokenRepo.Put(_token);
+                }
+            }
+            else 
+            {
+                // folder has already been selected, need to get folder from app storage
+                _artifactFolder = await StorageApplicationPermissions.MostRecentlyUsedList.GetFolderAsync(_token);
+                var folderArtifacts = await _artifactFolder.GetFilesAsync();
+                await CheckForNewArtifacts(folderArtifacts);
 
-            if (_token != string.Empty)
-            {
-                var folder = await StorageApplicationPermissions.MostRecentlyUsedList.GetFolderAsync(_token);
-                var folderContents = await folder.GetFilesAsync();
-                var count = folderContents.Count;
             }
-            else
-            {
-                await ConfigureDownloadsFolder();
-            }
-            
 
         }
 
+        /// <summary>
+        /// Removes the current Artifact folder and allows the user to select a new folder to Artifacts to be saved at.
+        /// </summary>
+        public void ChangeArtifactFolder()
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// allows the user to upload new file
+        /// </summary>
+        public void UploadNewArtifact()
+        {
+            throw new NotImplementedException();
+        }
+
+
+        /// <summary>
+        /// Checks the files contained in the artifact folder to see if any need to be inserted into the DB.
+        /// </summary>
+        /// <param name="folderArtifacts"></param>
+        /// <returns></returns>
+        private async Task CheckForNewArtifacts(IReadOnlyList<StorageFile> folderArtifacts)
+        {
+            foreach (StorageFile folderArtifact in folderArtifacts)
+            {
+                if (!await _artifactRepo.DoesExist(folderArtifact.Name))
+                {
+                    var newArtifact = new Artifact
+                    {
+                        Path = folderArtifact.Path,
+                        Title = GetDefaultArtifactTitle(folderArtifact.Name, folderArtifact.FileType),
+                        FileType = folderArtifact.FileType,
+                        FileName = folderArtifact.Name,
+                        DateAdded = DateTime.Now,
+                        Active = true
+                    };
+
+                    await _artifactRepo.SaveAsync(newArtifact);
+                }
+            }
+        }
+
+
+        /// <summary>
+        /// Creates a default Title for an Artifact by substracting the filetype off of the filename.
+        /// Artifacts should be able to have their titles changed at another time.
+        /// </summary>
+        /// <param name="fileName"></param>
+        /// <param name="fileType"></param>
+        /// <returns></returns>
+        private string GetDefaultArtifactTitle(string fileName, string fileType)
+        {
+            int index = fileName.IndexOf(fileType);
+            if(index < 0)
+            {
+                return fileName;
+            }else
+            {
+                return fileName.Remove(index, fileType.Length);
+            }
+                
+        }
+
+        /// <summary>
+        /// Allows user to select folder for Artifacts to be stored at.
+        /// Returns folder selected.
+        /// </summary>
+        /// <returns></returns>
+        private async Task<StorageFolder> UserSelectFolder()
+        {
+            var picker = new FolderPicker();
+            picker.FileTypeFilter.Add("*");
+            var folder = await picker.PickSingleFolderAsync();
+            return folder;
+        }    
 
     }
 }
