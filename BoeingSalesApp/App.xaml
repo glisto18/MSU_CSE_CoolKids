@@ -26,7 +26,7 @@
             
             <DataTemplate x:Key="ArtifactDetail">
                 <StackPanel Orientation="Horizontal" Width="250" Height="125">
-                    <Border Width="90" Height="100" Margin="10"
+                    <Border Width="90" Height="100" Margin="10"></Border>
                 </StackPanel>
             </DataTemplate>
         </ResourceDictionary>

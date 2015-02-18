@@ -12,51 +12,53 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
-using BoeingSalesApp.DataAccess;
 using BoeingSalesApp.DataAccess.Entities;
 using BoeingSalesApp.DataAccess.Repository;
-using SQLite;
 using System.Threading.Tasks;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234238
-// hello world
 
 namespace BoeingSalesApp
 {
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class MainPage : Page
+    public sealed partial class SalesBagView : Page
     {
-        public MainPage()
+        private SalesBag _newSalesBag;
+
+        private ISalesBagRepository _salesBagRepo;
+
+        public SalesBagView()
         {
             this.InitializeComponent();
-        }
-        
-
-        private void onMeetings(object sender, RoutedEventArgs e)
-        {
-            this.Frame.Navigate(typeof(MeetingsView));
+            Init();
         }
 
-        private void onArtifacts(object sender, RoutedEventArgs e)
+        private void Init()
         {
-            this.Frame.Navigate(typeof(ArtifactsView));
+            _newSalesBag = new SalesBag();
+            _salesBagRepo = new SalesBagRepository();
+            uxNewSalesBagPanel.DataContext = _newSalesBag;
+            
         }
 
-        private void onSalesBags(object sender, RoutedEventArgs e)
+        private async Task FetchSalesBags()
         {
-            this.Frame.Navigate(typeof(SalesBagsView));
+            var bags = await _salesBagRepo.GetAllAsync();
+            uxSalesBagGrid.ItemsSource = bags;
         }
 
-        private void DBTestLink_Click(object sender, RoutedEventArgs e)
+        private void btnCreate_Click(object sender, RoutedEventArgs e)
         {
-            this.Frame.Navigate(typeof(DBTest));
+            _newSalesBag.DateCreated = DateTime.Now;
+            _newSalesBag.Active = true;
+            _salesBagRepo.SaveAsync(_newSalesBag);
+            _newSalesBag = new SalesBag();
+            uxNewSalesBagPanel.DataContext = _newSalesBag;
+            tbNewName.Text = "";
         }
 
-        private void SalesBagLink_Click(object sender, RoutedEventArgs e)
-        {
-            Frame.Navigate(typeof(SalesBagView));
-        }
+
     }
 }
