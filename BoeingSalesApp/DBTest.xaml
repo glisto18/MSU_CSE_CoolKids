@@ -48,5 +48,7 @@
                 </DataTemplate>
             </GridView.ItemTemplate>
         </GridView>
+        <Button Click="btnOutlook_Click" Content="outlook button" HorizontalAlignment="Center"></Button>
+        <TextBlock Name="lblOutlookInfo" Text="Hello" HorizontalAlignment="Center" ></TextBlock>
         </Grid>
 </Page>

@@ -16,6 +16,7 @@ using BoeingSalesApp.DataAccess;
 using BoeingSalesApp.DataAccess.Entities;
 using BoeingSalesApp.DataAccess.Repository;
 using System.Threading.Tasks;
+using Outlook = Microsoft.Office.Interop.Outlook;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -155,6 +156,15 @@ namespace BoeingSalesApp
             Status.Text = "category has been deleted from your database.";
         }
 
+        private void btnOutlook_Click(object sender, RoutedEventArgs e)
+        {
+
+           // var outlookApp = new Outlook.Application();
+
+
+            lblOutlookInfo.Text = "worked";
+
+        }
         private void CategoryList_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (e.AddedItems.Count <= 0) return;
