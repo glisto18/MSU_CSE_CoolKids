@@ -30,7 +30,6 @@ namespace BoeingSalesApp
         //
         // Member variables for DB interaction
         //
-        //private CategoryRepository _categoryRepository;
         private CategoryRepository _categoryRepository;
         private ArtifactRepository _artifactsRepository;
 
