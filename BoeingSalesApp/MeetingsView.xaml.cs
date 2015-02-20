@@ -38,13 +38,23 @@ namespace BoeingSalesApp
             this.Frame.Navigate(typeof(launchMeeting));
         }
 
+
+        private void btnTest_Click(object sender, RoutedEventArgs e)
+        {
+            lblStatus.Text = "Clicked";
+        }
+
+
+
+
          //function to be called by "import meetings" button
-         private void onImport()
-         {
+         private void onImport(object sender, RoutedEventArgs e)
+         {/*
              DateTime strt, endx; string location, body, subject;
-             try
+             //try
              {
-                 Outlook.Application outlookapp = new Outlook.Application();
+                 //Guid g = Guid.Parse("00063001-0000-0000-C000-000000000046");
+                 Outlook.Application outlookapp = new Outlook.Application(); //try http://www.dimastr.com/redemption/home.htm
                  //Outlook.NameSpace mapiNamespace = outlookapp.GetNamespace("MAPI");
                  //Outlook.MAPIFolder calender = mapiNamespace.GetDefaultFolder(Outlook.OlDefaultFolders.olFolderCalendar);
                  Outlook.MAPIFolder calender = outlookapp.Session.GetDefaultFolder(Outlook.OlDefaultFolders.olFolderCalendar);
@@ -58,12 +68,31 @@ namespace BoeingSalesApp
                      body = meeting.Body;
                      subject = meeting.Subject;
                      //add to database somehow, but only selected how do i tell if they are selected?
+
                  }
              }
-             catch (System.Exception)
+            //catch (System.Exception)
              {
-                 this.Frame.Navigate(typeof(FailPage));
+                 //this.Frame.Navigate(typeof(FailPage));
              }
+             try
+             {
+                 // create an application instance of Outlook
+                 Outlook.Application oApp = new Outlook.Application();
+             }
+             catch (System.Exception ex)
+             {
+                 try
+                 {
+                     // get Outlook in another way
+                    // Outlook.Application oApp = Marshal.GetActiveObject("Outlook.Application");
+                 }
+                 catch (System.Exception ex2)
+                 {
+                     // try some other way to get the object
+                     //Outlook.Application oApp = Activator.CreateInstance(Type.GetTypeFromProgID("Outlook.Application"));
+                 }
+             }*/
          }
         //save appoointment based on select fields (there are others) to default folder, need xaml text fields
          private void addAppointment(DateTime strt, DateTime endx, string location, string body, string subject)
@@ -94,3 +123,37 @@ namespace BoeingSalesApp
          }
     }
 }
+/*
+namespace OutlookAddIn1
+{
+    class Sample
+    {
+        Outlook.Application GetApplicationObject()
+        {
+
+            Outlook.Application application = null;
+
+            // Check whether there is an Outlook process running.
+            if (Process.GetProcessesByName("OUTLOOK").Count() > 0)
+            {
+
+                // If so, use the GetActiveObject method to obtain the process and cast it to an Application object.
+                application = Marshal.GetActiveObject("Outlook.Application") as Outlook.Application;
+            }
+            else
+            {
+
+                // If not, create a new instance of Outlook and log on to the default profile.
+                application = new Outlook.Application();
+                Outlook.NameSpace nameSpace = application.GetNamespace("MAPI");
+                nameSpace.Logon("", "", Missing.Value, Missing.Value);
+                nameSpace = null;
+            }
+
+            // Return the Outlook Application object.
+            return application;
+        }
+
+    }
+}
+*/
