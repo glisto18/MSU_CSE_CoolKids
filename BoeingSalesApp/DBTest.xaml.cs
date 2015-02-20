@@ -159,7 +159,7 @@ namespace BoeingSalesApp
         private void btnOutlook_Click(object sender, RoutedEventArgs e)
         {
 
-           // var outlookApp = new Outlook.Application();
+           var outlookApp = new Outlook.Application();
 
 
             lblOutlookInfo.Text = "worked";

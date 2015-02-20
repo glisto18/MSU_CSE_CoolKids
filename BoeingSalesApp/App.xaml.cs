@@ -39,7 +39,7 @@ namespace BoeingSalesApp
         {
              // Populate database with fake values
             var seeder = new BoeingSalesApp.Utility.FakeSeeder();
-            await seeder.FakeSeedArtifacts();
+            //await seeder.FakeSeedArtifacts();
             await seeder.FakeSeedCategories();
         }
 

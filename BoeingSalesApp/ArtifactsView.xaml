@@ -110,31 +110,19 @@
 
             </Canvas>
 
-            <SemanticZoom x:Name="semanticZoom" VerticalAlignment="Center" Grid.Column="1" Margin="67,139,578,353" Height="175">
-                <SemanticZoom.ZoomedOutView>
-                    <GridView x:Name="ArtifactsGridView" 
-                              Grid.Column="1" 
-                              ItemTemplate="{StaticResource ArtifactTemplate}" 
-                              Height="152" VerticalAlignment="Bottom" 
-                              BorderBrush="Black" 
-                              BorderThickness="6" SelectionMode="Multiple">
-                        <GridView.ItemsPanel>
-                            <ItemsPanelTemplate>
-                                <ItemsWrapGrid MaximumRowsOrColumns="7"/>
-                            </ItemsPanelTemplate>
-                        </GridView.ItemsPanel>
-                    </GridView>
-                </SemanticZoom.ZoomedOutView>
-                <SemanticZoom.ZoomedInView>
-                    <GridView x:Name="ArtifactDetailGridView" Grid.Column="1" ItemTemplate="{StaticResource ArtifactTemplate}" Height="152" VerticalAlignment="Bottom" Margin="0,0,0,2" BorderBrush="Black" BorderThickness="6">
-                        <GridView.ItemsPanel>
-                            <ItemsPanelTemplate>
-                                <ItemsWrapGrid MaximumRowsOrColumns="7"/>
-                            </ItemsPanelTemplate>
-                        </GridView.ItemsPanel>
-                    </GridView>
-                </SemanticZoom.ZoomedInView>
-            </SemanticZoom>
+
+            <!-- This is the area with white background to the right of the gray pane -->
+            <GridView x:Name="ArtifactsGridView" 
+                            Grid.Column="1" 
+                            ItemTemplate="{StaticResource ArtifactTemplate}" 
+                            Height="667" VerticalAlignment="Bottom">
+                <GridView.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <ItemsWrapGrid MaximumRowsOrColumns="7"/>
+                    </ItemsPanelTemplate>
+                </GridView.ItemsPanel>
+            </GridView>
+
         </Grid>
     </Grid>
 </Page>
