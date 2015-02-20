@@ -25,5 +25,6 @@
             <Image Tapped="onSalesBags" Source="Assets/SalesBag.png" HorizontalAlignment="Center" Height="97" Width="358" VerticalAlignment="Top" Canvas.Top="20"/>
         </Canvas>
         <HyperlinkButton Content="Click for DBTest page" Click="DBTestLink_Click" HorizontalAlignment="Left" VerticalAlignment="Bottom"/>
+        <HyperlinkButton Content="Click for SalesBagView" Click="SalesBagLink_Click" HorizontalAlignment="center" VerticalAlignment="Bottom"/>
     </Grid>
 </Page>
