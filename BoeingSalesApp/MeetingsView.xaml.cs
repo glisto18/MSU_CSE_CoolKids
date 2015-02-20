@@ -28,28 +28,32 @@ namespace BoeingSalesApp
         {
             this.InitializeComponent();
         }
-
-        private void onBack(object sender, RoutedEventArgs e)
-        {
-            this.Frame.Navigate(typeof(MainPage));
-        }
         private void tap_to_launch(object sender, RoutedEventArgs e)
         {
             this.Frame.Navigate(typeof(launchMeeting));
         }
-
-
-        private void btnTest_Click(object sender, RoutedEventArgs e)
+        private void onCreateNew(object sender, RoutedEventArgs e)
         {
-            lblStatus.Text = "Clicked";
+            FlyoutBase.ShowAttachedFlyout((FrameworkElement)sender);
+
+            return;
         }
-
-
-
-
+        private void onBack(object sender, RoutedEventArgs e)
+        {
+            this.Frame.GoBack();
+        }
+        private void grid_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+        }
+        private void gridTapped(object sender, RoutedEventArgs e)
+        {
+        }
+    }
+}
+/*
          //function to be called by "import meetings" button
          private void onImport(object sender, RoutedEventArgs e)
-         {/*
+         {
              DateTime strt, endx; string location, body, subject;
              //try
              {
@@ -92,7 +96,7 @@ namespace BoeingSalesApp
                      // try some other way to get the object
                      //Outlook.Application oApp = Activator.CreateInstance(Type.GetTypeFromProgID("Outlook.Application"));
                  }
-             }*/
+             }
          }
         //save appoointment based on select fields (there are others) to default folder, need xaml text fields
          private void addAppointment(DateTime strt, DateTime endx, string location, string body, string subject)
@@ -121,9 +125,7 @@ namespace BoeingSalesApp
              Outlook.MAPIFolder calender = outlookapp.Session.GetDefaultFolder(Outlook.OlDefaultFolders.olFolderCalendar);
              Outlook.Items calendarItems = calender.Items; //.Delete()
          }
-    }
-}
-/*
+
 namespace OutlookAddIn1
 {
     class Sample
