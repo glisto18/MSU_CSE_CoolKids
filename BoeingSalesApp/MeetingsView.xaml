@@ -20,11 +20,10 @@
         <DataTemplate x:Key="MeetingsTemplate">
             <StackPanel Orientation="Horizontal" Width="250" Height="125">
                 <Border Width="90" Height="100" Margin="10">
-                    <Image Source="Assets/SalesBag.png" Width="90" Height="120"/>
+                    <Image Source="Assets/Meetings.png" Width="90" Height="120"/>
                 </Border>
                 <StackPanel Orientation="Vertical" VerticalAlignment="Center">
-                    <TextBlock Text="Name"  Margin="5,0,0,0" Width="170" Height="20" TextTrimming="WordEllipsis" Foreground="Black" />
-                    <TextBlock Text="Date Created" Margin="5,0,0,0" Width="170" Height="20" TextTrimming="WordEllipsis" Foreground="Black"/>
+                    <TextBlock Text="Subject"  Margin="5,0,0,0" Width="170" Height="20" TextTrimming="WordEllipsis" Foreground="Black" />
                 </StackPanel>
             </StackPanel>
         </DataTemplate>
@@ -63,8 +62,18 @@
             </Flyout.FlyoutPresenterStyle>
 
             <StackPanel>
-                <TextBlock Text="Enter name for Sales Bag:"/>
-                <TextBox PlaceholderText="SalesBagName" />
+                <TextBlock Text="Date:"/>
+                <TextBox PlaceholderText="Date" />
+                <TextBlock Text="Start Time:"/>
+                <TextBox PlaceholderText="Start Time" />
+                <TextBlock Text="End Time:"/>
+                <TextBox PlaceholderText="End Time" />
+                <TextBlock Text="Location:"/>
+                <TextBox PlaceholderText="Location" />
+                <TextBlock Text="Description:"/>
+                <TextBox PlaceholderText="Description" />
+                <TextBlock Text="Subject:"/>
+                <TextBox PlaceholderText="Subject" />
                 <Button Content="Create" HorizontalAlignment="Right"
                         FontSize="16" Margin="0,10,0,0" Click="onCreateNew"/>
             </StackPanel>
@@ -127,8 +136,34 @@
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
 
+            <GridView x:Name="MeetingsGridView" 
+                      Grid.Column="1" 
+                      ItemTemplate="{StaticResource MeetingsTemplate}" 
+                      Height="668" 
+                      VerticalAlignment="Bottom" 
+                      Margin="0,-1,0,0" 
+                      SelectionMode="Multiple" 
+                      SelectionChanged="grid_SelectionChanged"
+                      Tapped="gridTapped">
+
+                <GridView.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <ItemsWrapGrid MaximumRowsOrColumns="7"/>
+                    </ItemsPanelTemplate>
+                </GridView.ItemsPanel>
+
+                <!-- These radio buttons are just place holder GridView items. Replace with Bags from backend-->
+                <RadioButton />
+                <RadioButton />
+                <RadioButton />
+                <RadioButton />
+                <RadioButton />
+            </GridView>
+
         </Grid>
-        <Button Content="Import Meetings" HorizontalAlignment="Left" Height="108" Margin="8,17,0,0" Grid.Row="1" VerticalAlignment="Top" Width="238"/>
+        <Button Content="Import Meetings" HorizontalAlignment="Left" Height="108" Margin="7,64,0,0" Grid.Row="1" VerticalAlignment="Top" Width="238"/>
+        <Button Content="Delete Meeting" HorizontalAlignment="Left" Height="108" Margin="6,264,0,0" Grid.Row="1" VerticalAlignment="Top" Width="238"/>
+        <Button Content="Launch Meeting" HorizontalAlignment="Left" Height="108" Margin="5,459,0,0" Grid.Row="1" VerticalAlignment="Top" Width="238"/>
 
     </Grid>
 </Page>
