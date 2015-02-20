@@ -26,29 +26,34 @@ namespace BoeingSalesApp
         public SalesBagsView()
         {
             this.InitializeComponent();
-            newButton.Flyout = myFlyout;
+            newSalesBagButton.Flyout = myFlyout;
         }
 
         private void onBack(object sender, RoutedEventArgs e)
         {
             this.Frame.GoBack();
         }
-        
 
 
-        
-        private void onCreateNew(object sender, RoutedEventArgs e)
+
+        /// <summary>
+        /// Called when user clicks "Plus Sign" icon 
+        /// </summary>
+        private void showFlyout(object sender, RoutedEventArgs e)
         {
-            
             FlyoutBase.ShowAttachedFlyout((FrameworkElement) sender);
-            
-            return;
         }
 
+        /// <summary>
+        /// Called when user clicks "Create" button in the flyout 
+        /// </summary>
         private void onCreate(object sender, RoutedEventArgs e)
         {
-            newButton.Flyout.Hide();
-            return;
+            newSalesBagButton.Flyout.Hide();
+
+            //
+            // TODO - Push new sales bag to backend
+            //
         }
     }
 }

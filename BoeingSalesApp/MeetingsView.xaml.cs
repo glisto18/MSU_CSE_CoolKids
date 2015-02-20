@@ -27,17 +27,30 @@ namespace BoeingSalesApp
         public MeetingsView()
         {
             this.InitializeComponent();
+            newMeetingButton.Flyout = MeetingsAdd;
         }
         private void tap_to_launch(object sender, RoutedEventArgs e)
         {
             this.Frame.Navigate(typeof(launchMeeting));
         }
-        private void onCreateNew(object sender, RoutedEventArgs e)
+
+        private void showFlyout(object sender, RoutedEventArgs e)
         {
             FlyoutBase.ShowAttachedFlyout((FrameworkElement)sender);
-
-            return;
         }
+
+        /// <summary>
+        /// Called when user clicks "Create" button in the flyout 
+        /// </summary>
+        private void onCreate(object sender, RoutedEventArgs e)
+        {
+            newMeetingButton.Flyout.Hide();
+
+            //
+            // TODO - Push meeting to outlook
+            //
+        }
+
         private void onBack(object sender, RoutedEventArgs e)
         {
             this.Frame.GoBack();

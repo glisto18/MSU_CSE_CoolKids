@@ -37,15 +37,14 @@
             </StackPanel>
         </DataTemplate>
 
+        <!-- Template for the list of categories -->
         <DataTemplate x:Key="ArtifactCategoryTemplate">
-            <StackPanel Orientation="Vertical" >
-                <TextBlock Text="{Binding Name}" Foreground="#FF060606" FontSize="24" Margin="0,0,0,10" />
-            </StackPanel>
-        </DataTemplate>
-
-        <DataTemplate x:Key="ArtifactDetail">
-            <StackPanel Orientation="Horizontal" Width="250" Height="125">
-                <Border Width="90" Height="100" Margin="10"></Border>
+            <StackPanel x:Name="cont" Orientation="Vertical" >
+                <TextBlock Text="{Binding Name}" 
+                           Foreground="#FF060606" 
+                           FontSize="24" 
+                           Margin="10,0,5,10" 
+                           Width="{Binding Width, ElementName=myCanvas}"/>
             </StackPanel>
         </DataTemplate>
     </Page.Resources>
@@ -90,22 +89,30 @@
                 <ColumnDefinition Width="4*" />
             </Grid.ColumnDefinitions>
 
-            <Canvas Grid.Column="0" Background="#FFB6B0B0" >
+            <Canvas x:Name="myCanvas" Grid.Column="0" Background="#FFB6B0B0" HorizontalAlignment="Left" Width="271" >
+                <TextBlock Canvas.Left="12" TextWrapping="Wrap" Text="Categories" Canvas.Top="19" Foreground="Black" FontSize="24" FontWeight="Bold"/>
 
-                <ListView x:Name="CategoryList" ItemTemplate="{StaticResource ArtifactCategoryTemplate}" HorizontalAlignment="Left" Height="270" VerticalAlignment="Top" Width="175" Foreground="#FFEE1C1C" Canvas.Left="25" Canvas.Top="60" >
+                <ListView x:Name="CategoryList" 
+                          ItemTemplate="{StaticResource ArtifactCategoryTemplate}" 
+                          HorizontalAlignment="Left" 
+                          Height="270" 
+                          VerticalAlignment="Top"  
+                          Width="{Binding Width, ElementName=myCanvas}" 
+                          Foreground="#FFEE1C1C" 
+                          Canvas.Left="1" 
+                          Canvas.Top="60" 
+                          >
                     <ListView.ItemsPanel>
                         <ItemsPanelTemplate>
                             <ItemsWrapGrid MaximumRowsOrColumns="4"/>
                         </ItemsPanelTemplate>
                     </ListView.ItemsPanel>
 
-                    <RadioButton />
                 </ListView>
-                <TextBlock Canvas.Left="12" TextWrapping="Wrap" Text="Categories" Canvas.Top="19" Foreground="#FF131212" FontSize="24" FontWeight="Bold"/>
-                <TextBlock Canvas.Left="6" TextWrapping="Wrap" Text="Upcoming Meetings" Canvas.Top="419" Foreground="#FF131212" FontSize="24" FontWeight="Bold"/>
+                 <TextBlock Canvas.Left="6" TextWrapping="Wrap" Text="Upcoming Meetings" Canvas.Top="419" Foreground="Black" FontSize="24" FontWeight="Bold"/>
                 <StackPanel Height="175" Canvas.Left="24" Canvas.Top="469" Width="236">
-                    <TextBlock Canvas.Left="6" TextWrapping="Wrap" Text="USAF, 4/4/91" Canvas.Top="419" Foreground="#FF131212" FontSize="24" Margin="0,0,0,10" />
-                    <TextBlock Canvas.Left="6" TextWrapping="Wrap" Text="Delta, 8/26/91" Canvas.Top="419" Foreground="#FF131212" FontSize="24" />
+                    <TextBlock Canvas.Left="6" TextWrapping="Wrap" Text="USAF, 4/4/91" Canvas.Top="419" Foreground="Black" FontSize="24" Margin="0,0,0,10" />
+                    <TextBlock Canvas.Left="6" TextWrapping="Wrap" Text="Delta, 8/26/91" Canvas.Top="419" Foreground="Black" FontSize="24" />
                 </StackPanel>
 
             </Canvas>
@@ -115,7 +122,9 @@
             <GridView x:Name="ArtifactsGridView" 
                             Grid.Column="1" 
                             ItemTemplate="{StaticResource ArtifactTemplate}" 
-                            Height="667" VerticalAlignment="Bottom">
+                            Height="667" 
+                            VerticalAlignment="Bottom"
+                            SelectionMode="Multiple">
                 <GridView.ItemsPanel>
                     <ItemsPanelTemplate>
                         <ItemsWrapGrid MaximumRowsOrColumns="7"/>

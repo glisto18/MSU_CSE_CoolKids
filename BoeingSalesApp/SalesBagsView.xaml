@@ -36,6 +36,7 @@
             </StackPanel>
         </DataTemplate>
         
+        <!-- Template for GridView containing sales bags -->
         <ControlTemplate x:Key="SalesbagPropertyGridTemplate">
             <Grid>
                 <Grid.Resources>
@@ -60,7 +61,8 @@
             </Grid>
         </ControlTemplate>
 
-        <Flyout x:Key="CreateFlyout">
+        <!-- Flyout for creating a new sales bag -->
+        <Flyout x:Key="CreateFlyout" x:Name="myFlyout">
             <Flyout.FlyoutPresenterStyle>
                 <Style TargetType="FlyoutPresenter">
                     <Setter Property="Background" Value="Black"/>
@@ -73,9 +75,8 @@
                 <TextBlock Text="Enter name for Sales Bag:"/>
                 <TextBox PlaceholderText="SalesBagName" />
                 <Button Content="Create" HorizontalAlignment="Right"
-                        FontSize="16" Margin="0,10,0,0" /> <!--="onCreateNew"/>-->
+                        FontSize="16" Margin="0,10,0,0" Click="onCreate"/>
             </StackPanel>
-
         </Flyout>
     </Page.Resources>
 
@@ -113,15 +114,16 @@
                        IsHitTestVisible="false" 
                        TextWrapping="NoWrap" 
                        VerticalAlignment="Center" />
-            <Button x:Name="newButton"
+            <Button x:Name="newSalesBagButton"
                     Grid.Column="2"
                     Height="80" 
                     Width="80" 
                     Margin="50,0,0,0"
                     HorizontalAlignment="Center" 
                     BorderBrush="{x:Null}"
-                    Tapped="onCreateNew">
-                <FlyoutBase.AttachedFlyout>
+                    Tapped="showFlyout"
+                    FlyoutBase.AttachedFlyout="{StaticResource CreateFlyout}">
+                <!--<FlyoutBase.AttachedFlyout>
                     <Flyout x:Name="myFlyout">
                         <Flyout.FlyoutPresenterStyle>
                             <Style TargetType="FlyoutPresenter">
@@ -138,9 +140,9 @@
                             FontSize="16" Margin="0,10,0,0" Click="onCreate"/>
                         </StackPanel>
                     </Flyout>
-                </FlyoutBase.AttachedFlyout>
+                </FlyoutBase.AttachedFlyout>-->
                     
-                <!--.AttachedFlyout="{StaticResource CreateFlyout}">-->
+                
                 <Image Source="Assets/Plus.png"></Image>
             </Button>
         </Grid>

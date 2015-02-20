@@ -52,7 +52,7 @@
             </Grid>
         </ControlTemplate>
 
-        <Flyout x:Name="MeetingsAdd" x:Key="CreateFlyout" Placement="Left">
+        <Flyout x:Name="MeetingsAdd" x:Key="CreateFlyout">
             <Flyout.FlyoutPresenterStyle>
                 <Style TargetType="FlyoutPresenter">
                     <Setter Property="Background" Value="Black"/>
@@ -75,7 +75,7 @@
                 <TextBlock Text="Subject:"/>
                 <TextBox PlaceholderText="Subject" />
                 <Button Content="Create" HorizontalAlignment="Right"
-                        FontSize="16" Margin="0,10,0,0" Click="onCreateNew"/>
+                        FontSize="16" Margin="0,10,0,0" Click="onCreate"/>
             </StackPanel>
 
         </Flyout>
@@ -113,14 +113,13 @@
                         AutomationProperties.ItemType="Navigation Button" RequestedTheme="Dark" Margin="30"/>
             <TextBlock Grid.Column="1" Text="Meetings" Style="{StaticResource HeaderTextBlockStyle}" 
                         IsHitTestVisible="false" TextWrapping="NoWrap" VerticalAlignment="Center" />
-            <Button x:Name="newButton2" 
+            <Button x:Name="newMeetingButton" 
                     Grid.Column="2"
                     Height="80" 
                     Width="80" 
                     Margin="50,0,0,0"
-                    Tapped="onCreateNew"
-                    HorizontalAlignment="Center" 
-                    BorderBrush="{x:Null}"
+                    Tapped="showFlyout"
+                    HorizontalAlignment="Center"
                     FlyoutBase.AttachedFlyout="{StaticResource CreateFlyout}">
                 <Image Source="Assets/Plus.png"></Image>
             </Button>
