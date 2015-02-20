@@ -38,9 +38,9 @@ namespace BoeingSalesApp
         private async Task populate()
         {
              // Populate database with fake values
-            /*var seeder = new BoeingSalesApp.Utility.FakeSeeder();
+            var seeder = new BoeingSalesApp.Utility.FakeSeeder();
             await seeder.FakeSeedArtifacts();
-            await seeder.FakeSeedCategories();*/
+            await seeder.FakeSeedCategories();
         }
 
         /// <summary>
@@ -64,7 +64,7 @@ namespace BoeingSalesApp
             // just ensure that the window is active
             if (rootFrame == null)
             {
-                //await populate();
+                await populate();
 
                 // Create a Frame to act as the navigation context and navigate to the first page
                 rootFrame = new Frame();

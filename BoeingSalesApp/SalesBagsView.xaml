@@ -7,9 +7,158 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
-    <Grid Background="White">
-        <TextBlock Foreground="#005DAB" HorizontalAlignment="Left" FontSize="40" Margin="545,325,0,0" TextWrapping="Wrap" Text="Sales Bags" VerticalAlignment="Top" Height="55" Width="191"/>
-        <Rectangle Tapped="onBack" Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="60" Margin="540,427,0,0" Stroke="Black" VerticalAlignment="Top" Width="167"/>
-        <TextBlock HorizontalAlignment="Left" Margin="615,453,0,0" TextWrapping="Wrap" Text="Back" VerticalAlignment="Top" Foreground="#FF1574C3" FontSize="14"/>
+    <Page.Resources>
+        <x:String x:Key="ChevronGlyph">&#xE26B;</x:String>
+        <!--
+            Collection of grouped items displayed by this page, bound to a subset
+            of the complete item list because items in groups cannot be virtualized
+        -->
+        <CollectionViewSource
+            x:Name="groupedItemsViewSource"
+            Source="{Binding Groups}"
+            IsSourceGrouped="true"
+            ItemsPath="TopItems"/>
+
+        <!-- TODO: Delete this line if the key AppName is declared in App.xaml -->
+        <x:String x:Key="AppName">My Application</x:String>
+
+        <DataTemplate x:Key="SalesBagTemplate">
+            <StackPanel Orientation="Horizontal" Width="250" Height="125">
+                <Border Width="90" Height="100" Margin="10">
+                    <Image Source="Assets/SalesBag.png" Width="90" Height="120"/>
+                </Border>
+                <StackPanel Orientation="Vertical" VerticalAlignment="Center">
+                    <TextBlock Text="Name"  Margin="5,0,0,0" Width="170" Height="20" TextTrimming="WordEllipsis" Foreground="Black" />
+                    <TextBlock Text="Date Created" Margin="5,0,0,0" Width="170" Height="20" TextTrimming="WordEllipsis" Foreground="Black"/>
+                </StackPanel>
+            </StackPanel>
+        </DataTemplate>
+        
+        <ControlTemplate x:Key="SalesbagPropertyGridTemplate">
+            <Grid>
+                <Grid.Resources>
+                </Grid.Resources>
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Text="Name" Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" FontSize="18"/>
+                <TextBox Grid.Row="0" Grid.Column="1" Height="30" Margin="0,10"/>
+                <TextBlock Text="DateCreated" Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" FontSize="18"/>
+                <TextBox Grid.Row="1" Grid.Column="1" Margin="0,10"/>
+                <TextBlock Text="Artifacts" Grid.Row="2" Grid.Column="0" VerticalAlignment="Center" FontSize="18"/>
+                <TextBlock Text="###" Grid.Row="2" Grid.Column="1" Margin="0,10" FontSize="18"/>
+            </Grid>
+        </ControlTemplate>
+
+        <Flyout x:Name="zzz" x:Key="CreateFlyout" Placement="Left">
+            <Flyout.FlyoutPresenterStyle>
+                <Style TargetType="FlyoutPresenter">
+                    <Setter Property="Background" Value="Black"/>
+                    <Setter Property="MinHeight" Value="300"/>
+                    <Setter Property="MinWidth" Value="300"/>
+                </Style>
+            </Flyout.FlyoutPresenterStyle>
+
+            <StackPanel>
+                <TextBlock Text="Enter name for Sales Bag:"/>
+                <TextBox PlaceholderText="SalesBagName" />
+                <Button Content="Create" HorizontalAlignment="Right"
+                        FontSize="16" Margin="0,10,0,0" Click="onCreateNew"/>
+            </StackPanel>
+
+        </Flyout>
+    </Page.Resources>
+
+    <!--
+        This grid acts as a root panel for the page that defines two rows:
+        * Row 0 contains the back button and page title
+        * Row 1 contains the rest of the page layout
+    -->
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <!-- Back button and "Sales Bags" header -->
+        <Grid Grid.Row="0">
+            <Grid.RowDefinitions>
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <Button x:Name="backButton" Command="{Binding NavigationHelper.GoBackCommand, ElementName=pageRoot}"
+                        Style="{StaticResource NavigationBackButtonNormalStyle}"
+                        VerticalAlignment="Center"
+                        AutomationProperties.Name="Back"
+                        AutomationProperties.AutomationId="BackButton"
+                        AutomationProperties.ItemType="Navigation Button" RequestedTheme="Dark" Margin="30"/>
+            <TextBlock Grid.Column="1" Text="Sales Bags" Style="{StaticResource HeaderTextBlockStyle}" 
+                        IsHitTestVisible="false" TextWrapping="NoWrap" VerticalAlignment="Center" />
+            <Button x:Name="newButton"
+                    Grid.Column="2"
+                    Height="80" 
+                    Width="80" 
+                    Margin="50,0,0,0"
+                    Tapped="onCreateNew"
+                    HorizontalAlignment="Center" 
+                    BorderBrush="{x:Null}"
+                    FlyoutBase.AttachedFlyout="{StaticResource CreateFlyout}">
+                <Image Source="Assets/Plus.png"></Image>
+            </Button>
+        </Grid>
+        
+        
+        <Grid Grid.Row="1" Background="#FFEAE5E5">
+            <Grid.RowDefinitions>
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition Width="4*" />
+            </Grid.ColumnDefinitions>
+
+            <GridView x:Name="SalesBagsGridView" 
+                      Grid.Column="1" 
+                      ItemTemplate="{StaticResource SalesBagTemplate}" 
+                      Height="668" 
+                      VerticalAlignment="Bottom" 
+                      Margin="0,-1,0,0" 
+                      SelectionMode="Multiple" 
+                      SelectionChanged="grid_SelectionChanged"
+                      Tapped="gridTapped">
+                      
+                <GridView.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <ItemsWrapGrid MaximumRowsOrColumns="7"/>
+                    </ItemsPanelTemplate>
+                </GridView.ItemsPanel>
+
+                <!-- These radio buttons are just place holder GridView items. Replace with Bags from backend-->
+                <RadioButton />
+                <RadioButton />
+                <RadioButton />
+                <RadioButton />
+                <RadioButton />
+                <RadioButton />
+                <RadioButton />
+            </GridView>
+        </Grid>
     </Grid>
 </Page>
+    
+

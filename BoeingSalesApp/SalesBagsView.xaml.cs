@@ -25,11 +25,29 @@ namespace BoeingSalesApp
         public SalesBagsView()
         {
             this.InitializeComponent();
+            newButton.Flyout = zzz;
         }
 
         private void onBack(object sender, RoutedEventArgs e)
         {
             this.Frame.Navigate(typeof(MainPage));
+        }
+
+        private void grid_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+        }
+
+        private void gridTapped(object sender, RoutedEventArgs e)
+        {
+            /*FlyoutBase.ShowAttachedFlyout(sender as FrameworkElement);
+            return;*/
+        }
+
+        private void onCreateNew(object sender, RoutedEventArgs e)
+        {
+            FlyoutBase.ShowAttachedFlyout((FrameworkElement) sender);
+            
+            return;
         }
     }
 }
