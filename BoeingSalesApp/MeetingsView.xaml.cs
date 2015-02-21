@@ -71,7 +71,7 @@ namespace BoeingSalesApp
              //try
              {
                  //Guid g = Guid.Parse("00063001-0000-0000-C000-000000000046");
-                 Outlook.Application outlookapp = new Outlook.Application(); //try http://www.dimastr.com/redemption/home.htm
+                 Outlook.Application outlookapp = new Outlook.Application();
                  //Outlook.NameSpace mapiNamespace = outlookapp.GetNamespace("MAPI");
                  //Outlook.MAPIFolder calender = mapiNamespace.GetDefaultFolder(Outlook.OlDefaultFolders.olFolderCalendar);
                  Outlook.MAPIFolder calender = outlookapp.Session.GetDefaultFolder(Outlook.OlDefaultFolders.olFolderCalendar);
