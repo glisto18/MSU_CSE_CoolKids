@@ -43,7 +43,7 @@
                            Margin="10,0,5,10" 
                            Width="{Binding Width, ElementName=myCanvas}"/>
             </StackPanel>
-        </DataTemplate>
+        </DataTemplate> 
     </Page.Resources>
 
     <!--
@@ -60,14 +60,7 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
-        <Grid Grid.Row="0">
-            <Grid.RowDefinitions>
-                <RowDefinition />
-            </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="*" />
-            </Grid.ColumnDefinitions>
+        <StackPanel Grid.Row="0" Orientation="Horizontal">
             <Button x:Name="backButton" Command="{Binding NavigationHelper.GoBackCommand, ElementName=pageRoot}"
                         Style="{StaticResource NavigationBackButtonNormalStyle}"
                         VerticalAlignment="Center"
@@ -76,14 +69,22 @@
                         AutomationProperties.ItemType="Navigation Button" RequestedTheme="Dark" Margin="30"/>
             <TextBlock Grid.Column="1" Text="Artifacts" Style="{StaticResource HeaderTextBlockStyle}" 
                         IsHitTestVisible="false" TextWrapping="NoWrap" VerticalAlignment="Center" />
-        </Grid>
+            <Button x:Name="uploadButton" 
+                    Height="80" 
+                    Width="80" 
+                    BorderBrush="{x:Null}" 
+                    Margin="5,0,0,0" >
+                <Image Source="Assets/Upload.png"></Image>
+            </Button>
+        </StackPanel>
+        
         <Grid Background="#FFEAE5E5" Margin="9,100,-9,1" Grid.RowSpan="2">
             <Grid.RowDefinitions>
                 <RowDefinition />
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition />
-                <ColumnDefinition Width="4*" />
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
 
             <Canvas x:Name="myCanvas" Grid.Column="0" Background="#FFB6B0B0" HorizontalAlignment="Left" Width="271" >
@@ -130,7 +131,6 @@
                     <TextBlock Canvas.Left="6" TextWrapping="Wrap" Text="USAF, 4/4/91" Canvas.Top="419" Foreground="Black" FontSize="24" Margin="0,0,0,10" />
                     <TextBlock Canvas.Left="6" TextWrapping="Wrap" Text="Delta, 8/26/91" Canvas.Top="419" Foreground="Black" FontSize="24" />
                 </StackPanel>
-
             </Canvas>
 
 
@@ -138,7 +138,7 @@
             <GridView x:Name="ArtifactsGridView" 
                             Grid.Column="1" 
                             ItemTemplate="{StaticResource ArtifactTemplate}" 
-                            Height="667" 
+                            Height="{Binding}"
                             VerticalAlignment="Top"
                             SelectionMode="Multiple">
                 <GridView.ItemsPanel>

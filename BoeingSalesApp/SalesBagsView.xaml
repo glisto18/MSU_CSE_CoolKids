@@ -94,64 +94,47 @@
         </Grid.ColumnDefinitions>
 
         <!-- Back button and "Sales Bags" header -->
-        <Grid Grid.Row="0">
-            <Grid.RowDefinitions>
-                <RowDefinition />
-            </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="Auto" />
-            </Grid.ColumnDefinitions>
+        <!-- Consider replacing with a horizontal StackPanel -->
+        <StackPanel Orientation="Horizontal" Grid.Row="0">
             <Button x:Name="backButton" Tapped="onBack"
-                        Style="{StaticResource NavigationBackButtonNormalStyle}"
-                        VerticalAlignment="Center"
-                        AutomationProperties.Name="Back"
-                        AutomationProperties.AutomationId="BackButton"
-                        AutomationProperties.ItemType="Navigation Button" RequestedTheme="Dark" Margin="30"/>
+                            Style="{StaticResource NavigationBackButtonNormalStyle}"
+                            VerticalAlignment="Center"
+                            AutomationProperties.Name="Back"
+                            AutomationProperties.AutomationId="BackButton"
+                            AutomationProperties.ItemType="Navigation Button" RequestedTheme="Dark" Margin="30"/>
             <TextBlock Grid.Column="1" Text="Sales Bags" Style="{StaticResource HeaderTextBlockStyle}"
-                       IsHitTestVisible="false" 
-                       TextWrapping="NoWrap" 
-                       VerticalAlignment="Center" />
+                           IsHitTestVisible="false" 
+                           TextWrapping="NoWrap" 
+                           VerticalAlignment="Center" />
             <Button x:Name="newSalesBagButton"
-                    Grid.Column="2"
-                    Height="80" 
-                    Width="80" 
-                    Margin="50,0,0,0"
-                    HorizontalAlignment="Center" 
-                    BorderBrush="{x:Null}"
-                    Tapped="showFlyout"
-                    FlyoutBase.AttachedFlyout="{StaticResource CreateFlyout}">
-              
+                        Grid.Column="2"
+                        Height="80" 
+                        Width="80" 
+                        Margin="50,0,0,0"
+                        HorizontalAlignment="Center" 
+                        BorderBrush="{x:Null}"
+                        Tapped="showFlyout"
+                        FlyoutBase.AttachedFlyout="{StaticResource CreateFlyout}">
+
                 <Image Source="Assets/Plus.png"></Image>
             </Button>
-        </Grid>
+        </StackPanel>
 
-        <Grid Grid.Row="1" Background="#FFEAE5E5">
-            <Grid.RowDefinitions>
-                <RowDefinition />
-            </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition />
-            </Grid.ColumnDefinitions>
+        <GridView Grid.Row="1" x:Name="SalesBagsGridView" 
+                Grid.Column="0"
+                ItemTemplate="{StaticResource SalesBagTemplate}" 
+                Margin="0,-1,0,0" 
+                SelectionMode="Multiple" 
+                Background="White">
 
-            <GridView x:Name="SalesBagsGridView" 
-                    Grid.Column="0" 
-                    ItemTemplate="{StaticResource SalesBagTemplate}" 
-                    Height="668" 
-                    VerticalAlignment="Top" 
-                    Margin="0,-1,0,0" 
-                    SelectionMode="Multiple">
-
-                <GridView.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <ItemsWrapGrid MaximumRowsOrColumns="7"/>
-                    </ItemsPanelTemplate>
-                </GridView.ItemsPanel>
+            <GridView.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <ItemsWrapGrid MaximumRowsOrColumns="7"/>
+                </ItemsPanelTemplate>
+            </GridView.ItemsPanel>
                 
-                <Button/>
-            </GridView>
-        </Grid>
+            <Button/>
+        </GridView>
     </Grid>
 </Page>
     
