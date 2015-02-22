@@ -160,7 +160,7 @@
             </GridView>
 
         </Grid>
-        <Button Content="Import Meetings" HorizontalAlignment="Left" Height="108" Margin="7,64,0,0" Grid.Row="1" VerticalAlignment="Top" Width="238"/>
+        <Button Tapped="onImport" Content="Import Meetings" HorizontalAlignment="Left" Height="108" Margin="7,64,0,0" Grid.Row="1" VerticalAlignment="Top" Width="238"/>
         <Button Content="Delete Meeting" HorizontalAlignment="Left" Height="108" Margin="6,264,0,0" Grid.Row="1" VerticalAlignment="Top" Width="238"/>
         <Button Content="Launch Meeting" HorizontalAlignment="Left" Height="108" Margin="5,459,0,0" Grid.Row="1" VerticalAlignment="Top" Width="238"/>
 
