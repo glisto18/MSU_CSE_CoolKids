@@ -111,9 +111,6 @@
     <Compile Include="DataAccess\Entities\FolderToken.cs" />
     <Compile Include="DataAccess\Repository\FolderTokenRepository.cs" />
     <Compile Include="DataAccess\Repository\IFolderTokenRepository.cs" />
-    <Compile Include="FailPage.xaml.cs">
-      <DependentUpon>FailPage.xaml</DependentUpon>
-    </Compile>
     <Compile Include="SalesBagsView.xaml.cs">
       <DependentUpon>SalesBagsView.xaml</DependentUpon>
     </Compile>
@@ -196,10 +193,6 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Page Include="ArtifactsView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="FailPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

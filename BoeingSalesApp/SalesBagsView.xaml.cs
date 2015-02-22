@@ -12,6 +12,9 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
+using System.Threading.Tasks;
+using BoeingSalesApp.DataAccess.Repository;
+using BoeingSalesApp.DataAccess.Entities;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -23,10 +26,14 @@ namespace BoeingSalesApp
     public sealed partial class SalesBagsView : Page
     {
 
+        private SalesBagRepository _salesBagRepository;
+
         public SalesBagsView()
         {
             this.InitializeComponent();
             newSalesBagButton.Flyout = myFlyout;
+
+            _salesBagRepository = new SalesBagRepository();
         }
 
         private void onBack(object sender, RoutedEventArgs e)
@@ -34,6 +41,11 @@ namespace BoeingSalesApp
             this.Frame.GoBack();
         }
 
+        private async Task FetchSalesBags()
+        {
+            var bags = await _salesBagRepository.GetAllAsync();
+            SalesBagsGridView.ItemsSource = bags;
+        }
 
 
         /// <summary>
@@ -47,13 +59,29 @@ namespace BoeingSalesApp
         /// <summary>
         /// Called when user clicks "Create" button in the flyout 
         /// </summary>
-        private void onCreate(object sender, RoutedEventArgs e)
+        private async void onCreate(object sender, RoutedEventArgs e)
         {
             newSalesBagButton.Flyout.Hide();
 
             //
             // TODO - Push new sales bag to backend
             //
+            SalesBag newBag = new SalesBag();
+            newBag.Name = "C17";
+            newBag.DateCreated = DateTime.Now;
+            newBag.Active = true;
+            await _salesBagRepository.SaveAsync(newBag);
+
+
+            // Redraw gridview
+
+            return;
+        }
+
+        protected async override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            //navigationHelper.OnNavigatedTo(e);
+            await FetchSalesBags();
         }
     }
 }
