@@ -39,7 +39,7 @@ namespace BoeingSalesApp
         {
              // Populate database with fake values
             var seeder = new BoeingSalesApp.Utility.FakeSeeder();
-            //await seeder.FakeSeedArtifacts();
+            await seeder.FakeSeedArtifacts();
             //await seeder.FakeSeedCategories();
         }
 
@@ -50,6 +50,8 @@ namespace BoeingSalesApp
         /// <param name="e">Details about the launch request and process.</param>
         protected async override void OnLaunched(LaunchActivatedEventArgs e)
         {
+
+             await populate();
 
 #if DEBUG
             if (System.Diagnostics.Debugger.IsAttached)

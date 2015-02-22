@@ -65,7 +65,6 @@ namespace BoeingSalesApp.Utility
                 _artifactFolder = await StorageApplicationPermissions.MostRecentlyUsedList.GetFolderAsync(_token);
                 var folderArtifacts = await _artifactFolder.GetFilesAsync();
                 await CheckForNewArtifacts(folderArtifacts);
-
             }
 
         }

@@ -17,7 +17,7 @@ namespace BoeingSalesApp.Utility
 
         public FakeSeeder()
         {
-            
+            var test = Utility.TempSettings.DbPath;
         }
 
         private async Task InitDb()
@@ -42,20 +42,26 @@ namespace BoeingSalesApp.Utility
             var categories = new List<Category>();
             categories.Add(new Category
             {
-                Name = "Planes",
+                Name = "Lancer",
                 Active = true
             });
 
 
             categories.Add(new Category
             {
-                Name = "Trains",
+                Name = "GPS IIF",
                 Active = true
             });
 
             categories.Add(new Category
             {
-                Name = "Trucks",
+                Name = "Software",
+                Active = true
+            });
+
+            categories.Add(new Category
+            {
+                Name = "Training",
                 Active = true
             });
 
@@ -75,8 +81,8 @@ namespace BoeingSalesApp.Utility
             artifacts.Add(new Artifact
             {
                 Path = "CoolPlanePath",
-                Title = "Cool Plane",
-                FileName = "coolPlane.pds",
+                Title = "F16",
+                FileName = "F16.pdf",
                 FileType = "pdf",
                 DateAdded = DateTime.Now,
                 Active = true
@@ -85,9 +91,9 @@ namespace BoeingSalesApp.Utility
 
             artifacts.Add(new Artifact
             {
-                Path = "DuckPath",
-                Title = "Duck",
-                FileName = "duck.pdf",
+                Path = "satellite",
+                Title = "702 MP Satellite",
+                FileName = "mpsatellite.pdf",
                 FileType = "pdf",
                 DateAdded = DateTime.Now,
                 Active = true
@@ -95,9 +101,19 @@ namespace BoeingSalesApp.Utility
 
             artifacts.Add(new Artifact
             {
-                Path = "BlueTruckPath",
-                Title = "Blue Truck",
-                FileName = "bluetruck.png",
+                Path = "Brochure",
+                Title = "Brochure",
+                FileName = "Brochure.pdf",
+                FileType = "pdf",
+                DateAdded = DateTime.Now,
+                Active = true
+            });
+
+            artifacts.Add(new Artifact
+            {
+                Path = "MSF13",
+                Title = "MSF13-0126",
+                FileName = "msf13.png",
                 FileType = "png",
                 DateAdded = DateTime.Now,
                 Active = true
@@ -157,7 +173,5 @@ namespace BoeingSalesApp.Utility
             var artifactCategory = new Artifact_CategoryRepository(_db);
             await artifactCategory.AddRelationship(artifact, category);
         }
-
-      
     }
 }
