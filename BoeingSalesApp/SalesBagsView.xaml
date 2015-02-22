@@ -139,7 +139,7 @@
                     Grid.Column="0" 
                     ItemTemplate="{StaticResource SalesBagTemplate}" 
                     Height="668" 
-                    VerticalAlignment="Bottom" 
+                    VerticalAlignment="Top" 
                     Margin="0,-1,0,0" 
                     SelectionMode="Multiple">
 
@@ -148,6 +148,8 @@
                         <ItemsWrapGrid MaximumRowsOrColumns="7"/>
                     </ItemsPanelTemplate>
                 </GridView.ItemsPanel>
+                
+                <Button/>
             </GridView>
         </Grid>
     </Grid>

@@ -55,9 +55,7 @@ namespace BoeingSalesApp
         {
             this.Frame.GoBack();
         }
-        private void grid_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-        }
+     
         private void gridTapped(object sender, RoutedEventArgs e)
         {
         }

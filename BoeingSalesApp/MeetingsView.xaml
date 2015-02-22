@@ -139,10 +139,9 @@
                       Grid.Column="1" 
                       ItemTemplate="{StaticResource MeetingsTemplate}" 
                       Height="668" 
-                      VerticalAlignment="Bottom" 
                       Margin="0,-1,0,0" 
+                      VerticalAlignment="Top"
                       SelectionMode="Multiple" 
-                      SelectionChanged="grid_SelectionChanged"
                       Tapped="gridTapped">
 
                 <GridView.ItemsPanel>

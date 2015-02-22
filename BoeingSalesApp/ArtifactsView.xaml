@@ -22,9 +22,6 @@
             IsSourceGrouped="true"
             ItemsPath="TopItems"/>
 
-        <!-- TODO: Delete this line if the key AppName is declared in App.xaml -->
-        <x:String x:Key="AppName">My Application</x:String>
-
         <DataTemplate x:Key="ArtifactTemplate"  >
             <StackPanel Orientation="Horizontal" Width="250" Height="125">
                 <Border Width="90" Height="100" Margin="10">
@@ -90,7 +87,13 @@
             </Grid.ColumnDefinitions>
 
             <Canvas x:Name="myCanvas" Grid.Column="0" Background="#FFB6B0B0" HorizontalAlignment="Left" Width="271" >
-                <TextBlock Canvas.Left="12" TextWrapping="Wrap" Text="Categories" Canvas.Top="19" Foreground="Black" FontSize="24" FontWeight="Bold"/>
+                <TextBlock Canvas.Left="12" 
+                           TextWrapping="Wrap" 
+                           Text="Categories" 
+                           Canvas.Top="19" 
+                           Foreground="Black" 
+                           FontSize="24" 
+                           FontWeight="Bold"/>
 
                 <ListView x:Name="CategoryList" 
                           ItemTemplate="{StaticResource ArtifactCategoryTemplate}" 
@@ -109,8 +112,21 @@
                     </ListView.ItemsPanel>
 
                 </ListView>
-                 <TextBlock Canvas.Left="6" TextWrapping="Wrap" Text="Upcoming Meetings" Canvas.Top="419" Foreground="Black" FontSize="24" FontWeight="Bold"/>
-                <StackPanel Height="175" Canvas.Left="24" Canvas.Top="469" Width="236">
+                 <TextBlock 
+                     Canvas.Left="6" 
+                     TextWrapping="Wrap" 
+                     Text="Upcoming Meetings" 
+                     Canvas.Top="419" 
+                     Foreground="Black" 
+                     FontSize="24" 
+                     FontWeight="Bold"
+                     VerticalAlignment="Bottom"/>
+                <StackPanel 
+                    Height="175" 
+                    Canvas.Left="24" 
+                    Canvas.Top="469" 
+                    Width="236"
+                    VerticalAlignment="Bottom">
                     <TextBlock Canvas.Left="6" TextWrapping="Wrap" Text="USAF, 4/4/91" Canvas.Top="419" Foreground="Black" FontSize="24" Margin="0,0,0,10" />
                     <TextBlock Canvas.Left="6" TextWrapping="Wrap" Text="Delta, 8/26/91" Canvas.Top="419" Foreground="Black" FontSize="24" />
                 </StackPanel>
@@ -123,7 +139,7 @@
                             Grid.Column="1" 
                             ItemTemplate="{StaticResource ArtifactTemplate}" 
                             Height="667" 
-                            VerticalAlignment="Bottom"
+                            VerticalAlignment="Top"
                             SelectionMode="Multiple">
                 <GridView.ItemsPanel>
                     <ItemsPanelTemplate>
