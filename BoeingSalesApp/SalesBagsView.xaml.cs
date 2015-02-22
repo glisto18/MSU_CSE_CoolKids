@@ -63,19 +63,14 @@ namespace BoeingSalesApp
         {
             newSalesBagButton.Flyout.Hide();
 
-            //
-            // TODO - Push new sales bag to backend
-            //
             SalesBag newBag = new SalesBag();
-            newBag.Name = "C17";
+            newBag.Name = NameInput.Text;
             newBag.DateCreated = DateTime.Now;
             newBag.Active = true;
             await _salesBagRepository.SaveAsync(newBag);
 
-
-            // Redraw gridview
-
-            return;
+            NameInput.Text = "";
+            await FetchSalesBags();
         }
 
         protected async override void OnNavigatedTo(NavigationEventArgs e)

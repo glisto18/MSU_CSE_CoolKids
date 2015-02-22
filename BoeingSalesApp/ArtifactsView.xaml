@@ -43,7 +43,25 @@
                            Margin="10,0,5,10" 
                            Width="{Binding Width, ElementName=myCanvas}"/>
             </StackPanel>
-        </DataTemplate> 
+        </DataTemplate>
+
+        <!-- Flyout for creating a new Category -->
+        <Flyout x:Key="CreateCategoryFlyout" x:Name="myFlyout">
+            <Flyout.FlyoutPresenterStyle>
+                <Style TargetType="FlyoutPresenter">
+                    <Setter Property="Background" Value="Black"/>
+                    <Setter Property="MinHeight" Value="300"/>
+                    <Setter Property="MinWidth" Value="300"/>
+                </Style>
+            </Flyout.FlyoutPresenterStyle>
+
+            <StackPanel>
+                <TextBlock Text="Enter name for Category:"/>
+                <TextBox x:Name="categoryInput" PlaceholderText="Category ..." />
+                <Button Content="Create" HorizontalAlignment="Right"
+                        FontSize="16" Margin="0,10,0,0" Click="onCreateCategory"/>
+            </StackPanel>
+        </Flyout>
     </Page.Resources>
 
     <!--
@@ -60,6 +78,7 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
+        <!-- Header containing Back Button, title, and upload icon -->
         <StackPanel Grid.Row="0" Orientation="Horizontal">
             <Button x:Name="backButton" Command="{Binding NavigationHelper.GoBackCommand, ElementName=pageRoot}"
                         Style="{StaticResource NavigationBackButtonNormalStyle}"
@@ -78,6 +97,7 @@
             </Button>
         </StackPanel>
         
+        <!-- Grid for lower portion of UI containing Grid View and gray panel -->
         <Grid Background="#FFEAE5E5" Margin="9,100,-9,1" Grid.RowSpan="2">
             <Grid.RowDefinitions>
                 <RowDefinition />
@@ -87,33 +107,36 @@
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
 
-            <Canvas x:Name="myCanvas" Grid.Column="0" Background="#FFB6B0B0" HorizontalAlignment="Left" Width="271" >
-                <TextBlock Canvas.Left="12" 
-                           TextWrapping="Wrap" 
+            <!-- Gray panel -->
+            <StackPanel x:Name="myPanel" Grid.Column="0" Background="#FFB6B0B0" HorizontalAlignment="Left" Width="271" >
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Canvas.Left="12" 
+                           Margin="10,0,0,0" 
                            Text="Categories" 
-                           Canvas.Top="19" 
                            Foreground="Black" 
                            FontSize="24" 
-                           FontWeight="Bold"/>
+                           FontWeight="Bold" 
+                           VerticalAlignment="Center"/>
 
-                <ListView x:Name="CategoryList" 
+                    <Button x:Name="CreateCategoryButton" BorderBrush="{x:Null}" 
+                            VerticalAlignment="Center" 
+                            Tapped="showFlyout"
+                            FlyoutBase.AttachedFlyout="{StaticResource CreateCategoryFlyout}">
+                        <Image Source="Assets/Plus_Black.png" Height="30"/>
+                    </Button>
+                </StackPanel>
+                
+    
+                <ListView x:Name="CategoryList" VerticalContentAlignment="Center"
                           ItemTemplate="{StaticResource ArtifactCategoryTemplate}" 
                           HorizontalAlignment="Left" 
-                          Height="270" 
                           VerticalAlignment="Top"  
-                          Width="{Binding Width, ElementName=myCanvas}" 
-                          Foreground="#FFEE1C1C" 
-                          Canvas.Left="1" 
-                          Canvas.Top="60" 
-                          >
-                    <ListView.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <ItemsWrapGrid MaximumRowsOrColumns="4"/>
-                        </ItemsPanelTemplate>
-                    </ListView.ItemsPanel>
-
+                          Width="{Binding Width, ElementName=myPanel}"
+                          Height="{Binding Height, ElementName=myPanel}"
+                          Foreground="Black" >
+                  
                 </ListView>
-                 <TextBlock 
+                 <!--<TextBlock 
                      Canvas.Left="6" 
                      TextWrapping="Wrap" 
                      Text="Upcoming Meetings" 
@@ -130,8 +153,8 @@
                     VerticalAlignment="Bottom">
                     <TextBlock Canvas.Left="6" TextWrapping="Wrap" Text="USAF, 4/4/91" Canvas.Top="419" Foreground="Black" FontSize="24" Margin="0,0,0,10" />
                     <TextBlock Canvas.Left="6" TextWrapping="Wrap" Text="Delta, 8/26/91" Canvas.Top="419" Foreground="Black" FontSize="24" />
-                </StackPanel>
-            </Canvas>
+                </StackPanel>-->
+            </StackPanel>
 
 
             <!-- This is the area with white background to the right of the gray pane -->

@@ -21,9 +21,6 @@
             IsSourceGrouped="true"
             ItemsPath="TopItems"/>
 
-        <!-- TODO: Delete this line if the key AppName is declared in App.xaml -->
-        <x:String x:Key="AppName">My Application</x:String>
-
         <DataTemplate x:Key="SalesBagTemplate">
             <StackPanel Orientation="Horizontal" Width="250" Height="125">
                 <Border Width="90" Height="100" Margin="10">
@@ -72,7 +69,7 @@
 
             <StackPanel>
                 <TextBlock Text="Enter name for Sales Bag:"/>
-                <TextBox PlaceholderText="SalesBagName" />
+                <TextBox x:Name="NameInput" PlaceholderText=" Sales Bag Name..." />
                 <Button Content="Create" HorizontalAlignment="Right"
                         FontSize="16" Margin="0,10,0,0" Click="onCreate"/>
             </StackPanel>

@@ -5,7 +5,8 @@
     xmlns:local="using:BoeingSalesApp">
 
     <Application.Resources>
-        <ResourceDictionary />
+        <ResourceDictionary>
+            <SolidColorBrush x:Key="Brush_BoeingBlue" x:Name="Brush_BoeingBlue"/>
+        </ResourceDictionary>
     </Application.Resources>
-    
 </Application>

@@ -67,6 +67,16 @@ namespace BoeingSalesApp
 
             _artifactsRepository = new ArtifactRepository();
             _categoryRepository = new CategoryRepository();
+
+            CreateCategoryButton.Flyout = myFlyout;
+        }
+
+        /// <summary>
+        /// Called when user clicks "Create category" icon 
+        /// </summary>
+        private void showFlyout(object sender, RoutedEventArgs e)
+        {
+            FlyoutBase.ShowAttachedFlyout((FrameworkElement)sender);
         }
 
         /// <summary>
@@ -108,9 +118,18 @@ namespace BoeingSalesApp
             // TODO: Assign a collection of bindable groups to this.DefaultViewModel["Groups"]
         }
 
-        private void onCategoryTapped(object sender, RoutedEventArgs e)
+        private async void onCreateCategory(object sender, RoutedEventArgs e)
         {
-            Border border = (Border)this.FindName("allBorder");
+            CreateCategoryButton.Flyout.Hide();
+            
+            Category category = new Category();
+            category.Name = categoryInput.Text;
+            category.Active = true;
+            await _categoryRepository.SaveAsync(category);
+
+            categoryInput.Text = "";
+
+            await FetchCategories();
         }
         
 #region NavigationHelper registration
