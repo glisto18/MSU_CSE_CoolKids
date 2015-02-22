@@ -35,10 +35,23 @@ namespace BoeingSalesApp
             this.Suspending += OnSuspending;
         }
 
+        private async Task InitDb()
+        {
+            var seeder = new BoeingSalesApp.Utility.FakeSeeder();
+            await seeder.InitDb();
+        }
+
+        private async Task CheckForNewArtifacts()
+        {
+            var fileStore = new Utility.FileStore();
+            await fileStore.CheckForNewArtifacts();
+        }
+
         private async Task populate()
         {
              // Populate database with fake values
             var seeder = new BoeingSalesApp.Utility.FakeSeeder();
+            
             //await seeder.FakeSeedArtifacts();
             //await seeder.FakeSeedCategories();
         }
@@ -50,7 +63,9 @@ namespace BoeingSalesApp
         /// <param name="e">Details about the launch request and process.</param>
         protected async override void OnLaunched(LaunchActivatedEventArgs e)
         {
+            await InitDb();
 
+           // await CheckForNewArtifacts();
 #if DEBUG
             if (System.Diagnostics.Debugger.IsAttached)
             {

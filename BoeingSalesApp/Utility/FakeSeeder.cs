@@ -20,7 +20,7 @@ namespace BoeingSalesApp.Utility
             
         }
 
-        private async Task InitDb()
+        public async Task InitDb()
         {
             _db = new Database(TempSettings.DbPath);
             await _db.Initialize();
