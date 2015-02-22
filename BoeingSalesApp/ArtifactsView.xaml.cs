@@ -145,6 +145,11 @@ namespace BoeingSalesApp
 
         protected async override void OnNavigatedTo(NavigationEventArgs e)
         {
+            // added ahl - check for new artifacts to upload
+            var fileStore = new Utility.FileStore();
+            await fileStore.CheckForNewArtifacts();
+
+
             navigationHelper.OnNavigatedTo(e);
             await FetchCategories();
             await FetchArtifacts();
