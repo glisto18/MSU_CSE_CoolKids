@@ -12,8 +12,8 @@
             <Setter Property="Margin" Value="30,30,30,30" />
             <Setter Property="Height" Value="200" />
             <Setter Property="Width" Value="300" />
-            <Setter Property="BorderBrush" Value="#005DAB" />
-            <Setter Property="BorderThickness" Value="10" /> 
+            <Setter Property="BorderBrush" Value="{StaticResource Brush_BoeingBlue}"/>
+            <Setter Property="BorderThickness" Value="10" />
         </Style>
         <Style x:Key="MyImgStyle" TargetType="Image">
             <Setter Property="Height" Value="100" />
@@ -27,17 +27,17 @@
     
     <Grid Background="White">
         <Grid.RowDefinitions>
-            <RowDefinition Height="*" />
-            <RowDefinition />
-            <RowDefinition />
+            <RowDefinition Height="109*" />
+            <RowDefinition Height="403*" />
+            <RowDefinition Height="256*" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         
-        <Image Grid.Row="0" Source="Assets/BoeingLogo.png" Height="97" Width="358" Margin="40,20,0,0" VerticalAlignment="Top" HorizontalAlignment="Left"/>
+        <Image Grid.Row="0" Source="Assets/BoeingLogo.png" Height="97" Width="358" Margin="40,20,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Grid.RowSpan="2"/>
 
-        <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center">
+        <StackPanel x:Name="stackPanel" Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0" VerticalAlignment="Center">
             <StackPanel.Resources>
                 <Style TargetType="Button" BasedOn="{StaticResource MyButtonStyle}" />
                 <Style TargetType="Image" BasedOn="{StaticResource MyImgStyle}" />
@@ -46,20 +46,22 @@
               
 
             <!-- Artifacts button -->
+            <!-- Meetings button -->
+            <!-- Artifacts button -->
             <Button x:Name="ArtifactsButton" Tapped="onArtifacts">
-                <StackPanel Orientation="Vertical">
-                    <Image Source="Assets/Artifacts.png" />
-                    <TextBlock Text="Artifacts"/>
-                </StackPanel>
+            	<StackPanel Orientation="Vertical">
+            		<Image Source="Assets/Artifacts.png" />
+            		<TextBlock Text="Artifacts"/>
+            	</StackPanel>
             </Button>
         
         
             <!-- Meetings button -->
             <Button x:Name="MeetingsButton" Tapped="onMeetings">
-                <StackPanel Orientation="Vertical">
-                    <Image Source="Assets/Meetings.png" />
-                    <TextBlock Text="Meetings" />
-                </StackPanel>
+            	<StackPanel Orientation="Vertical">
+            		<Image Source="Assets/Meetings.png" />
+            		<TextBlock Text="Meetings" />
+            	</StackPanel>
             </Button>
             
             <!--SalesBag button -->
@@ -70,11 +72,5 @@
                 </StackPanel>
             </Button>
         </StackPanel>
-        
-        <!-- Links for testing backend 
-        <StackPanel Grid.Row="2" VerticalAlignment="Bottom">
-            <HyperlinkButton Content="Click for DBTest page" Click="DBTestLink_Click" />
-            <HyperlinkButton Content="Click for SalesBagView" Click="SalesBagLink_Click" />
-        </StackPanel> -->
     </Grid>
 </Page>

@@ -69,7 +69,8 @@ namespace BoeingSalesApp
 #if DEBUG
             if (System.Diagnostics.Debugger.IsAttached)
             {
-                this.DebugSettings.EnableFrameRateCounter = true;
+                // This is commented out to hide the debug counters (small black boxes with white numbers)
+                //this.DebugSettings.EnableFrameRateCounter = true;
             }
 #endif
 

@@ -41,7 +41,9 @@
                            Foreground="#FF060606" 
                            FontSize="24" 
                            Margin="10,0,5,10" 
-                           Width="{Binding Width, ElementName=myCanvas}"/>
+                           Width="{Binding Width, ElementName=myCanvas}"
+                           SelectionHighlightColor="White"
+                           />
             </StackPanel>
         </DataTemplate>
 
@@ -62,6 +64,45 @@
                         FontSize="16" Margin="0,10,0,0" Click="onCreateCategory"/>
             </StackPanel>
         </Flyout>
+        <Style x:Key="Style_CategoryListViewItemSelected" TargetType="ListViewItem">
+        	<Setter Property="FontFamily" Value="{ThemeResource ContentControlThemeFontFamily}"/>
+            <Setter Property="FontSize" Value="{ThemeResource ControlContentThemeFontSize}"/>
+            <Setter Property="Background" Value="Transparent"/>
+        	<Setter Property="TabNavigation" Value="Local"/>
+        	<Setter Property="IsHoldingEnabled" Value="True"/>
+        	<Setter Property="Margin" Value="0,0,18,2"/>
+        	<Setter Property="HorizontalContentAlignment" Value="Left"/>
+        	<Setter Property="VerticalContentAlignment" Value="Top"/>
+        	<Setter Property="Template">
+        		<Setter.Value>
+        			<ControlTemplate TargetType="ListViewItem">
+        				<ListViewItemPresenter x:Name="listViewItemPresenter" CheckHintBrush="{ThemeResource ListViewItemCheckHintThemeBrush}" CheckBrush="{ThemeResource ListViewItemCheckThemeBrush}" ContentMargin="4" ContentTransitions="{TemplateBinding ContentTransitions}" CheckSelectingBrush="{ThemeResource ListViewItemCheckSelectingThemeBrush}" DragForeground="{ThemeResource ListViewItemDragForegroundThemeBrush}" DragOpacity="{ThemeResource ListViewItemDragThemeOpacity}" DragBackground="{ThemeResource ListViewItemDragBackgroundThemeBrush}" DisabledOpacity="{ThemeResource ListViewItemDisabledThemeOpacity}" FocusBorderBrush="{ThemeResource ListViewItemFocusBorderThemeBrush}" HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}" Padding="{TemplateBinding Padding}" PointerOverBackgroundMargin="1" PlaceholderBackground="{ThemeResource ListViewItemPlaceholderBackgroundThemeBrush}" PointerOverBackground="{ThemeResource ListViewItemPointerOverBackgroundThemeBrush}" ReorderHintOffset="{ThemeResource ListViewItemReorderHintThemeOffset}" SelectedPointerOverBorderBrush="{ThemeResource ListViewItemSelectedPointerOverBorderThemeBrush}" SelectionCheckMarkVisualEnabled="False" SelectedForeground="{ThemeResource ListViewItemSelectedForegroundThemeBrush}" SelectedPointerOverBackground="{ThemeResource ListViewItemSelectedPointerOverBackgroundThemeBrush}" SelectedBorderThickness="{ThemeResource ListViewItemCompactSelectedBorderThemeThickness}" SelectedBackground="{ThemeResource ListViewItemSelectedBackgroundThemeBrush}" VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}">
+        					<VisualStateManager.VisualStateGroups>
+        						<VisualStateGroup x:Name="CommonStates">
+        							<VisualState x:Name="Normal"/>
+        							<VisualState x:Name="PointerOver"/>
+        							<VisualState x:Name="Pressed">
+        								<Storyboard>
+        									<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(ListViewItemPresenter.SelectedBackground)" Storyboard.TargetName="listViewItemPresenter">
+        										<DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource Brush_BoeingBlue}"/>
+        									</ObjectAnimationUsingKeyFrames>
+        									<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(ListViewItemPresenter.SelectedPointerOverBackground)" Storyboard.TargetName="listViewItemPresenter">
+        										<DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource Brush_BoeingBlue}"/>
+        									</ObjectAnimationUsingKeyFrames>
+        									<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(ListViewItemPresenter.SelectedPointerOverBorderBrush)" Storyboard.TargetName="listViewItemPresenter">
+        										<DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource Brush_BoeingBlue}"/>
+        									</ObjectAnimationUsingKeyFrames>
+        								</Storyboard>
+        							</VisualState>
+        							<VisualState x:Name="PointerOverPressed"/>
+        							<VisualState x:Name="Disabled"/>
+        						</VisualStateGroup>
+        					</VisualStateManager.VisualStateGroups>
+        				</ListViewItemPresenter>
+        			</ControlTemplate>
+        		</Setter.Value>
+        	</Setter>
+        </Style>
     </Page.Resources>
 
     <!--
@@ -110,13 +151,15 @@
             <!-- Gray panel -->
             <StackPanel x:Name="myPanel" Grid.Column="0" Background="#FFB6B0B0" HorizontalAlignment="Left" Width="271" >
                 <StackPanel Orientation="Horizontal">
-                    <TextBlock Canvas.Left="12" 
-                           Margin="10,0,0,0" 
+                    <TextBlock 
+                           Width="{Binding Width, ElementName=myPanel}"
+                           Padding="10,0,0,0"
                            Text="Categories" 
                            Foreground="Black" 
                            FontSize="24" 
                            FontWeight="Bold" 
-                           VerticalAlignment="Center"/>
+                           VerticalAlignment="Center"
+                           />
 
                     <Button x:Name="CreateCategoryButton" BorderBrush="{x:Null}" 
                             VerticalAlignment="Center" 
@@ -127,33 +170,18 @@
                 </StackPanel>
                 
     
+                <!-- List of category items -->
                 <ListView x:Name="CategoryList" VerticalContentAlignment="Center"
                           ItemTemplate="{StaticResource ArtifactCategoryTemplate}" 
-                          HorizontalAlignment="Left" 
+                          HorizontalAlignment="Left"
+                          HorizontalContentAlignment="Center"
                           VerticalAlignment="Top"  
                           Width="{Binding Width, ElementName=myPanel}"
                           Height="{Binding Height, ElementName=myPanel}"
-                          Foreground="Black" >
-                  
+                          Foreground="Black" 
+                          ItemContainerStyle="{StaticResource Style_CategoryListViewItemSelected}" 
+                          CanReorderItems="True" >
                 </ListView>
-                 <!--<TextBlock 
-                     Canvas.Left="6" 
-                     TextWrapping="Wrap" 
-                     Text="Upcoming Meetings" 
-                     Canvas.Top="419" 
-                     Foreground="Black" 
-                     FontSize="24" 
-                     FontWeight="Bold"
-                     VerticalAlignment="Bottom"/>
-                <StackPanel 
-                    Height="175" 
-                    Canvas.Left="24" 
-                    Canvas.Top="469" 
-                    Width="236"
-                    VerticalAlignment="Bottom">
-                    <TextBlock Canvas.Left="6" TextWrapping="Wrap" Text="USAF, 4/4/91" Canvas.Top="419" Foreground="Black" FontSize="24" Margin="0,0,0,10" />
-                    <TextBlock Canvas.Left="6" TextWrapping="Wrap" Text="Delta, 8/26/91" Canvas.Top="419" Foreground="Black" FontSize="24" />
-                </StackPanel>-->
             </StackPanel>
 
 
