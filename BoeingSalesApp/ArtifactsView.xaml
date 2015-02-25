@@ -22,7 +22,7 @@
             IsSourceGrouped="true"
             ItemsPath="TopItems"/>
 
-        <DataTemplate x:Key="ArtifactTemplate"  >
+        <DataTemplate x:Key="ArtifactTemplate">
             <StackPanel Orientation="Horizontal" Width="250" Height="125">
                 <Border Width="90" Height="100" Margin="10">
                     <Image Source="Assets/Artifact.png" Width="90" Height="120" />
@@ -42,7 +42,7 @@
                            FontSize="24" 
                            Margin="10,0,5,10" 
                            Width="{Binding Width, ElementName=myCanvas}"
-                           SelectionHighlightColor="White"
+                           Drop="TextBlock_Drop" AllowDrop="True"
                            />
             </StackPanel>
         </DataTemplate>
@@ -64,7 +64,7 @@
                         FontSize="16" Margin="0,10,0,0" Click="onCreateCategory"/>
             </StackPanel>
         </Flyout>
- 
+
     </Page.Resources>
 
     <!--
@@ -99,7 +99,7 @@
                 <Image Source="Assets/Upload.png"></Image>
             </Button>
         </StackPanel>
-        
+
         <!-- Grid for lower portion of UI containing Grid View and gray panel -->
         <Grid Background="#FFEAE5E5" Margin="9,100,-9,1" Grid.RowSpan="2">
             <Grid.RowDefinitions>
@@ -111,7 +111,7 @@
             </Grid.ColumnDefinitions>
 
             <!-- Gray panel on the left side-->
-            <StackPanel x:Name="myPanel" Grid.Column="0" Background="#FFB6B0B0" HorizontalAlignment="Left" Width="271" >
+            <StackPanel x:Name="myPanel" Grid.Column="0" Background="#FFB6B0B0" HorizontalAlignment="Left" Width="271">
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
                     <TextBlock 
                            Style="{StaticResource TitleTextBlockStyle}"
@@ -120,7 +120,7 @@
                            Foreground="Black" 
                            FontSize="26" 
                            FontWeight="Bold" 
-                           VerticalAlignment="Center" />
+                           VerticalAlignment="Center"/>
 
                     <Button x:Name="CreateCategoryButton" BorderBrush="{x:Null}" 
                             VerticalAlignment="Center" 
@@ -129,8 +129,8 @@
                         <Image Source="Assets/Plus_Black.png" Height="30"/>
                     </Button>
                 </StackPanel>
-                
-    
+
+
                 <!-- List of category items -->
                 <ListView x:Name="CategoryList" VerticalContentAlignment="Center"
                           ItemTemplate="{StaticResource ArtifactCategoryTemplate}" 
@@ -139,7 +139,7 @@
                           VerticalAlignment="Top"  
                           Width="{Binding Width, ElementName=myPanel}"
                           Height="{Binding Height, ElementName=myPanel}"
-                          Foreground="Black">
+                          Foreground="Black" SelectionMode="None">
                 </ListView>
             </StackPanel>
 
@@ -150,7 +150,7 @@
                             ItemTemplate="{StaticResource ArtifactTemplate}" 
                             Height="{Binding}"
                             VerticalAlignment="Top"
-                            SelectionMode="Multiple">
+                            SelectionMode="Multiple" CanDragItems="True">
                 <GridView.ItemsPanel>
                     <ItemsPanelTemplate>
                         <ItemsWrapGrid MaximumRowsOrColumns="7"/>

@@ -161,5 +161,18 @@ namespace BoeingSalesApp
         }
 
         #endregion
+
+        private async void TextBlock_Drop(object sender, DragEventArgs e)
+        {
+            var selectedArtifacts = this.ArtifactsGridView.SelectedItems;
+            TextBlock destTextblock = (TextBlock)sender;
+            Category roo = (Category)destTextblock.DataContext;
+
+            foreach(Artifact i in selectedArtifacts)
+            {
+                Artifact_CategoryRepository bar = new Artifact_CategoryRepository();
+                await bar.AddRelationship(i, roo);
+            }
+        }
     }
 }
