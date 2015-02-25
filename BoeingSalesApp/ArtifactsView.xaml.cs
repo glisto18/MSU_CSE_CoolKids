@@ -132,6 +132,9 @@ namespace BoeingSalesApp
             await FetchCategories();
         }
         
+        
+
+        
 #region NavigationHelper registration
 
         /// The methods provided in this section are simply used to allow
@@ -147,7 +150,19 @@ namespace BoeingSalesApp
         {
             // added ahl - check for new artifacts to upload
             var fileStore = new Utility.FileStore();
-            await fileStore.CheckForNewArtifacts();
+            var newArtifacts = await fileStore.CheckForNewArtifacts();
+            if (newArtifacts.Count > 0)
+            {
+                // added ahl 2/25
+                var msg = new Windows.UI.Popups.MessageDialog("New artifacts found.");
+                msg.Commands.Add(new Windows.UI.Popups.UICommand(
+                    "Edit New Artifacts.", null
+                    ));
+                msg.Commands.Add(new Windows.UI.Popups.UICommand(
+                    "Use Defualt Artifacts Attributes.", null
+                    ));
+                await msg.ShowAsync();
+            }
 
 
             navigationHelper.OnNavigatedTo(e);
@@ -161,6 +176,17 @@ namespace BoeingSalesApp
         }
 
         #endregion
+
+        private async void Artifact_DoubleTapped(object sender, DoubleTappedRoutedEventArgs e)
+        {
+            var artifactPanel = (StackPanel)sender;
+            var artifactContext = (Artifact)artifactPanel.DataContext;
+            var fileStore = new BoeingSalesApp.Utility.FileStore();
+            var artifact = await fileStore.GetArtifact(artifactContext.FileName);
+
+            await Windows.System.Launcher.LaunchFileAsync(artifact);
+        }
+
 
         private async void TextBlock_Drop(object sender, DragEventArgs e)
         {

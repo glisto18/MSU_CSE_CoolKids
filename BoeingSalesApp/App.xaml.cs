@@ -39,8 +39,6 @@ namespace BoeingSalesApp
         {
             var seeder = new BoeingSalesApp.Utility.FakeSeeder();
             await seeder.InitDb();
-
-            await populate();
         }
 
         private async Task CheckForNewArtifacts()
@@ -65,7 +63,7 @@ namespace BoeingSalesApp
         /// <param name="e">Details about the launch request and process.</param>
         protected async override void OnLaunched(LaunchActivatedEventArgs e)
         {
-            //await InitDb();
+            await InitDb();
 
             //await CheckForNewArtifacts();
 #if DEBUG

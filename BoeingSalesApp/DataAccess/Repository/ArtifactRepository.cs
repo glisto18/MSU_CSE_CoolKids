@@ -24,9 +24,9 @@ namespace BoeingSalesApp.DataAccess.Repository
             _database = database.GetAsyncConnection();
         }
 
-        public async Task SaveAsync(Artifact artifact)
+        public async Task<int> SaveAsync(Artifact artifact)
         {
-            await _database.InsertAsync(artifact);
+            return await _database.InsertAsync(artifact);
         }
 
         public async Task DeleteAsync(Artifact artifact)
@@ -38,6 +38,11 @@ namespace BoeingSalesApp.DataAccess.Repository
         {
             var artifacts = await _database.Table<Artifact>().ToListAsync();
             return artifacts;
+        }
+
+        public async Task<Artifact> Get(int artifactId)
+        {
+            return await _database.GetAsync<Artifact>(artifactId);
         }
 
         public async Task<Artifact> Get(Guid artifactId)
