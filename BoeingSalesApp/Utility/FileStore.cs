@@ -38,7 +38,6 @@ namespace BoeingSalesApp.Utility
         /// </summary>
         public async Task CheckForNewArtifacts()
         {
-
             var folderToken = await _tokenRepo.Get();
             if (folderToken != null)
             {
@@ -63,9 +62,11 @@ namespace BoeingSalesApp.Utility
             {
                 // folder has already been selected, need to get folder from app storage
                 _artifactFolder = await StorageApplicationPermissions.MostRecentlyUsedList.GetFolderAsync(_token);
-                var folderArtifacts = await _artifactFolder.GetFilesAsync();
-                await CheckForNewArtifacts(folderArtifacts);
             }
+
+            // check the folder for new artifacts
+            var folderArtifacts = await _artifactFolder.GetFilesAsync();
+            await CheckForNewArtifacts(folderArtifacts);
 
         }
 
