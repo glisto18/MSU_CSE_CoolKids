@@ -108,6 +108,9 @@
     <Compile Include="ArtifactsView.xaml.cs">
       <DependentUpon>ArtifactsView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="BagCreationView.xaml.cs">
+      <DependentUpon>BagCreationView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="DataAccess\Entities\FolderToken.cs" />
     <Compile Include="DataAccess\Repository\FolderTokenRepository.cs" />
     <Compile Include="DataAccess\Repository\IFolderTokenRepository.cs" />
@@ -158,9 +161,6 @@
       <DependentUpon>MeetingsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SalesBagView.xaml.cs">
-      <DependentUpon>SalesBagView.xaml</DependentUpon>
-    </Compile>
     <Compile Include="SQLite.cs" />
     <Compile Include="SQLiteAsync.cs" />
     <Compile Include="Utility\FakeSeeder.cs" />
@@ -198,6 +198,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="BagCreationView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="SalesBagsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -215,10 +219,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="MeetingsView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="SalesBagView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

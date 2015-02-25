@@ -31,7 +31,7 @@ namespace BoeingSalesApp
         public SalesBagsView()
         {
             this.InitializeComponent();
-            newSalesBagButton.Flyout = myFlyout;
+            //newSalesBagButton.Flyout = myFlyout;
 
             _salesBagRepository = new SalesBagRepository();
         }
@@ -47,30 +47,12 @@ namespace BoeingSalesApp
             SalesBagsGridView.ItemsSource = bags;
         }
 
-
-        /// <summary>
-        /// Called when user clicks "Plus Sign" icon 
-        /// </summary>
-        private void showFlyout(object sender, RoutedEventArgs e)
-        {
-            FlyoutBase.ShowAttachedFlyout((FrameworkElement) sender);
-        }
-
         /// <summary>
         /// Called when user clicks "Create" button in the flyout 
         /// </summary>
-        private async void onCreate(object sender, RoutedEventArgs e)
+        private void onCreate(object sender, RoutedEventArgs e)
         {
-            newSalesBagButton.Flyout.Hide();
-
-            SalesBag newBag = new SalesBag();
-            newBag.Name = NameInput.Text;
-            newBag.DateCreated = DateTime.Now;
-            newBag.Active = true;
-            await _salesBagRepository.SaveAsync(newBag);
-
-            NameInput.Text = "";
-            await FetchSalesBags();
+            this.Frame.Navigate(typeof(BoeingSalesApp.BagCreationView));
         }
 
         protected async override void OnNavigatedTo(NavigationEventArgs e)
