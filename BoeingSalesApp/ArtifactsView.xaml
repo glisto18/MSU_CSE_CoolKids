@@ -179,8 +179,8 @@
                           Width="{Binding Width, ElementName=myPanel}"
                           Height="{Binding Height, ElementName=myPanel}"
                           Foreground="Black" 
-                          ItemContainerStyle="{StaticResource Style_CategoryListViewItemSelected}" 
-                          CanReorderItems="True" >
+                          ItemContainerStyle="{StaticResource Style_CategoryListViewItemSelected}">
+                	<ListViewItem Content="ListViewItem" Margin="0" Style="{StaticResource Style_CategoryListViewItemSelected}" Foreground="White"/>
                 </ListView>
             </StackPanel>
 

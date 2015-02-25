@@ -39,6 +39,8 @@ namespace BoeingSalesApp
         {
             var seeder = new BoeingSalesApp.Utility.FakeSeeder();
             await seeder.InitDb();
+
+            await populate();
         }
 
         private async Task CheckForNewArtifacts()
@@ -52,8 +54,8 @@ namespace BoeingSalesApp
              // Populate database with fake values
             var seeder = new BoeingSalesApp.Utility.FakeSeeder();
             
-            //await seeder.FakeSeedArtifacts();
-            //await seeder.FakeSeedCategories();
+            await seeder.FakeSeedArtifacts();
+            await seeder.FakeSeedCategories();
         }
 
         /// <summary>
@@ -63,13 +65,13 @@ namespace BoeingSalesApp
         /// <param name="e">Details about the launch request and process.</param>
         protected async override void OnLaunched(LaunchActivatedEventArgs e)
         {
-            await InitDb();
+            //await InitDb();
 
-           // await CheckForNewArtifacts();
+            //await CheckForNewArtifacts();
 #if DEBUG
             if (System.Diagnostics.Debugger.IsAttached)
             {
-                // This is commented out to hide the debug counters (small black boxes with white numbers)
+                // This is commented out to hide the debug counters in the UI(small black boxes with white numbers)
                 //this.DebugSettings.EnableFrameRateCounter = true;
             }
 #endif
