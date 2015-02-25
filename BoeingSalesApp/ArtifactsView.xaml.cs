@@ -147,7 +147,19 @@ namespace BoeingSalesApp
         {
             // added ahl - check for new artifacts to upload
             var fileStore = new Utility.FileStore();
-            await fileStore.CheckForNewArtifacts();
+            var newArtifacts = await fileStore.CheckForNewArtifacts();
+            if (newArtifacts.Count > 0)
+            {
+                // added ahl 2/25
+                var msg = new Windows.UI.Popups.MessageDialog("New artifacts found.");
+                msg.Commands.Add(new Windows.UI.Popups.UICommand(
+                    "Edit New Artifacts.", null
+                    ));
+                msg.Commands.Add(new Windows.UI.Popups.UICommand(
+                    "Use Defualt Artifacts Attributes.", null
+                    ));
+                await msg.ShowAsync();
+            }
 
 
             navigationHelper.OnNavigatedTo(e);

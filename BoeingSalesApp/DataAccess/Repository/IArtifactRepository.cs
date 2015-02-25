@@ -9,11 +9,13 @@ namespace BoeingSalesApp.DataAccess.Repository
 {
     interface IArtifactRepository
     {
-        Task SaveAsync(Artifact artifact);
+        Task<int> SaveAsync(Artifact artifact);
 
         Task DeleteAsync(Artifact artifact);
 
         Task<List<Artifact>> GetAllAsync();
+
+        Task<Artifact> Get(int artifactId);
 
         Task<Artifact> Get(Guid artifactId);
 
