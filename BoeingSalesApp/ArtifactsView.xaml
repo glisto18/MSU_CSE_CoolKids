@@ -23,11 +23,11 @@
             ItemsPath="TopItems"/>
 
         <DataTemplate x:Key="ArtifactTemplate">
-            <StackPanel Orientation="Horizontal" Width="250" Height="125">
+            <StackPanel Orientation="Horizontal" Width="250" Height="125" DoubleTapped="Artifact_DoubleTapped">
                 <Border Width="90" Height="100" Margin="10">
                     <Image Source="Assets/Artifact.png" Width="90" Height="120" />
                 </Border>
-                <StackPanel Orientation="Vertical" VerticalAlignment="Center" DoubleTapped="Artifact_DoubleTapped">
+                <StackPanel Orientation="Vertical" VerticalAlignment="Center">
                     <TextBlock Text="{Binding Title}"  Margin="5,0,0,0" Width="170" Height="20" TextTrimming="WordEllipsis" Foreground="Black" />
                     <TextBlock Text="{Binding FileType}" Margin="5,0,0,0" Width="170" Height="20" TextTrimming="WordEllipsis" Foreground="Black"/>
                 </StackPanel>
