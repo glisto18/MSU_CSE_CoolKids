@@ -103,18 +103,17 @@
                            IsHitTestVisible="false" 
                            TextWrapping="NoWrap" 
                            VerticalAlignment="Center" />
-            <Button x:Name="newSalesBagButton"
+            <HyperlinkButton x:Name="newSalesBagButton"
                         Grid.Column="2"
                         Height="80" 
                         Width="80" 
                         Margin="50,0,0,0"
                         HorizontalAlignment="Center" 
                         BorderBrush="{x:Null}"
-                        Tapped="showFlyout"
-                        FlyoutBase.AttachedFlyout="{StaticResource CreateFlyout}">
+                        Click="onCreate">
 
                 <Image Source="Assets/Plus.png"></Image>
-            </Button>
+            </HyperlinkButton>
         </StackPanel>
 
         <GridView Grid.Row="1" x:Name="SalesBagsGridView" 

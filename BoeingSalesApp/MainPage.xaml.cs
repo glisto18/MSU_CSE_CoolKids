@@ -58,7 +58,7 @@ namespace BoeingSalesApp
 
         private void SalesBagLink_Click(object sender, RoutedEventArgs e)
         {
-            Frame.Navigate(typeof(SalesBagView));
+            this.Frame.Navigate(typeof(SalesBagsView));
         }
     }
 }
