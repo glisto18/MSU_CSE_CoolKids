@@ -131,6 +131,9 @@ namespace BoeingSalesApp
 
             await FetchCategories();
         }
+
+        
+
         
 #region NavigationHelper registration
 
@@ -173,5 +176,16 @@ namespace BoeingSalesApp
         }
 
         #endregion
+
+        private async void Artifact_DoubleTapped(object sender, DoubleTappedRoutedEventArgs e)
+        {
+            var artifactPanel = (StackPanel)sender;
+            var artifactContext = (Artifact)artifactPanel.DataContext;
+            var fileStore = new BoeingSalesApp.Utility.FileStore();
+            var artifact = await fileStore.GetArtifact(artifactContext.FileName);
+
+            await Windows.System.Launcher.LaunchFileAsync(artifact);
+        }
+
     }
 }

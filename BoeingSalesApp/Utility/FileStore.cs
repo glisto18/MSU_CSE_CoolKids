@@ -9,6 +9,7 @@ using Windows.Storage.Pickers;
 using Windows.Storage.AccessCache;
 using BoeingSalesApp.DataAccess.Repository;
 using BoeingSalesApp.DataAccess.Entities;
+using Windows.Storage;
 
 namespace BoeingSalesApp.Utility
 {
@@ -24,11 +25,13 @@ namespace BoeingSalesApp.Utility
 
         private StorageFolder _artifactFolder;
 
-        public  FileStore()
+        public FileStore()
         {
             _directoryPath = TempSettings.ArtifactsContainingFolderPath;
             _tokenRepo = new FolderTokenRepository();
             _artifactRepo = new ArtifactRepository();
+
+            
 
             //CreateArtifactFolder();
         }
@@ -57,6 +60,11 @@ namespace BoeingSalesApp.Utility
                     // save token for later use
                     await _tokenRepo.Put(_token);
                 }
+                else
+                {
+                    // user cancelled picking a folder, return empty list
+                    return new List<int>();
+                }
             }
             else 
             {
@@ -70,6 +78,23 @@ namespace BoeingSalesApp.Utility
 
 
             
+        }
+
+        public async Task<StorageFile> GetArtifact(string path)
+        {
+            var folderToken = await _tokenRepo.Get();
+            _token = folderToken.Token;
+            if (_token != null)
+            {
+                _artifactFolder = await StorageApplicationPermissions.MostRecentlyUsedList.GetFolderAsync(_token);
+                return await _artifactFolder.GetFileAsync(path);
+            }
+            else
+            {
+                // need to let user pick folder
+                await CheckForNewArtifacts();
+            }
+            return null;
         }
 
         /// <summary>
