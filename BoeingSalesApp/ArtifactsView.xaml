@@ -8,7 +8,7 @@
     xmlns:common="using:BoeingSalesApp.Common"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d" Loaded="pageRoot_Loaded">
+    mc:Ignorable="d" >
 
     <Page.Resources>
         <x:String x:Key="ChevronGlyph">&#xE26B;</x:String>
@@ -23,7 +23,7 @@
             ItemsPath="TopItems"/>
 
         <DataTemplate x:Key="ArtifactTemplate">
-            <StackPanel Orientation="Horizontal" Width="250" Height="125">
+            <StackPanel Orientation="Horizontal" Width="250" Height="125" DoubleTapped="Artifact_DoubleTapped">
                 <Border Width="90" Height="100" Margin="10">
                     <Image Source="Assets/Artifact.png" Width="90" Height="120" />
                 </Border>
@@ -42,7 +42,7 @@
                            FontSize="24" 
                            Margin="10,0,5,10" 
                            Width="{Binding Width, ElementName=myCanvas}"
-                           SelectionHighlightColor="White"
+                           Drop="TextBlock_Drop" AllowDrop="True"
                            />
             </StackPanel>
         </DataTemplate>
@@ -108,12 +108,10 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*" />
-
-                <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
 
             <!-- Gray panel on the left side-->
-            <StackPanel x:Name="myPanel" Grid.Column="0" Background="#FFB6B0B0" HorizontalAlignment="Left" Width="271" >
+            <StackPanel x:Name="myPanel" Grid.Column="0" Background="#FFB6B0B0" HorizontalAlignment="Left" Width="271">
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
                     <TextBlock 
                            Style="{StaticResource TitleTextBlockStyle}"
@@ -122,7 +120,7 @@
                            Foreground="Black" 
                            FontSize="26" 
                            FontWeight="Bold" 
-                           VerticalAlignment="Center" />
+                           VerticalAlignment="Center"/>
 
                     <Button x:Name="CreateCategoryButton" BorderBrush="{x:Null}" 
                             VerticalAlignment="Center" 
@@ -141,24 +139,24 @@
                           VerticalAlignment="Top"  
                           Width="{Binding Width, ElementName=myPanel}"
                           Height="{Binding Height, ElementName=myPanel}"
-                          Foreground="Black" />
+                          Foreground="Black" SelectionMode="Single" SelectionChanged="CategoryList_SelectionChanged">
+                </ListView>
             </StackPanel>
 
             <!-- Grid of artifacts -->
             <GridView x:Name="ArtifactsGridView" 
                     Grid.Column="2" 
-                    ItemTemplate="{StaticResource ArtifactTemplate}" 
-                    Height="{Binding}"
-                    VerticalAlignment="Top"
-                    SelectionMode="Multiple"
-                    Holding="ArtifactsGridView_Holding" >
+                            ItemTemplate="{StaticResource ArtifactTemplate}" 
+                            Height="{Binding}"
+                            VerticalAlignment="Top"
+                            SelectionMode="Multiple" 
+                            CanDragItems="True">
                 <GridView.ItemsPanel>
                     <ItemsPanelTemplate>
                         <ItemsWrapGrid MaximumRowsOrColumns="7"/>
                     </ItemsPanelTemplate>
                 </GridView.ItemsPanel>
             </GridView>
-
         </Grid>
     </Grid>
 </Page>

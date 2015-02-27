@@ -131,7 +131,10 @@ namespace BoeingSalesApp
 
             await FetchCategories();
         }
+        
+        
 
+        
 #region NavigationHelper registration
 
         /// The methods provided in this section are simply used to allow
@@ -147,7 +150,19 @@ namespace BoeingSalesApp
         {
             // added ahl - check for new artifacts to upload
             var fileStore = new Utility.FileStore();
-            await fileStore.CheckForNewArtifacts();
+            var newArtifacts = await fileStore.CheckForNewArtifacts();
+            if (newArtifacts.Count > 0)
+            {
+                // added ahl 2/25
+                var msg = new Windows.UI.Popups.MessageDialog("New artifacts found.");
+                msg.Commands.Add(new Windows.UI.Popups.UICommand(
+                    "Edit New Artifacts.", null
+                    ));
+                msg.Commands.Add(new Windows.UI.Popups.UICommand(
+                    "Use Defualt Artifacts Attributes.", null
+                    ));
+                await msg.ShowAsync();
+            }
 
 
             navigationHelper.OnNavigatedTo(e);
@@ -162,43 +177,44 @@ namespace BoeingSalesApp
 
         #endregion
 
-        private void ArtifactsGridView_Holding(object sender, HoldingRoutedEventArgs e)
+        private async void Artifact_DoubleTapped(object sender, DoubleTappedRoutedEventArgs e)
         {
-            Debug.WriteLine("held grid");
+            var artifactPanel = (StackPanel)sender;
+            var artifactContext = (Artifact)artifactPanel.DataContext;
+            var fileStore = new BoeingSalesApp.Utility.FileStore();
+            var artifact = await fileStore.GetArtifact(artifactContext.FileName);
 
-            //
-            // Is an artifact in the GridView being held ? If not, do nothing.
-            //
-
-            //
-            // Get held artifact's thumbnail
-            //
-
-            //
-            // Draw adorner
-            //
-
-            //
-            // Display appropriate control containing artifact thumbnail
-            //
-            // Artifact Type  -> control to display:
-            // Video          -> MediaElement
-            // Image          -> None (just add image to adorner layer)
-            // Pdf/PowerPoint -> ??? (need a control that  allows for multi-page document)
-            // Word Document  -> ??? (need a control that  allows for multi-page document)
-            //
-            return;
+            await Windows.System.Launcher.LaunchFileAsync(artifact);
         }
 
-        private void pageRoot_Loaded(object sender, RoutedEventArgs e)
-        {
-            return;
-            //
-            // attach ArtifactViewAdorner
-            //
-            //Adorner a = new Adorner();
 
+        private async void TextBlock_Drop(object sender, DragEventArgs e)
+        {
+            var selectedArtifacts = this.ArtifactsGridView.SelectedItems;
+            TextBlock destTextblock = (TextBlock)sender;
+            Category roo = (Category)destTextblock.DataContext;
+
+            foreach(Artifact i in selectedArtifacts)
+            {
+                Artifact_CategoryRepository bar = new Artifact_CategoryRepository();
+                await bar.AddRelationship(i, roo);
+            }
         }
 
+        private async void CategoryList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var artCatRepo = new Artifact_CategoryRepository();
+            if (e.AddedItems.Count() == 0)
+            {
+                var artifacts = new ArtifactRepository();
+                this.ArtifactsGridView.ItemsSource = await artifacts.GetAllAsync();
+            }
+            else
+            {
+                var selectedCategory = e.AddedItems[0] as Category;
+                List<Artifact> artList = await artCatRepo.GetAllArtifactsForCategory(selectedCategory);
+                this.ArtifactsGridView.ItemsSource = artList;
+            }
+        }
     }
 }
