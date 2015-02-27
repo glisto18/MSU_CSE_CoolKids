@@ -109,6 +109,7 @@
     <Compile Include="ArtifactsView.xaml.cs">
       <DependentUpon>ArtifactsView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ArtifactViewAdorner.cs" />
     <Compile Include="DataAccess\Entities\FolderToken.cs" />
     <Compile Include="DataAccess\Repository\FolderTokenRepository.cs" />
     <Compile Include="DataAccess\Repository\IFolderTokenRepository.cs" />

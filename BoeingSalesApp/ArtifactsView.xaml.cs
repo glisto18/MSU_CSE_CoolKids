@@ -17,6 +17,8 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using System.Threading.Tasks;
+using System.Diagnostics;
+using System.Windows;
 
 // The Grouped Items Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234231
 
@@ -58,7 +60,6 @@ namespace BoeingSalesApp
                 return this.navigationHelper;
             }
         }
-
         public ArtifactsView()
         {
             this.InitializeComponent();
@@ -96,7 +97,6 @@ namespace BoeingSalesApp
         /// <returns></returns>
         private async Task FetchCategories()
         {
-            
             var categories = await _categoryRepository.GetAllAsync();
             ListView listView = (ListView)this.FindName("CategoryList");
             listView.ItemsSource = categories;
@@ -131,7 +131,7 @@ namespace BoeingSalesApp
 
             await FetchCategories();
         }
-        
+
 #region NavigationHelper registration
 
         /// The methods provided in this section are simply used to allow
@@ -161,5 +161,44 @@ namespace BoeingSalesApp
         }
 
         #endregion
+
+        private void ArtifactsGridView_Holding(object sender, HoldingRoutedEventArgs e)
+        {
+            Debug.WriteLine("held grid");
+
+            //
+            // Is an artifact in the GridView being held ? If not, do nothing.
+            //
+
+            //
+            // Get held artifact's thumbnail
+            //
+
+            //
+            // Draw adorner
+            //
+
+            //
+            // Display appropriate control containing artifact thumbnail
+            //
+            // Artifact Type  -> control to display:
+            // Video          -> MediaElement
+            // Image          -> None (just add image to adorner layer)
+            // Pdf/PowerPoint -> ??? (need a control that  allows for multi-page document)
+            // Word Document  -> ??? (need a control that  allows for multi-page document)
+            //
+            return;
+        }
+
+        private void pageRoot_Loaded(object sender, RoutedEventArgs e)
+        {
+            return;
+            //
+            // attach ArtifactViewAdorner
+            //
+            //Adorner a = new Adorner();
+
+        }
+
     }
 }

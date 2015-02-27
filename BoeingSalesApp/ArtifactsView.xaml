@@ -8,7 +8,7 @@
     xmlns:common="using:BoeingSalesApp.Common"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d">
+    mc:Ignorable="d" Loaded="pageRoot_Loaded">
 
     <Page.Resources>
         <x:String x:Key="ChevronGlyph">&#xE26B;</x:String>
@@ -22,7 +22,7 @@
             IsSourceGrouped="true"
             ItemsPath="TopItems"/>
 
-        <DataTemplate x:Key="ArtifactTemplate"  >
+        <DataTemplate x:Key="ArtifactTemplate">
             <StackPanel Orientation="Horizontal" Width="250" Height="125">
                 <Border Width="90" Height="100" Margin="10">
                     <Image Source="Assets/Artifact.png" Width="90" Height="120" />
@@ -108,6 +108,8 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*" />
+
+                <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
 
             <!-- Gray panel on the left side-->
@@ -139,18 +141,17 @@
                           VerticalAlignment="Top"  
                           Width="{Binding Width, ElementName=myPanel}"
                           Height="{Binding Height, ElementName=myPanel}"
-                          Foreground="Black">
-                </ListView>
+                          Foreground="Black" />
             </StackPanel>
 
-
-            <!-- This is the area with white background to the right of the gray pane -->
+            <!-- Grid of artifacts -->
             <GridView x:Name="ArtifactsGridView" 
-                            Grid.Column="1" 
-                            ItemTemplate="{StaticResource ArtifactTemplate}" 
-                            Height="{Binding}"
-                            VerticalAlignment="Top"
-                            SelectionMode="Multiple">
+                    Grid.Column="2" 
+                    ItemTemplate="{StaticResource ArtifactTemplate}" 
+                    Height="{Binding}"
+                    VerticalAlignment="Top"
+                    SelectionMode="Multiple"
+                    Holding="ArtifactsGridView_Holding" >
                 <GridView.ItemsPanel>
                     <ItemsPanelTemplate>
                         <ItemsWrapGrid MaximumRowsOrColumns="7"/>
