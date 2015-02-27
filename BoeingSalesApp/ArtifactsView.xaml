@@ -139,7 +139,7 @@
                           VerticalAlignment="Top"  
                           Width="{Binding Width, ElementName=myPanel}"
                           Height="{Binding Height, ElementName=myPanel}"
-                          Foreground="Black" SelectionMode="None">
+                          Foreground="Black" SelectionMode="Single" SelectionChanged="CategoryList_SelectionChanged">
                 </ListView>
             </StackPanel>
 

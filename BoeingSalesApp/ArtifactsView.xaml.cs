@@ -200,5 +200,21 @@ namespace BoeingSalesApp
                 await bar.AddRelationship(i, roo);
             }
         }
+
+        private async void CategoryList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var artCatRepo = new Artifact_CategoryRepository();
+            if (e.AddedItems.Count() == 0)
+            {
+                var artifacts = new ArtifactRepository();
+                this.ArtifactsGridView.ItemsSource = await artifacts.GetAllAsync();
+            }
+            else
+            {
+                var selectedCategory = e.AddedItems[0] as Category;
+                List<Artifact> artList = await artCatRepo.GetAllArtifactsForCategory(selectedCategory);
+                this.ArtifactsGridView.ItemsSource = artList;
+            }
+        }
     }
 }
