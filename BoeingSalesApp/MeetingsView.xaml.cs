@@ -14,6 +14,7 @@ using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using Outlook = Microsoft.Office.Interop.Outlook;
 using System.Runtime.InteropServices;
+using Windows.Storage;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -45,7 +46,7 @@ namespace BoeingSalesApp
         private void onCreate(object sender, RoutedEventArgs e)
         {
             newMeetingButton.Flyout.Hide();
-
+            //await Windows.Storage.FileIO.WriteTextAsync(sampleFile, "write this");
             //
             // TODO - Push meeting to outlook
             //
@@ -59,9 +60,64 @@ namespace BoeingSalesApp
         private void gridTapped(object sender, RoutedEventArgs e)
         {
         }
-        private void onImport(object sender, RoutedEventArgs e)
+        private async void onImport(object sender, RoutedEventArgs e)
         {
-            //Outlook.Application oApp = new Outlook.Application();
+            string strt, end, loc, bdy = "", ldy, sub;
+            //List<string> strt = new List<string>(), end = new List<string>(), loc = new List<string>(), bdln = new List<string>(), lday = new List<string>(), sub = new List<string>();
+            //List<List<string>> body = new List<List<string>>();
+            string nextLine; int count = 0;
+            //await Windows.Storage.KnownFolders.PicturesLibrary.CreateFileAsync("appdata.txt", CreationCollisionOption.FailIfExists);
+            var meetings = await KnownFolders.PicturesLibrary.GetFileAsync("appdata.txt");
+            using(StreamReader reader = new StreamReader(await meetings.OpenStreamForReadAsync()))
+            {
+                while((nextLine = await reader.ReadLineAsync()) != null)
+                {
+                    if (count == 0)
+                        cdstrt.Text = nextLine;
+                    else if (count == 1)
+                        cdend.Text = nextLine;
+                    else if (count == 2)
+                        cdloc.Text = nextLine;
+                    else if (count == 3)
+                    {
+                        if (nextLine == "---ENDBODY---")
+                        {
+                            cdbdy.Text = bdy;
+                            bdy = "";
+                        }
+                        else
+                        {
+                            bdy += nextLine + " ";
+                            count--;
+                        }
+                    }
+                    else if (count == 4)
+                        cdldy.Text = nextLine;
+                    else if (count == 5)
+                    {
+                        count = -1;
+                        cdsub.Text = nextLine;
+                    }
+                    else { }
+                   /* if (count == 0)
+                        strt.Add(nextLine);
+                    else if (count == 1)
+                        end.Add(nextLine);
+                    else if (count == 2)
+                        loc.Add(nextLine);
+                    else if (count == 3)
+                        bdln.Add(nextLine);
+                    else if (count == 4)
+                        lday.Add(nextLine);
+                    else if (count == 5)
+                    {
+                        count = -1;
+                        sub.Add(nextLine);
+                    }
+                    else { }*/
+                    count++;
+                }
+            }
         }
     }
 }

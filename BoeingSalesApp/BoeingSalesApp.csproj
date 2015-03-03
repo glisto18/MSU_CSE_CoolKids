@@ -164,6 +164,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SQLite.cs" />
     <Compile Include="SQLiteAsync.cs" />
+    <Compile Include="TESTMeetingsView.xaml.cs">
+      <DependentUpon>TESTMeetingsView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Utility\FakeSeeder.cs" />
     <Compile Include="Utility\FileStore.cs" />
     <Compile Include="Utility\TempSettings.cs" />
@@ -220,6 +223,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="MeetingsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="TESTMeetingsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
