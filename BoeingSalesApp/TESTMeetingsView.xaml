@@ -31,8 +31,10 @@
         </StackPanel>
 
         <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
-            <ComboBox x:Name="ComboBox1" ItemsSource="{Binding}"
-        Foreground="Black" FontSize="30" Height="50" Width="780"/>
+            <GridView x:Name="ComboBox1" ItemsSource="{Binding}"
+                Foreground="White" FontSize="65" 
+                SelectionMode="Multiple"  Margin="229,108,0,10"/>
+            <GridViewItem Height="200" Width="200"></GridViewItem>
         </Grid>
 
     </Grid>
