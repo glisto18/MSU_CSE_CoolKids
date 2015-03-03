@@ -17,6 +17,8 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using System.Threading.Tasks;
+using System.Diagnostics;
+using System.Windows;
 
 // The Grouped Items Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234231
 
@@ -58,7 +60,6 @@ namespace BoeingSalesApp
                 return this.navigationHelper;
             }
         }
-
         public ArtifactsView()
         {
             this.InitializeComponent();
@@ -96,7 +97,6 @@ namespace BoeingSalesApp
         /// <returns></returns>
         private async Task FetchCategories()
         {
-            
             var categories = await _categoryRepository.GetAllAsync();
             ListView listView = (ListView)this.FindName("CategoryList");
             listView.ItemsSource = categories;
