@@ -17,6 +17,8 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using System.Threading.Tasks;
+using System.Diagnostics;
+using System.Windows;
 
 // The Grouped Items Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234231
 
@@ -58,7 +60,6 @@ namespace BoeingSalesApp
                 return this.navigationHelper;
             }
         }
-
         public ArtifactsView()
         {
             this.InitializeComponent();
@@ -96,7 +97,6 @@ namespace BoeingSalesApp
         /// <returns></returns>
         private async Task FetchCategories()
         {
-            
             var categories = await _categoryRepository.GetAllAsync();
             ListView listView = (ListView)this.FindName("CategoryList");
             listView.ItemsSource = categories;
@@ -198,6 +198,22 @@ namespace BoeingSalesApp
             {
                 Artifact_CategoryRepository bar = new Artifact_CategoryRepository();
                 await bar.AddRelationship(i, roo);
+            }
+        }
+
+        private async void CategoryList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var artCatRepo = new Artifact_CategoryRepository();
+            if (e.AddedItems.Count() == 0)
+            {
+                var artifacts = new ArtifactRepository();
+                this.ArtifactsGridView.ItemsSource = await artifacts.GetAllAsync();
+            }
+            else
+            {
+                var selectedCategory = e.AddedItems[0] as Category;
+                List<Artifact> artList = await artCatRepo.GetAllArtifactsForCategory(selectedCategory);
+                this.ArtifactsGridView.ItemsSource = artList;
             }
         }
     }

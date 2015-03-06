@@ -96,13 +96,13 @@ namespace BoeingSalesApp
         protected async override void OnNavigatedTo(NavigationEventArgs e)
         {
             navigationHelper.OnNavigatedTo(e);
-            CategoryRepository foo = new CategoryRepository();
+            CategoryRepository catRepo = new CategoryRepository();
 
-            List<BoeingSalesApp.DataAccess.Entities.Category> bar = await foo.GetAllAsync();
+            List<BoeingSalesApp.DataAccess.Entities.Category> catList = await catRepo.GetAllAsync();
 
-            foreach(BoeingSalesApp.DataAccess.Entities.Category i in bar)
+            foreach(BoeingSalesApp.DataAccess.Entities.Category i in catList)
             {
-                this.sourceGrid.Items.Add(i.Name);
+                this.sourceGrid.Items.Add(i);
             }
         }
 
