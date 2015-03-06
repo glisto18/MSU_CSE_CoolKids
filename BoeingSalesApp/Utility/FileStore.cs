@@ -1,15 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Windows.Storage;
-using System.Threading;
 using Windows.Storage.Pickers;
 using Windows.Storage.AccessCache;
 using BoeingSalesApp.DataAccess.Repository;
 using BoeingSalesApp.DataAccess.Entities;
-using Windows.Storage;
 
 namespace BoeingSalesApp.Utility
 {
@@ -31,15 +27,13 @@ namespace BoeingSalesApp.Utility
             _tokenRepo = new FolderTokenRepository();
             _artifactRepo = new ArtifactRepository();
 
-            
-
             //CreateArtifactFolder();
         }
 
         /// <summary>
         /// Checks if any new Artifacts have been inserted into the monitored folder for insert into the DB.
         /// </summary>
-        public async Task<List<int>> CheckForNewArtifacts()
+        public async Task<List<Guid>> CheckForNewArtifacts()
         {
             var folderToken = await _tokenRepo.Get();
             if (folderToken != null)
@@ -63,7 +57,7 @@ namespace BoeingSalesApp.Utility
                 else
                 {
                     // user cancelled picking a folder, return empty list
-                    return new List<int>();
+                    return new List<Guid>();
                 }
             }
             else 
@@ -74,10 +68,7 @@ namespace BoeingSalesApp.Utility
 
             // check the folder for new artifacts
             var folderArtifacts = await _artifactFolder.GetFilesAsync();
-            return await CheckForNewArtifacts(folderArtifacts);
-
-
-            
+            return await CheckForNewArtifacts(folderArtifacts);      
         }
 
         public async Task<StorageFile> GetArtifact(string path)
@@ -113,15 +104,14 @@ namespace BoeingSalesApp.Utility
             throw new NotImplementedException();
         }
 
-
         /// <summary>
         /// Checks the files contained in the artifact folder to see if any need to be inserted into the DB.
         /// </summary>
         /// <param name="folderArtifacts"></param>
         /// <returns></returns>
-        private async Task<List<int>> CheckForNewArtifacts(IReadOnlyList<StorageFile> folderArtifacts)
+        private async Task<List<Guid>> CheckForNewArtifacts(IReadOnlyList<StorageFile> folderArtifacts)
         {
-            var artifactsInserted = new List<int>();
+            var artifactsInserted = new List<Guid>();
             foreach (StorageFile folderArtifact in folderArtifacts)
             {
                 if (!await _artifactRepo.DoesExist(folderArtifact.Name))
@@ -136,8 +126,8 @@ namespace BoeingSalesApp.Utility
                         Active = true
                     };
 
-                    var newArtifactId = await _artifactRepo.SaveAsync(newArtifact);
-                    artifactsInserted.Add(newArtifactId);
+                    await _artifactRepo.SaveAsync(newArtifact);
+                    artifactsInserted.Add(newArtifact.ID);
                 }
             }
 
