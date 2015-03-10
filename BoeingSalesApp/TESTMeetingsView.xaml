@@ -7,6 +7,64 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
+    <Page.Resources>
+        <Flyout x:Name="MeetingsAdd" x:Key="CreateFlyout1">
+            <Flyout.FlyoutPresenterStyle>
+                <Style TargetType="FlyoutPresenter">
+                    <Setter Property="Background" Value="Black"/>
+                    <Setter Property="MinHeight" Value="300"/>
+                    <Setter Property="MinWidth" Value="300"/>
+                </Style>
+            </Flyout.FlyoutPresenterStyle>
+
+            <StackPanel>
+                <TextBlock Text="Start Time:"/>
+                <TextBox PlaceholderText="Start Time: xx/yy/zz xx:yy:zz AM" x:Name="Cstrt"/>
+                <TextBlock Text="End Time:"/>
+                <TextBox PlaceholderText="End Time: xx/yy/zz xx:yy:xx PM" x:Name="Cend"/>
+                <TextBlock Text="Location:"/>
+                <TextBox PlaceholderText="Location" x:Name="Cloc"/>
+                <TextBlock Text="Description:"/>
+                <TextBox PlaceholderText="Description" x:Name="Cbdy"/>
+                <TextBlock Text="Subject:"/>
+                <TextBox PlaceholderText="Subject" x:Name="Csub"/>
+                <Button Content="Create" HorizontalAlignment="Right"
+                        FontSize="16" Margin="0,10,0,0" Tapped="onCreate"/>
+            </StackPanel>
+
+        </Flyout>
+        <Flyout x:Name="SelectedMeetings" x:Key="CreateFlyout2">
+                <Flyout.FlyoutPresenterStyle>
+                    <Style TargetType="FlyoutPresenter">
+                        <Setter Property="Background" Value="Black"/>
+                        <Setter Property="MinHeight" Value="300"/>
+                        <Setter Property="MinWidth" Value="300"/>
+                    </Style>                    
+                </Flyout.FlyoutPresenterStyle>
+            <StackPanel>
+                <Grid x:Name="ImportGrid" Grid.Row="1">
+                    <GridView x:Name="ComboBox1" ItemsSource="{Binding}"
+                Foreground="White" FontSize="65"
+                SelectionMode="Multiple"/>
+                </Grid>
+                <Button Content="Import" HorizontalAlignment="Right" Tapped="ImportSelected"/>
+            </StackPanel>
+        </Flyout>
+
+        <DataTemplate x:Key="MeetingTemplate">
+            <StackPanel Orientation="Horizontal" Width="300" Height="125">
+                <Border Width="90" Height="100" Margin="10">
+                    <Image Source="Assets/Meetings.png" Width="90" Height="120" />
+                </Border>
+                <StackPanel Orientation="Vertical" VerticalAlignment="Center">
+                    <TextBlock Text="{Binding StartTime}"/>
+                    <TextBlock Text="{Binding Subject}"/>
+                </StackPanel>
+            </StackPanel>
+        </DataTemplate>
+
+    </Page.Resources>
+
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
         <!-- Back button and "Sales Bags" header -->
@@ -21,20 +79,27 @@
                        Text="Meetings" 
                        Style="{StaticResource HeaderTextBlockStyle}" 
                        IsHitTestVisible="false" Margin="30" />
+            <Button x:Name="newMeetingButton" 
+            	Width="80" 
+            	Tapped="showFlyout"
+            	FlyoutBase.AttachedFlyout="{StaticResource CreateFlyout1}" 
+            	BorderBrush="{x:Null}"
+                VerticalAlignment="Top" Margin="20">
+                <Image Source="Assets/Plus.png"/>
+            </Button>
         </StackPanel>
 
         <!-- Left-side pane with Import/Delete/Launch Meeting Buttons -->
         <StackPanel Grid.Column="0" Orientation="Vertical" Margin="0,115,0,0">
-            <Button Tapped="onImport" Content="Import Meetings" Height="108" Width="238"/>
-            <!--Button Content="Delete Meeting" Height="108" Width="238"/>
-            <Button Name="impBut" Content="Launch Meeting" Height="108" Width="238"/-->
+            <Button Tapped="onImport" FlyoutBase.AttachedFlyout="{StaticResource CreateFlyout2}" 
+                    Content="Import Meetings" Height="108" Width="238"/>
+            <Button Tapped="onDelete" Name="delBut" Content="Delete Meeting" Height="108" Width="238"/>
         </StackPanel>
 
         <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
-            <GridView x:Name="ComboBox1" ItemsSource="{Binding}"
-                Foreground="White" FontSize="65" 
+            <GridView x:Name="DatabaseMeetings" ItemsSource="{Binding}"
+                Foreground="White" FontSize="65" ItemTemplate="{StaticResource MeetingTemplate}"
                 SelectionMode="Multiple"  Margin="229,108,0,10"/>
-            <GridViewItem Height="200" Width="200"></GridViewItem>
         </Grid>
 
     </Grid>

@@ -13,24 +13,50 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using Windows.Storage;
-
-// The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234238
+using System.Threading.Tasks;
+using BoeingSalesApp.Common;
 
 namespace BoeingSalesApp
 {
-    /// <summary>
-    /// An empty page that can be used on its own or navigated to within a Frame.
-    /// </summary>
     public sealed partial class TESTMeetingsView : Page
     {
+        private DataAccess.Repository.MeetingRepository _meetingRepo;
+        private NavigationHelper navigationHelper;
         public TESTMeetingsView()
         {
             this.InitializeComponent();
+            this.navigationHelper = new NavigationHelper(this);
+            _meetingRepo = new DataAccess.Repository.MeetingRepository();
+        }
+        private async Task FetchMeetings()
+        {
+            try
+            {
+                var meetings = await _meetingRepo.GetAllAsync();
+                GridView gridView = (GridView)this.FindName("DatabaseMeetings");
+                gridView.ItemsSource = meetings;
+            }
+            catch (NullReferenceException e)
+            {
+                //Crashed once did this and then it didnt. ***Need to revisit***
+            }
+        }
+        protected async override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            navigationHelper.OnNavigatedTo(e);
+            await FetchMeetings();
         }
         private void onBack(object sender, RoutedEventArgs e)
         {
             this.Frame.GoBack();
         }
+        /*****************************************************************************/
+
+
+        /*****************************************************************************
+         * Data container to hold variables for selection
+         * Allows user to visualize+select data before it is entered in database
+         ****************************************************************************/
         public class Meetin
         {
             public Meetin() { }
@@ -49,6 +75,12 @@ namespace BoeingSalesApp
                 return "Subject: " + Sub + "\nStart Time: " + Strt + "\nEnd Time: " + End + "\nLocation: " + Loc + "\nDescription: " + Bdy;
             }
         }
+        /**************************************************************************************
+         * AllMeets allows for multiple meetings in gridview
+         * onImport parses data from Outlook created file
+         * For now it is a .txt file in the pictures library (will be changed for optimization)
+         * ComboBox1 is the gridview which displays all items from AllMeets in a flyout grid
+         ***************************************************************************************/ 
         public System.Collections.ObjectModel.ObservableCollection<Meetin> AllMeets = new System.Collections.ObjectModel.ObservableCollection<Meetin>();
         private async void onImport(object sender, RoutedEventArgs e)
         {
@@ -93,6 +125,91 @@ namespace BoeingSalesApp
                 }
                 ComboBox1.DataContext = AllMeets;
             }
+            showFlyout(sender, e);
+        }
+        /****************************************************************************************************
+         * Called by Import Meetings Button flyout button: Import
+         * User chooses among all imported meetings
+         * Selected meetings are saved in "Meeting" database
+         ****************************************************************************************************/
+        private async void ImportSelected(object sender, RoutedEventArgs e)
+        {
+            foreach (Meetin selectedMeetin in ComboBox1.SelectedItems)
+            {
+                var newMeeting = new DataAccess.Entities.Meeting
+                {
+                    StartTime = DateTime.Parse(selectedMeetin.Strt),
+                    EndTime = DateTime.Parse(selectedMeetin.End),
+                    Location = selectedMeetin.Loc,
+                    Body = selectedMeetin.Bdy,
+                    AllDay = Convert.ToBoolean(selectedMeetin.Ldy),
+                    Subject = selectedMeetin.Sub
+                };
+
+                //var meetingRepo = new DataAccess.Repository.MeetingRepository();
+                await _meetingRepo.SaveAsync(newMeeting);
+            }
+            await FetchMeetings();
+            SelectedMeetings.Hide();
+        }
+        /*********************************************************************************************
+         * showFlyout is called twice: once by Import Meeting and once by Add Meeting
+         * showFlyout displays one of the two xaml flyouts
+         ********************************************************************************************/
+        private void showFlyout(object sender, RoutedEventArgs e)
+        {
+            FlyoutBase.ShowAttachedFlyout((FrameworkElement)sender);
+        }
+        /****************************************************************************************
+         * For now onCreate appends to a text file the user entered fields required by Outlook
+         * The fields are in a flyout which closes when "Create" is tapped
+         * Will need a way to clear the text file of unnesscary meetings/mistakes
+         *************************************************************************************/
+        private async void onCreate(object sender, RoutedEventArgs e)
+        {
+            var meetings = await KnownFolders.PicturesLibrary.GetFileAsync("appdatacreation.txt");
+            var entMet = new List<string>
+            {
+                Cstrt.Text,
+                Cend.Text,
+                Cloc.Text,
+                Cbdy.Text,
+                "---ENDBODY---",
+                "False",
+                Csub.Text
+            };
+            await Windows.Storage.FileIO.AppendLinesAsync(meetings, entMet);
+
+            var newMeeting = new DataAccess.Entities.Meeting
+            {
+                StartTime = DateTime.Parse(Cstrt.Text),
+                EndTime = DateTime.Parse(Cend.Text),
+                Location = Cloc.Text,
+                Body = Cbdy.Text,
+                AllDay = false,
+                Subject = Csub.Text
+            };
+            await _meetingRepo.SaveAsync(newMeeting);
+            await FetchMeetings();
+
+            MeetingsAdd.Hide();
+        }
+        /*****************************************************************************************
+         * onDelete removes user selected items from the database
+         * For now it appends to a .txt file in the pictures folder for Outlook addin to parse
+         * ^ writes relevant lines from user selected objects
+         *****************************************************************************************/
+        private async void onDelete(object sender, RoutedEventArgs e)
+        {
+            var deletings = await KnownFolders.PicturesLibrary.GetFileAsync("appdatadeletion.txt");
+            var delMet = new List<string> { };
+            foreach (DataAccess.Entities.Meeting selectdelete in DatabaseMeetings.SelectedItems)
+            {
+                delMet.Add(selectdelete.StartTime.ToString());
+                await _meetingRepo.DeleteAsync(selectdelete);
+            }
+            await Windows.Storage.FileIO.AppendLinesAsync(deletings, delMet);
+            await FetchMeetings();
         }
     }
 }

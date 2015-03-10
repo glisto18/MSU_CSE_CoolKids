@@ -23,9 +23,15 @@ namespace BoeingSalesApp.DataAccess.Entities
 
         public bool Active { get; set; }
 
-        public string City { get; set; }
+        //public string City { get; set; }
 
-        public string State { get; set; }
+        //public string State { get; set; }
+
+        public string Location { get; set; }
+
+        public string Body { get; set; }
+
+        public string Subject { get; set; }
 
         public Guid Company { get; set; }
 
@@ -37,7 +43,13 @@ namespace BoeingSalesApp.DataAccess.Entities
 
         public DateTime TimeOfMeeting { get; set; }
 
+        public DateTime StartTime { get; set; }
+
+        public DateTime EndTime { get; set; }
+
         // sqlite didnt like the timezone type
         public string TimeZone { get; set; }
+
+        public bool AllDay { get; set; }
     }
 }
