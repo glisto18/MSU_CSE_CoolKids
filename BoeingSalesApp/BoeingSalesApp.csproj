@@ -112,6 +112,9 @@
     <Compile Include="BagCreationView.xaml.cs">
       <DependentUpon>BagCreationView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="NewArtifactsView.xaml.cs">
+      <DependentUpon>NewArtifactsView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="DataAccess\Entities\FolderToken.cs" />
     <Compile Include="DataAccess\Repository\FolderTokenRepository.cs" />
     <Compile Include="DataAccess\Repository\IFolderTokenRepository.cs" />
@@ -176,6 +179,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Assets\Artifact.scale-100.png" />
     <Content Include="Assets\Artifacts.scale-100.png" />
     <Content Include="Assets\BoeingLogo.scale-100.png" />
     <Content Include="Assets\Logo.scale-100.png" />
@@ -187,7 +191,6 @@
     <Content Include="Assets\SmallLogo.scale-100.png" />
     <Content Include="Assets\SplashScreen.scale-100.png" />
     <Content Include="Assets\StoreLogo.scale-100.png" />
-    <Content Include="Assets\Artifact.scale-100.png" />
     <Content Include="Assets\Upload.scale-100.png" />
   </ItemGroup>
   <ItemGroup>
@@ -200,6 +203,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="BagCreationView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="NewArtifactsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -229,8 +236,8 @@
     <SDKReference Include="Microsoft.VCLibs, Version=12.0">
       <Name>Microsoft Visual C++ 2013 Runtime Package for Windows</Name>
     </SDKReference>
-    <SDKReference Include="SQLite.WinRT81, Version=3.8.8.3">
-      <Name>SQLite for Windows Runtime %28Windows 8.1%291</Name>
+    <SDKReference Include="SQLite.WinRT81, Version=3.8.8.1">
+      <Name>SQLite for Windows Runtime %28Windows 8.1%29</Name>
     </SDKReference>
   </ItemGroup>
   <ItemGroup>
