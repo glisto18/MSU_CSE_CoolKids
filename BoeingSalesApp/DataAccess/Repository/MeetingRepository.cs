@@ -17,6 +17,12 @@ namespace BoeingSalesApp.DataAccess.Repository
             _database = database.GetAsyncConnection();
         }
 
+        public MeetingRepository()
+        {
+            var db = new Database(BoeingSalesApp.Utility.TempSettings.DbPath);
+            _database = db.GetAsyncConnection();
+        }
+
         public async Task SaveAsync(Meeting meeting)
         {
             await _database.InsertAsync(meeting);

@@ -44,6 +44,11 @@ namespace BoeingSalesApp.DataAccess.Repository
             return await _database.GetAsync<Category>(categoryId);
         }
 
+        public async Task<Category> Get(string name)
+        {
+            return await _database.Table<Category>().Where(x => x.Name == name).FirstAsync();
+        }
+
        public async Task<bool> DoesExist(Guid categoryId)
         {
             var countById = await _database.Table<Category>().Where(x => x.ID == categoryId).CountAsync();
@@ -53,6 +58,12 @@ namespace BoeingSalesApp.DataAccess.Repository
        public async Task<List<Category>> GetCategoriesByName(string title)
        {
            return await _database.Table<Category>().Where(x => x.Name == title).ToListAsync();
+       }
+
+       public async Task<bool> DoesExist(string name)
+       {
+           var count = await _database.Table<Category>().Where(x => x.Name == name).CountAsync();
+           return count > 0;
        }
 
     }

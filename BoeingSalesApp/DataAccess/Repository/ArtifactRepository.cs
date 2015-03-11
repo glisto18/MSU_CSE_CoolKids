@@ -1,6 +1,7 @@
 ﻿using SQLite;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -65,6 +66,11 @@ namespace BoeingSalesApp.DataAccess.Repository
         {
             var artifactCount = await _database.Table<Artifact>().Where(x => x.FileName == fileName).CountAsync();
             return artifactCount > 0;
+        }
+
+        public async Task<Artifact> GetArtifactByFileName(string fileName)
+        {
+            return await _database.Table<Artifact>().Where(x => x.FileName == fileName).FirstAsync();
         }
 
     }
