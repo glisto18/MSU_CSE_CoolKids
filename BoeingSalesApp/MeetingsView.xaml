@@ -6,7 +6,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
-
+    
     <Page.Resources>
         <x:String x:Key="ChevronGlyph">&#xE26B;</x:String>
         <!--
@@ -112,8 +112,14 @@
             <!-- Left-side pane with Import/Delete/Launch Meeting Buttons -->
             <StackPanel Grid.Column="0" Orientation="Vertical">
                 <Button Tapped="onImport" Content="Import Meetings" Height="108" Width="238"/>
+                <TextBlock Name="cdstrt"></TextBlock>
+                <TextBlock Name="cdend"></TextBlock>
+                <TextBlock Name="cdloc"></TextBlock>
+                <TextBlock Name="cdbdy"></TextBlock>
+                <TextBlock Name="cdldy"></TextBlock>
+                <TextBlock Name="cdsub"></TextBlock>
                 <Button Content="Delete Meeting" Height="108" Width="238"/>
-                <Button Content="Launch Meeting" Height="108" Width="238"/>
+                <Button Name="impBut" Content="Launch Meeting" Height="108" Width="238"/>
             </StackPanel>
         
             <!-- Meetings GridView -->

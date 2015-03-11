@@ -13,8 +13,6 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
-using BoeingSalesApp.DataAccess.Repository;
-using System.Threading.Tasks;
 
 // The Basic Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234237
 
@@ -23,11 +21,13 @@ namespace BoeingSalesApp
     /// <summary>
     /// A basic page that provides characteristics common to most applications.
     /// </summary>
-    public sealed partial class BagCreationView : Page
+    public sealed partial class NewArtifactsView : Page
     {
 
         private NavigationHelper navigationHelper;
         private ObservableDictionary defaultViewModel = new ObservableDictionary();
+        String categoryShown = "All";
+
 
         /// <summary>
         /// This can be changed to a strongly typed view model.
@@ -47,7 +47,7 @@ namespace BoeingSalesApp
         }
 
 
-        public BagCreationView()
+        public NewArtifactsView()
         {
             this.InitializeComponent();
             this.navigationHelper = new NavigationHelper(this);
@@ -93,17 +93,9 @@ namespace BoeingSalesApp
         /// The navigation parameter is available in the LoadState method 
         /// in addition to page state preserved during an earlier session.
 
-        protected async override void OnNavigatedTo(NavigationEventArgs e)
+        protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             navigationHelper.OnNavigatedTo(e);
-            CategoryRepository catRepo = new CategoryRepository();
-
-            List<BoeingSalesApp.DataAccess.Entities.Category> catList = await catRepo.GetAllAsync();
-
-            foreach(BoeingSalesApp.DataAccess.Entities.Category i in catList)
-            {
-                this.sourceGrid.Items.Add(i);
-            }
         }
 
         protected override void OnNavigatedFrom(NavigationEventArgs e)
@@ -112,10 +104,5 @@ namespace BoeingSalesApp
         }
 
         #endregion
-
-        private void sourceGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-
-        }
     }
 }

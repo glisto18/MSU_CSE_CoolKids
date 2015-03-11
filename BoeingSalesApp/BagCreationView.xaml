@@ -13,6 +13,12 @@
     <Page.Resources>
         <!-- TODO: Delete this line if the key AppName is declared in App.xaml -->
         <x:String x:Key="AppName">My Application</x:String>
+
+        <DataTemplate x:Key="CategoryTemplate">
+            <StackPanel Orientation="Vertical" VerticalAlignment="Center">
+                <TextBlock Text="{Binding Name}"  Margin="5,0,0,0" Width="170" Height="20" TextTrimming="WordEllipsis" Foreground="Black" />
+            </StackPanel>
+        </DataTemplate>
     </Page.Resources>
 
     <!--
@@ -47,6 +53,11 @@
                         IsHitTestVisible="false" TextWrapping="NoWrap" VerticalAlignment="Bottom" Margin="0,0,30,40"/>
         </Grid>
         <TextBox x:Name="bagName" HorizontalAlignment="Left" Height="64" Margin="510,49,0,0" TextWrapping="NoWrap" FontSize="42" VerticalAlignment="Top" Width="739"/>
-        <ListView x:Name="sourceGrid" SelectionMode="Multiple" Margin="37,32,774,572" Width="555" SelectionChanged="sourceGrid_SelectionChanged" Grid.Row="1"/>
+        <StackPanel x:Name="sourcePanel" Grid.Row="1" Width="433"  Background="#FFB6B0B0" Margin="135,61,798,50">
+            <ListView x:Name="sourceGrid" ItemTemplate="{StaticResource CategoryTemplate}"
+                    HorizontalAlignment="Left" HorizontalContentAlignment="Center"
+                    VerticalAlignment="Top" Foreground="Black" SelectionMode="Multiple" SelectionChanged="sourceGrid_SelectionChanged">
+            </ListView>
+        </StackPanel>
     </Grid>
 </Page>
