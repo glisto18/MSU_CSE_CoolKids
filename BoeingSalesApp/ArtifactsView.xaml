@@ -36,7 +36,7 @@
 
         <!-- Template for the list of categories -->
         <DataTemplate x:Key="ArtifactCategoryTemplate">
-            <StackPanel x:Name="CatStackPanel" Orientation="Vertical" >
+            <StackPanel x:Name="CatStackPanel" Orientation="Vertical">
                 <TextBlock Text="{Binding Name}" 
                            Foreground="#FF060606" 
                            FontSize="24" 
