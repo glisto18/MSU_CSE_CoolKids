@@ -59,5 +59,13 @@
                     VerticalAlignment="Top" Foreground="Black" SelectionMode="Multiple" SelectionChanged="sourceGrid_SelectionChanged">
             </ListView>
         </StackPanel>
+
+    <!--    <StackPanel x:Name="destPanel" Width="433" Background="#FFB6B0B0" Margin="816,61,117,50" Grid.Row="1">
+            <ListView x:Name="destList" ItemTemplate="{StaticResource CategoryTemplate}" 
+                      HorizontalAlignment="Right" HorizontalContentAlignment="Center"
+                      VerticalAlignment="Top" Foreground="Black" SelectionMode="None"/>
+        </StackPanel> -->
+        <Button Content="Create" HorizontalAlignment="Left" Height="95" Margin="670,261,0,0"
+                Grid.Row="1" VerticalAlignment="Top" Width="88" Click="Button_Click"/>
     </Grid>
 </Page>
