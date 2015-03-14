@@ -112,6 +112,9 @@
     <Compile Include="BagCreationView.xaml.cs">
       <DependentUpon>BagCreationView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="DataAccess\Entities\SalesBag_Category.cs" />
+    <Compile Include="DataAccess\Repository\ISalesBag_CategoryRepository.cs" />
+    <Compile Include="DataAccess\Repository\SalesBag_CategoryRepository.cs" />
     <Compile Include="NewArtifactsView.xaml.cs">
       <DependentUpon>NewArtifactsView.xaml</DependentUpon>
     </Compile>
