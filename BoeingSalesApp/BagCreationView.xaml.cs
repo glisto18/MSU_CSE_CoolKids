@@ -51,6 +51,9 @@ namespace BoeingSalesApp
 
         public BagCreationView()
         {
+            _salesBagCategoryRepository = new SalesBag_CategoryRepository();
+            _salesBagRepository = new SalesBagRepository();
+
             this.InitializeComponent();
             this.navigationHelper = new NavigationHelper(this);
             this.navigationHelper.LoadState += navigationHelper_LoadState;
@@ -143,7 +146,7 @@ namespace BoeingSalesApp
             foreach(DataAccess.Entities.Category i in query)
             {
                 //DR - This is breaking as a nullexception on my end.  It should just create the relationship.
-                //await _salesBagCategoryRepository.AddCategoryToSalesBag(i, newbag);
+                await _salesBagCategoryRepository.AddCategoryToSalesBag(i, newbag);
             }
 
             //DR - Save the new bag to the database
