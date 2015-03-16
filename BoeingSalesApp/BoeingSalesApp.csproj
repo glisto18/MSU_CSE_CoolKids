@@ -112,6 +112,9 @@
     <Compile Include="BagCreationView.xaml.cs">
       <DependentUpon>BagCreationView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="DataAccess\Entities\SalesBag_Category.cs" />
+    <Compile Include="DataAccess\Repository\ISalesBag_CategoryRepository.cs" />
+    <Compile Include="DataAccess\Repository\SalesBag_CategoryRepository.cs" />
     <Compile Include="NewArtifactsView.xaml.cs">
       <DependentUpon>NewArtifactsView.xaml</DependentUpon>
     </Compile>
@@ -244,7 +247,7 @@
       <Name>Microsoft Visual C++ 2013 Runtime Package for Windows</Name>
     </SDKReference>
     <SDKReference Include="SQLite.WinRT81, Version=3.8.8.3">
-      <Name>SQLite for Windows Runtime %28Windows 8.1%291</Name>
+      <Name>SQLite for Windows Runtime %28Windows 8.1%29</Name>
     </SDKReference>
   </ItemGroup>
   <ItemGroup>
@@ -257,9 +260,6 @@
       <SpecificVersion>False</SpecificVersion>
       <EmbedInteropTypes>True</EmbedInteropTypes>
       <HintPath>..\..\..\..\..\..\Program Files (x86)\Microsoft Visual Studio 12.0\Visual Studio Tools for Office\PIA\Office15\Office.dll</HintPath>
-    </Reference>
-    <Reference Include="PresentationFramework">
-      <HintPath>..\..\..\..\..\..\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\PresentationFramework.dll</HintPath>
     </Reference>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '12.0' ">

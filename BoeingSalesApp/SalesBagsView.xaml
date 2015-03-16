@@ -27,11 +27,11 @@
                     <Image Source="Assets/SalesBag.png" Width="90" Height="120"/>
                 </Border>
                 <StackPanel Orientation="Vertical" VerticalAlignment="Center">
-                    <TextBlock Text="{Binding Name}" Margin="5,0,0,0" Width="170" Height="20" TextTrimming="WordEllipsis" Foreground="Black" />
+                    <TextBlock Text="{Binding Name}" Margin="5,0,0,0" Width="211" FontSize="18" Height="58" TextTrimming="WordEllipsis" Foreground="Black" />
                 </StackPanel>
             </StackPanel>
         </DataTemplate>
-        
+
         <!-- Template for GridView containing sales bags -->
         <ControlTemplate x:Key="SalesbagPropertyGridTemplate">
             <Grid>
@@ -128,7 +128,7 @@
                     <ItemsWrapGrid MaximumRowsOrColumns="7"/>
                 </ItemsPanelTemplate>
             </GridView.ItemsPanel>
-                
+
             <Button/>
         </GridView>
     </Grid>
