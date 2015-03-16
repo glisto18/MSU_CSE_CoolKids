@@ -41,9 +41,8 @@ namespace BoeingSalesApp
 
         private void onArtifacts(object sender, RoutedEventArgs e)
         {
-            //SolidColorBrush b = (SolidColorBrush)this.FindName("Brush_BoeingBlue");
-            //ArtifactsButton.Background = b;
-            this.Frame.Navigate(typeof(ArtifactsView));
+            //this.Frame.Navigate(typeof(ArtifactsView));
+            this.Frame.Navigate(typeof(NewArtifactsView));
         }
 
         private void onSalesBags(object sender, RoutedEventArgs e)

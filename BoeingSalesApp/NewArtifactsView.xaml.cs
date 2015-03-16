@@ -13,8 +13,6 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
-using BoeingSalesApp.DataAccess.Repository;
-using System.Threading.Tasks;
 
 // The Basic Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234237
 
@@ -23,11 +21,13 @@ namespace BoeingSalesApp
     /// <summary>
     /// A basic page that provides characteristics common to most applications.
     /// </summary>
-    public sealed partial class BagCreationView : Page
+    public sealed partial class NewArtifactsView : Page
     {
 
         private NavigationHelper navigationHelper;
         private ObservableDictionary defaultViewModel = new ObservableDictionary();
+        String categoryShown = "All";
+
 
         /// <summary>
         /// This can be changed to a strongly typed view model.
@@ -47,7 +47,7 @@ namespace BoeingSalesApp
         }
 
 
-        public BagCreationView()
+        public NewArtifactsView()
         {
             this.InitializeComponent();
             this.navigationHelper = new NavigationHelper(this);
@@ -93,22 +93,9 @@ namespace BoeingSalesApp
         /// The navigation parameter is available in the LoadState method 
         /// in addition to page state preserved during an earlier session.
 
-        protected async override void OnNavigatedTo(NavigationEventArgs e)
+        protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             navigationHelper.OnNavigatedTo(e);
-
-            //DR - Below, capture all categories and bind to grid
-            CategoryRepository catRepo = new CategoryRepository();
-            List<BoeingSalesApp.DataAccess.Entities.Category> catList = await catRepo.GetAllAsync();
-            foreach(BoeingSalesApp.DataAccess.Entities.Category i in catList)
-            {
-                this.sourceGrid.Items.Add(i);
-            }
-
-            //DR - This could probably be set in the xaml for the grid itself
-            this.sourceGrid.SelectionMode = ListViewSelectionMode.Multiple;
-
-            //DR - Do we capture artifacts without categories?  Do those exist?
         }
 
         protected override void OnNavigatedFrom(NavigationEventArgs e)
@@ -117,30 +104,5 @@ namespace BoeingSalesApp
         }
 
         #endregion
-
-        private void sourceGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-
-        }
-
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            //DR - The new salesbag to be added to the db
-            DataAccess.Entities.SalesBag newbag = new DataAccess.Entities.SalesBag();
-
-            //DR - This is the means of querying the database with an interface
-            //  Found the code here https://msdn.microsoft.com/en-us/library/bb341406(v=vs.110).aspx
-            IEnumerable<DataAccess.Entities.Category> query =
-                this.sourceGrid.SelectedItems.Cast<DataAccess.Entities.Category>().Select(x => x);
-
-            foreach(DataAccess.Entities.Category i in query)
-            {
-                //DR - We need a means of associating salesbags and categories.
-//               DataAccess.Entities.SalesBag_Category newSalesBagCat = new DataAccess.Entities.SalesBag_Category();
-            }
-
-            //After bag is created and saved to db, navigate back to the salesbag page.
-            this.Frame.Navigate(typeof(SalesBagsView));
-        }
     }
 }
