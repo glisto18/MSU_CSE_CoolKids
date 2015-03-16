@@ -25,6 +25,8 @@ namespace BoeingSalesApp
     /// </summary>
     public sealed partial class BagCreationView : Page
     {
+        private SalesBag_CategoryRepository _salesBagCategoryRepository;
+        private SalesBagRepository _salesBagRepository;
 
         private NavigationHelper navigationHelper;
         private ObservableDictionary defaultViewModel = new ObservableDictionary();
@@ -49,6 +51,9 @@ namespace BoeingSalesApp
 
         public BagCreationView()
         {
+            _salesBagCategoryRepository = new SalesBag_CategoryRepository();
+            _salesBagRepository = new SalesBagRepository();
+
             this.InitializeComponent();
             this.navigationHelper = new NavigationHelper(this);
             this.navigationHelper.LoadState += navigationHelper_LoadState;
@@ -123,21 +128,29 @@ namespace BoeingSalesApp
 
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private async void Button_Click(object sender, RoutedEventArgs e)
         {
             //DR - The new salesbag to be added to the db
             DataAccess.Entities.SalesBag newbag = new DataAccess.Entities.SalesBag();
+            newbag.Name = this.bagName.Text;
+            newbag.Active = true;
+            newbag.DateCreated = DateTime.Now;
+            newbag.ID = Guid.NewGuid();
 
             //DR - This is the means of querying the database with an interface
             //  Found the code here https://msdn.microsoft.com/en-us/library/bb341406(v=vs.110).aspx
             IEnumerable<DataAccess.Entities.Category> query =
                 this.sourceGrid.SelectedItems.Cast<DataAccess.Entities.Category>().Select(x => x);
 
+            //DR - For each category, create a relationship tieing the new bag to each selected category
             foreach(DataAccess.Entities.Category i in query)
             {
-                //DR - We need a means of associating salesbags and categories.
-//               DataAccess.Entities.SalesBag_Category newSalesBagCat = new DataAccess.Entities.SalesBag_Category();
+                //DR - This is breaking as a nullexception on my end.  It should just create the relationship.
+                await _salesBagCategoryRepository.AddCategoryToSalesBag(i, newbag);
             }
+
+            //DR - Save the new bag to the database
+            //await _salesBagRepository.SaveAsync(newbag);
 
             //After bag is created and saved to db, navigate back to the salesbag page.
             this.Frame.Navigate(typeof(SalesBagsView));
