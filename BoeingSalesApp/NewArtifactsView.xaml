@@ -49,7 +49,7 @@
                             VerticalAlignment="Center" 
                             Background="LightGray"
                             Height="{Binding Height, ElementName=GridItemContainer}">
-                    <TextBlock Text="Category"  Margin="5,0,0,0" Width="170" Height="20" TextTrimming="WordEllipsis" Foreground="Black" />
+                    <TextBlock Text="{Binding Name}"  Margin="5,0,0,0" Width="170" Height="20" TextTrimming="WordEllipsis" Foreground="Black" />
                     <TextBlock Text="# Artifacts" Margin="5,0,0,0" Width="170" Height="20" TextTrimming="WordEllipsis" Foreground="Black"/>
                 </StackPanel>
             </StackPanel>

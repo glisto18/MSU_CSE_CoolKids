@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Windows.SystemParameters;
+//using System.Windows.SystemParameters;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
@@ -14,6 +14,9 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
+using BoeingSalesApp.DataAccess.Entities;
+using BoeingSalesApp.DataAccess.Repository;
+using System.Threading.Tasks;
 
 // The Basic Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234237
 
@@ -24,6 +27,12 @@ namespace BoeingSalesApp
     /// </summary>
     public sealed partial class NewArtifactsView : Page
     {
+
+        //
+        // Member variables for DB interaction
+        //
+        private CategoryRepository _categoryRepository;
+        private ArtifactRepository _artifactsRepository;
 
         private NavigationHelper navigationHelper;
         private ObservableDictionary defaultViewModel = new ObservableDictionary();
@@ -116,9 +125,20 @@ namespace BoeingSalesApp
                 double screenWidth = System.Windows.SystemParameters.FullPrimaryScreenWidth;
 
                 
-                //myPopup.IsOpen = true;*/
-            }
+                //myPopup.IsOpen = true;
+            }*/
 
+        }
+
+        /// <summary>
+        /// Get categories from backend and bind to frontend
+        /// </summary>
+        /// <returns></returns>
+        private async Task FetchCategories()
+        {
+            var categories = await _categoryRepository.GetAllAsync();
+            GridView gridView = (GridView)this.FindName("ArtifactsGridView");
+            gridView.ItemsSource = categories;
         }
     }
 }
