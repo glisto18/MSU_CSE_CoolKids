@@ -49,8 +49,8 @@
                             VerticalAlignment="Center" 
                             Background="LightGray"
                             Height="{Binding Height, ElementName=GridItemContainer}">
-                    <TextBlock Text="{Binding Name}"  Margin="5,0,0,0" Width="170" Height="20" TextTrimming="WordEllipsis" Foreground="Black" />
-                    <TextBlock Text="# Artifacts" Margin="5,0,0,0" Width="170" Height="20" TextTrimming="WordEllipsis" Foreground="Black"/>
+                    <TextBlock Text="{Binding DisplayName}"  Margin="5,0,0,0" Width="170" Height="20" TextTrimming="WordEllipsis" Foreground="Black" />
+                    <TextBlock Text="{Binding DisplayInfo}" Margin="5,0,0,0" Width="170" Height="20" TextTrimming="WordEllipsis" Foreground="Black"/>
                 </StackPanel>
             </StackPanel>
         </DataTemplate>
@@ -103,11 +103,11 @@
             SelectionMode="Multiple" 
             CanDragItems="True" >
 
+            <!--<Button/>
             <Button/>
             <Button/>
             <Button/>
-            <Button/>
-            <Button/>
+            <Button/>-->
         </GridView>
 
     </Grid>
