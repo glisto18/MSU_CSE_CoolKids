@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Windows.SystemParameters;
+//using System.Windows.SystemParameters;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
@@ -116,8 +116,8 @@ namespace BoeingSalesApp
                 double screenWidth = System.Windows.SystemParameters.FullPrimaryScreenWidth;
 
                 
-                //myPopup.IsOpen = true;*/
-            }
+                //myPopup.IsOpen = true;
+            }*/
 
         }
     }
