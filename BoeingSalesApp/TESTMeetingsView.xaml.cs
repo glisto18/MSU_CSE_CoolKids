@@ -40,13 +40,9 @@ namespace BoeingSalesApp
             try
             {
                 var meetings = await _meetingRepo.GetAllAsync();
-                GridView gridView = (GridView)this.FindName("DatabaseMeetings");
-                gridView.ItemsSource = meetings;
+                DatabaseMeetings.ItemsSource = meetings;
             }
-            catch (NullReferenceException e)
-            {
-                //Crashed once did this and then it didnt. ***Need to revisit***
-            }
+            catch (NullReferenceException e) { }
         }
         //gets all salesbags from backend: to do
         private async Task FetchSalesbag()
@@ -107,7 +103,7 @@ namespace BoeingSalesApp
         public System.Collections.ObjectModel.ObservableCollection<Meetin> AllMeets = new System.Collections.ObjectModel.ObservableCollection<Meetin>();
         private async void onImport(object sender, RoutedEventArgs e)
         {
-            //AllMeets.Clear();
+            AllMeets.Clear();
             string nextLine, strt="", end="", loc="", bdy="", bdyln="", ldy="", sub=""; int count = 0, z, o;
             DateTime x; var y = await _meetingRepo.GetAllAsync(); var stayMet = new List<string> { };
             try { await Windows.Storage.KnownFolders.PicturesLibrary.CreateFileAsync("appdata.txt", CreationCollisionOption.FailIfExists); }
@@ -269,13 +265,22 @@ namespace BoeingSalesApp
             await Windows.Storage.FileIO.AppendLinesAsync(deletings, delMet);
             await FetchMeetings();
         }
-        private void onConnect(object sender, RoutedEventArgs e)
+        /********************************************************************************************
+         * Connects one or more meeting to a salesbag
+         * Deletes old meeting from database, then saves new one with salesbag guid and name fields
+         *******************************************************************************************/
+        private async void onConnect(object sender, RoutedEventArgs e)
         {
-            var salesbagto = DatabaseSalesBag.SelectedItem;
+            DataAccess.Entities.SalesBag salesbagto = (DataAccess.Entities.SalesBag)DatabaseSalesBag.SelectedItem;
             foreach (DataAccess.Entities.Meeting selectCon in DatabaseMeetings.SelectedItems)
             {
-                //selectCon.SalesBag = salesbagto.ID;
+                var newMeeting = selectCon;
+                newMeeting.SalesBag = salesbagto.ID;
+                newMeeting.Name = salesbagto.Name;
+                await _meetingRepo.DeleteAsync(selectCon);
+                await _meetingRepo.SaveAsync(newMeeting);
             }
+            await FetchMeetings();
             ConMeetings.Hide();
         }
     }

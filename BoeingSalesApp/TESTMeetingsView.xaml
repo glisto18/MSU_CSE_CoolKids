@@ -40,13 +40,15 @@
         <Flyout x:Name="SelectedMeetings" x:Key="CreateFlyout2">
                 <Flyout.FlyoutPresenterStyle>
                     <Style TargetType="FlyoutPresenter">
-                        <Setter Property="Background" Value="LightBlue"/>
-                    </Style>                    
+                    <Setter Property="Background" Value="LightBlue"/>
+                    <Setter Property="MaxWidth" Value="5000"/>
+                    <Setter Property="MaxHeight" Value="900"/>
+                </Style>                    
                 </Flyout.FlyoutPresenterStyle>
             <StackPanel>
-                <Grid x:Name="ImportGrid">
+                <Grid x:Name="ImportGrid" MaxWidth="1400" MaxHeight="800">
                     <GridView x:Name="ComboBox1" ItemsSource="{Binding}"
-                Foreground="Black" FontSize="65"
+                Foreground="Black" FontSize="65" MaxHeight="800" MaxWidth="1400"
                 SelectionMode="Multiple"/>
                 </Grid>
                 <Button Content="Import" HorizontalAlignment="Right" Tapped="ImportSelected"/>
@@ -54,7 +56,7 @@
         </Flyout>
         
         <DataTemplate x:Key="SalesbagTemplate">
-            <StackPanel Orientation="Horizontal" Width="300" Height="125">
+            <StackPanel Orientation="Horizontal" Width="100" Height="50">
                 <StackPanel Orientation="Vertical" VerticalAlignment="Center">
                     <TextBlock Text="{Binding Name}"/>
                 </StackPanel>
@@ -64,13 +66,13 @@
         <Flyout x:Name="ConMeetings" x:Key="CreateFlyout3">
             <Flyout.FlyoutPresenterStyle>
                 <Style TargetType="FlyoutPresenter">
-                    <Setter Property="Background" Value="Black"/>
+                    <Setter Property="Background" Value="LightBlue"/>
                 </Style>
             </Flyout.FlyoutPresenterStyle>
             <StackPanel>
-                <Grid x:Name="conMeet" Grid.Row="1">
+                <Grid x:Name="conMeet">
                     <GridView x:Name="DatabaseSalesBag" ItemsSource="{Binding}"
-                Foreground="White" FontSize="65" ItemTemplate="{StaticResource SalesbagTemplate}"
+                Foreground="Black" FontSize="65" ItemTemplate="{StaticResource SalesbagTemplate}"
                 SelectionMode="Single"/>
                 </Grid>
                 <Button Content="Add" HorizontalAlignment="Right" Tapped="onConnect"/>
@@ -85,6 +87,7 @@
                 <StackPanel Orientation="Vertical" VerticalAlignment="Center">
                     <TextBlock Text="{Binding StartTime}"/>
                     <TextBlock Text="{Binding Subject}"/>
+                    <TextBlock Text="{Binding Name}"/>
                 </StackPanel>
             </StackPanel>
         </DataTemplate>
