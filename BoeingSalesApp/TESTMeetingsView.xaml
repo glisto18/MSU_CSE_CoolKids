@@ -18,15 +18,19 @@
             </Flyout.FlyoutPresenterStyle>
 
             <StackPanel>
-                <TextBlock Text="Start Time:"/>
-                <TextBox PlaceholderText="Start Time: xx/yy/zz xx:yy:zz AM" x:Name="Cstrt"/>
-                <TextBlock Text="End Time:"/>
-                <TextBox PlaceholderText="End Time: xx/yy/zz xx:yy:xx PM" x:Name="Cend"/>
-                <TextBlock Text="Location:"/>
+                <TextBlock Text="Start Date:" Foreground="White" Margin="5" FontSize="20"/>
+                <DatePicker x:Name="strtDate"></DatePicker>
+                <TextBlock Text="Start Time:" Foreground="White" Margin="5" FontSize="20"/>
+                <TimePicker x:Name="strtTime"></TimePicker>
+
+                <TextBlock Text="End Time:" Foreground="White" Margin="5" FontSize="20"/>
+                <TimePicker x:Name="endTime"></TimePicker>
+                
+                <TextBlock Text="Location:" Foreground="White" Margin="5" FontSize="20"/>
                 <TextBox PlaceholderText="Location" x:Name="Cloc"/>
-                <TextBlock Text="Description:"/>
+                <TextBlock Text="Description:" Foreground="White" Margin="5" FontSize="20"/>
                 <TextBox PlaceholderText="Description" x:Name="Cbdy"/>
-                <TextBlock Text="Subject:"/>
+                <TextBlock Text="Subject:" Foreground="White" Margin="5" FontSize="20"/>
                 <TextBox PlaceholderText="Subject" x:Name="Csub"/>
                 <Button Content="Create" HorizontalAlignment="Right"
                         FontSize="16" Margin="0,10,0,0" Tapped="onCreate"/>
@@ -36,18 +40,40 @@
         <Flyout x:Name="SelectedMeetings" x:Key="CreateFlyout2">
                 <Flyout.FlyoutPresenterStyle>
                     <Style TargetType="FlyoutPresenter">
-                        <Setter Property="Background" Value="Black"/>
-                        <Setter Property="MinHeight" Value="300"/>
-                        <Setter Property="MinWidth" Value="300"/>
+                        <Setter Property="Background" Value="LightBlue"/>
                     </Style>                    
                 </Flyout.FlyoutPresenterStyle>
             <StackPanel>
-                <Grid x:Name="ImportGrid" Grid.Row="1">
+                <Grid x:Name="ImportGrid">
                     <GridView x:Name="ComboBox1" ItemsSource="{Binding}"
-                Foreground="White" FontSize="65"
+                Foreground="Black" FontSize="65"
                 SelectionMode="Multiple"/>
                 </Grid>
                 <Button Content="Import" HorizontalAlignment="Right" Tapped="ImportSelected"/>
+            </StackPanel>
+        </Flyout>
+        
+        <DataTemplate x:Key="SalesbagTemplate">
+            <StackPanel Orientation="Horizontal" Width="300" Height="125">
+                <StackPanel Orientation="Vertical" VerticalAlignment="Center">
+                    <TextBlock Text="{Binding Name}"/>
+                </StackPanel>
+            </StackPanel>
+        </DataTemplate>
+
+        <Flyout x:Name="ConMeetings" x:Key="CreateFlyout3">
+            <Flyout.FlyoutPresenterStyle>
+                <Style TargetType="FlyoutPresenter">
+                    <Setter Property="Background" Value="Black"/>
+                </Style>
+            </Flyout.FlyoutPresenterStyle>
+            <StackPanel>
+                <Grid x:Name="conMeet" Grid.Row="1">
+                    <GridView x:Name="DatabaseSalesBag" ItemsSource="{Binding}"
+                Foreground="White" FontSize="65" ItemTemplate="{StaticResource SalesbagTemplate}"
+                SelectionMode="Single"/>
+                </Grid>
+                <Button Content="Add" HorizontalAlignment="Right" Tapped="onConnect"/>
             </StackPanel>
         </Flyout>
 
@@ -78,7 +104,7 @@
             <TextBlock TextWrapping="NoWrap" 
                        Text="Meetings" 
                        Style="{StaticResource HeaderTextBlockStyle}" 
-                       IsHitTestVisible="false" Margin="30" />
+                       IsHitTestVisible="false" Margin="30,30,30,679" />
             <Button x:Name="newMeetingButton" 
             	Width="80" 
             	Tapped="showFlyout"
@@ -94,6 +120,8 @@
             <Button Tapped="onImport" FlyoutBase.AttachedFlyout="{StaticResource CreateFlyout2}" 
                     Content="Import Meetings" Height="108" Width="238"/>
             <Button Tapped="onDelete" Name="delBut" Content="Delete Meeting" Height="108" Width="238"/>
+            <Button Tapped="onAddButton" Name="SalesbagConnect" Content="Add Salesbag" 
+                    FlyoutBase.AttachedFlyout="{StaticResource CreateFlyout3}" Height="108" Width="238"/>
         </StackPanel>
 
         <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">

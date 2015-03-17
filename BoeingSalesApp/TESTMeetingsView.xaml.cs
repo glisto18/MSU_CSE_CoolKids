@@ -21,13 +21,20 @@ namespace BoeingSalesApp
     public sealed partial class TESTMeetingsView : Page
     {
         private DataAccess.Repository.MeetingRepository _meetingRepo;
+        private DataAccess.Repository.SalesBagRepository _salesbagRepo;
         private NavigationHelper navigationHelper;
         public TESTMeetingsView()
         {
             this.InitializeComponent();
             this.navigationHelper = new NavigationHelper(this);
             _meetingRepo = new DataAccess.Repository.MeetingRepository();
+            _salesbagRepo = new DataAccess.Repository.SalesBagRepository();
         }
+        /************************************************************************
+         * FetchSalesbag will be caled multiple times
+         * Called to refresh the view of the page
+         * Shows all meetings from the backend
+         *********************************************************************/
         private async Task FetchMeetings()
         {
             try
@@ -41,11 +48,27 @@ namespace BoeingSalesApp
                 //Crashed once did this and then it didnt. ***Need to revisit***
             }
         }
+        //gets all salesbags from backend: to do
+        private async Task FetchSalesbag()
+        {
+            try
+            {
+                var salesbags = await _salesbagRepo.GetAllAsync();
+                GridView gridView = (GridView)this.FindName("DatabaseSalesBag");
+                gridView.ItemsSource = salesbags;
+            }
+            catch (NullReferenceException e) { /**/ }
+        }
+        //onAddButton: for salesbag connection
+        private async void onAddButton(object sender, RoutedEventArgs e) { await FetchSalesbag(); showFlyout(sender, e); }
+
+        //Whenever MeetingsView page is navigated to FetchMeetings is called
         protected async override void OnNavigatedTo(NavigationEventArgs e)
         {
             navigationHelper.OnNavigatedTo(e);
             await FetchMeetings();
         }
+        //Function to handle returning to page that called MeetingsView
         private void onBack(object sender, RoutedEventArgs e)
         {
             this.Frame.GoBack();
@@ -84,9 +107,11 @@ namespace BoeingSalesApp
         public System.Collections.ObjectModel.ObservableCollection<Meetin> AllMeets = new System.Collections.ObjectModel.ObservableCollection<Meetin>();
         private async void onImport(object sender, RoutedEventArgs e)
         {
-            AllMeets.Clear();
-            string nextLine, strt="", end="", loc="", bdy="", bdyln="", ldy="", sub=""; int count = 0;
-            //await Windows.Storage.KnownFolders.PicturesLibrary.CreateFileAsync("appdata.txt", CreationCollisionOption.FailIfExists);
+            //AllMeets.Clear();
+            string nextLine, strt="", end="", loc="", bdy="", bdyln="", ldy="", sub=""; int count = 0, z, o;
+            DateTime x; var y = await _meetingRepo.GetAllAsync(); var stayMet = new List<string> { };
+            try { await Windows.Storage.KnownFolders.PicturesLibrary.CreateFileAsync("appdata.txt", CreationCollisionOption.FailIfExists); }
+            catch { }
             var meetings = await KnownFolders.PicturesLibrary.GetFileAsync("appdata.txt");
             using (StreamReader reader = new StreamReader(await meetings.OpenStreamForReadAsync()))
             {
@@ -118,13 +143,43 @@ namespace BoeingSalesApp
                     {
                         count = -1;
                         sub = nextLine;
-                        AllMeets.Add(new Meetin(strt, end, loc, bdy, ldy, sub));
+
+                        /*****************************************************************************
+                         * Two foreach loops:
+                         * 1st - Only adds meetings not already saved in database
+                         * 2nd - Only allows meetings not already in "AllMeets" to be selected from
+                         ***************************************************************************/
+                        x = DateTime.Parse(strt);
+                        z = 0; o = 0;
+                        foreach (var obj in y)
+                        {
+                            if (x == obj.StartTime)
+                                z = 1;
+                        }
+                        foreach (var obj2 in AllMeets)
+                        {
+                            if (strt == obj2.Strt)
+                                o = 1;
+                        }
+                        if (z == 0)
+                        {
+                            AllMeets.Add(new Meetin(strt, end, loc, bdy, ldy, sub));
+                            stayMet.Add(strt);
+                            stayMet.Add(end);
+                            stayMet.Add(loc);
+                            stayMet.Add(bdy);
+                            stayMet.Add("---ENDBODY---");
+                            stayMet.Add(ldy);
+                            stayMet.Add(sub);
+                        }
+
                     }
                     else { }
                     count++;
                 }
                 ComboBox1.DataContext = AllMeets;
             }
+            await Windows.Storage.FileIO.WriteLinesAsync(meetings, stayMet);
             showFlyout(sender, e);
         }
         /****************************************************************************************************
@@ -145,8 +200,6 @@ namespace BoeingSalesApp
                     AllDay = Convert.ToBoolean(selectedMeetin.Ldy),
                     Subject = selectedMeetin.Sub
                 };
-
-                //var meetingRepo = new DataAccess.Repository.MeetingRepository();
                 await _meetingRepo.SaveAsync(newMeeting);
             }
             await FetchMeetings();
@@ -167,11 +220,14 @@ namespace BoeingSalesApp
          *************************************************************************************/
         private async void onCreate(object sender, RoutedEventArgs e)
         {
+            try { await Windows.Storage.KnownFolders.PicturesLibrary.CreateFileAsync("appdatacreation.txt", CreationCollisionOption.FailIfExists); }
+            catch { }
             var meetings = await KnownFolders.PicturesLibrary.GetFileAsync("appdatacreation.txt");
+            string dtstrt = strtDate.Date.ToString().Split(' ')[0] + " " + strtTime.Time.ToString(), dtend = strtDate.Date.ToString().Split(' ')[0] + " " + endTime.Time.ToString();
             var entMet = new List<string>
             {
-                Cstrt.Text,
-                Cend.Text,
+                dtstrt,
+                dtend,
                 Cloc.Text,
                 Cbdy.Text,
                 "---ENDBODY---",
@@ -179,11 +235,11 @@ namespace BoeingSalesApp
                 Csub.Text
             };
             await Windows.Storage.FileIO.AppendLinesAsync(meetings, entMet);
-
+            
             var newMeeting = new DataAccess.Entities.Meeting
             {
-                StartTime = DateTime.Parse(Cstrt.Text),
-                EndTime = DateTime.Parse(Cend.Text),
+                StartTime = DateTime.Parse(dtstrt),
+                EndTime = DateTime.Parse(dtend),
                 Location = Cloc.Text,
                 Body = Cbdy.Text,
                 AllDay = false,
@@ -191,7 +247,7 @@ namespace BoeingSalesApp
             };
             await _meetingRepo.SaveAsync(newMeeting);
             await FetchMeetings();
-
+            
             MeetingsAdd.Hide();
         }
         /*****************************************************************************************
@@ -201,6 +257,8 @@ namespace BoeingSalesApp
          *****************************************************************************************/
         private async void onDelete(object sender, RoutedEventArgs e)
         {
+            try { await Windows.Storage.KnownFolders.PicturesLibrary.CreateFileAsync("appdatadeletion.txt", CreationCollisionOption.FailIfExists); }
+            catch { }
             var deletings = await KnownFolders.PicturesLibrary.GetFileAsync("appdatadeletion.txt");
             var delMet = new List<string> { };
             foreach (DataAccess.Entities.Meeting selectdelete in DatabaseMeetings.SelectedItems)
@@ -210,6 +268,15 @@ namespace BoeingSalesApp
             }
             await Windows.Storage.FileIO.AppendLinesAsync(deletings, delMet);
             await FetchMeetings();
+        }
+        private void onConnect(object sender, RoutedEventArgs e)
+        {
+            var salesbagto = DatabaseSalesBag.SelectedItem;
+            foreach (DataAccess.Entities.Meeting selectCon in DatabaseMeetings.SelectedItems)
+            {
+                //selectCon.SalesBag = salesbagto.ID;
+            }
+            ConMeetings.Hide();
         }
     }
 }

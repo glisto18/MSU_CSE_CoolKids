@@ -3,7 +3,6 @@ using SQLite;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace BoeingSalesApp.DataAccess.Repository
@@ -37,6 +36,13 @@ namespace BoeingSalesApp.DataAccess.Repository
         {
             var categories = await _database.Table<Category>().ToListAsync();
             return categories;
+        }
+
+        public async Task<List<Utility.DisplayCategory>> GetAllDisPlayCategoriesAsync()
+        {
+            var categories = await GetAllAsync();
+            var displayCategories = categories.Select(x => new Utility.DisplayCategory(x)).ToList();
+            return displayCategories;
         }
 
         public async Task<Category> Get(Guid categoryId)

@@ -173,6 +173,9 @@
     <Compile Include="TESTMeetingsView.xaml.cs">
       <DependentUpon>TESTMeetingsView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Utility\DisplayArtifact.cs" />
+    <Compile Include="Utility\DisplayCategory.cs" />
+    <Compile Include="Utility\IDisplayItem.cs" />
     <Compile Include="Utility\FakeSeeder.cs" />
     <Compile Include="Utility\FileStore.cs" />
     <Compile Include="Utility\TempSettings.cs" />
