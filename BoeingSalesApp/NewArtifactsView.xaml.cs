@@ -1,5 +1,6 @@
 ﻿using BoeingSalesApp.Common;
 using System;
+using System.Collections.Generic;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Navigation;
@@ -83,9 +84,20 @@ namespace BoeingSalesApp
         /// The navigation parameter is available in the LoadState method 
         /// in addition to page state preserved during an earlier session.
 
-        protected override void OnNavigatedTo(NavigationEventArgs e)
+        protected async override void OnNavigatedTo(NavigationEventArgs e)
         {
             navigationHelper.OnNavigatedTo(e);
+
+            // added ahl
+            var categoryRepo = new DataAccess.Repository.CategoryRepository();
+            var artifactRepo = new DataAccess.Repository.ArtifactRepository();
+            var displayItems = new List<Utility.IDisplayItem>();
+            var allCategories = await categoryRepo.GetAllDisPlayCategoriesAsync();
+            var allArtifacts = await artifactRepo.GetAllDisPlayArtifactsAsync();
+
+            displayItems.AddRange(allCategories);
+            displayItems.AddRange(allArtifacts);
+            ArtifactsGridView.ItemsSource = displayItems;
         }
 
         protected override void OnNavigatedFrom(NavigationEventArgs e)
