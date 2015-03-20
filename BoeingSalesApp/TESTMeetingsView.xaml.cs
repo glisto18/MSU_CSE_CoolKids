@@ -69,6 +69,12 @@ namespace BoeingSalesApp
         {
             this.Frame.GoBack();
         }
+        //Function to Launch a meeting and enter "presentation mode"
+        private void onLaunchMeet(object sender, RoutedEventArgs e)
+        {
+            if (DatabaseMeetings.SelectedItems.Count == 1)
+                this.Frame.Navigate(typeof(PresPg));//, DatabaseMeetings.SelectedItem);
+        }
         /*****************************************************************************/
 
 
@@ -175,7 +181,16 @@ namespace BoeingSalesApp
                 }
                 ComboBox1.DataContext = AllMeets;
             }
-            await Windows.Storage.FileIO.WriteLinesAsync(meetings, stayMet);
+            //await Windows.Storage.FileIO.WriteLinesAsync(meetings, stayMet);
+            using (Windows.Storage.Streams.DataWriter dw = new Windows.Storage.Streams.DataWriter(await meetings.OpenAsync(Windows.Storage.FileAccessMode.ReadWrite)))
+            {
+                foreach (var hu in stayMet)
+                {
+                    dw.WriteString(hu);
+                }
+                dw.Dispose();
+            }
+
             showFlyout(sender, e);
         }
         /****************************************************************************************************

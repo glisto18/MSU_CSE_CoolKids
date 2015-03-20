@@ -125,6 +125,7 @@
             <Button Tapped="onDelete" Name="delBut" Content="Delete Meeting" Height="108" Width="238"/>
             <Button Tapped="onAddButton" Name="SalesbagConnect" Content="Add Salesbag" 
                     FlyoutBase.AttachedFlyout="{StaticResource CreateFlyout3}" Height="108" Width="238"/>
+            <Button Tapped="onLaunchMeet" Name="launchBut" Content="Launch Meeting" Height="108" Width="238"/>
         </StackPanel>
 
         <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
