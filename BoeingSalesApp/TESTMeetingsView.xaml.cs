@@ -80,8 +80,7 @@ namespace BoeingSalesApp
                 DataAccess.Entities.Meeting ms = (DataAccess.Entities.Meeting)DatabaseMeetings.SelectedItem;
                 if (ms.SalesBag!=Guid.Empty)
                 {
-                    //DataAccess.Entities.SalesBag ts = await _salesbagRepo.Get(ms.SalesBag);
-                    this.Frame.Navigate(typeof(PresPg), ms); //ts
+                    this.Frame.Navigate(typeof(PresPg), ms);
                 }
             }
         }
@@ -275,6 +274,7 @@ namespace BoeingSalesApp
          * onDelete removes user selected items from the database
          * For now it appends to a .txt file in the pictures folder for Outlook addin to parse
          * ^ writes relevant lines from user selected objects
+         * recently added delete note if the meeting has one attached
          *****************************************************************************************/
         private async void onDelete(object sender, RoutedEventArgs e)
         {
@@ -285,6 +285,15 @@ namespace BoeingSalesApp
             foreach (DataAccess.Entities.Meeting selectdelete in DatabaseMeetings.SelectedItems)
             {
                 delMet.Add(selectdelete.StartTime.ToString());
+                if(selectdelete.Note!=null)
+                {
+                    try
+                    {
+                        var notefile = await Windows.Storage.ApplicationData.Current.LocalFolder.GetFileAsync(selectdelete.Note);
+                        await notefile.DeleteAsync();
+                    }
+                    catch { }
+                }
                 await _meetingRepo.DeleteAsync(selectdelete);
             }
             await Windows.Storage.FileIO.AppendLinesAsync(deletings, delMet);
@@ -307,6 +316,23 @@ namespace BoeingSalesApp
             }
             await FetchMeetings();
             ConMeetings.Hide();
+        }
+        /*************************************************************
+         * If only one meeting is selected
+         * If the meeting as an associated note
+         * launch the note in notepad
+         ***************************************************************/
+        private async void onNote(object sender, RoutedEventArgs e)
+        {
+            if(DatabaseMeetings.SelectedItems.Count==1)
+            {
+                DataAccess.Entities.Meeting meat = (DataAccess.Entities.Meeting)DatabaseMeetings.SelectedItem;
+                if (meat.Note != null)
+                {
+                    var note = await Windows.Storage.ApplicationData.Current.LocalFolder.GetFileAsync(meat.Note);
+                    await Windows.System.Launcher.LaunchFileAsync(note);
+                }
+            }
         }
     }
 }

@@ -28,10 +28,14 @@ namespace BoeingSalesApp
             _salesbagRepo = new DataAccess.Repository.SalesBagRepository();
             _meetingRepo = new DataAccess.Repository.MeetingRepository();
         }
+        /********************************************************************
+         * Note field is the meeting unique ID + ".txt"
+         * Should display all artifacts from salesbag
+         *********************************************************************/
         protected async override void OnNavigatedTo(NavigationEventArgs e) 
         {
-            //DataAccess.Entities.SalesBag salesbagChosen = (DataAccess.Entities.SalesBag)e.Parameter;
             launchmeet = (DataAccess.Entities.Meeting)e.Parameter;
+            launchmeet.Note = launchmeet.ID.ToString() + ".txt";
             try 
             {
                 DataAccess.Entities.SalesBag salesbagChosen = await _salesbagRepo.Get(launchmeet.SalesBag);
@@ -41,22 +45,17 @@ namespace BoeingSalesApp
             catch (NullReferenceException) { }
         }
         /*****************************************************************************
-         * If current meeting has no note associated: asks user to enter note name
-         * Opens file (associated with meeting) for writing to
+         * Creates file from "Note" field if not existed
+         * Update database by deleting and saving new meeting
          ***************************************************************************/
         private async void addNote(object sender, RoutedEventArgs e)
         {
-            if (launchmeet.Note == null || launchmeet.Note == "")
-            {
-                showFlyout(sender, e);
-                var newMeeting = launchmeet;
-                newMeeting.Note = nt.Text;
-                launchmeet.Note = nt.Text;
-                await _meetingRepo.DeleteAsync(launchmeet);
-                await _meetingRepo.SaveAsync(newMeeting);
-            }
-            else
-                noteE.ShowAt(ArtPanel);
+            showFlyout(sender, e);
+            try { await Windows.Storage.ApplicationData.Current.LocalFolder.CreateFileAsync(launchmeet.Note, Windows.Storage.CreationCollisionOption.FailIfExists); }
+            catch { }
+            var newMeeting = launchmeet;
+            await _meetingRepo.DeleteAsync(launchmeet);
+            await _meetingRepo.SaveAsync(newMeeting);
         }
         /**************************************************************
          * Adds lines from textblock to file connected to meeting
@@ -65,10 +64,11 @@ namespace BoeingSalesApp
         {
             if (launchmeet.Note == null)
                 return;
-            string filename = launchmeet.Note + ".txt";
-            var notefile = await Windows.Storage.ApplicationData.Current.LocalFolder.GetFileAsync(filename);
-            string toadd = lines.Text + "\n";
-            await Windows.Storage.FileIO.AppendTextAsync(notefile, toadd);
+            
+            var notefile = await Windows.Storage.ApplicationData.Current.LocalFolder.GetFileAsync(launchmeet.Note);
+            var listadd = await Windows.Storage.FileIO.ReadLinesAsync(notefile);
+            listadd.Add(lines.Text);
+            await Windows.Storage.FileIO.WriteLinesAsync(notefile, listadd);
             noteE.Hide();
         }
         /****************************************************************
@@ -82,15 +82,6 @@ namespace BoeingSalesApp
         private void showFlyout(object sender, RoutedEventArgs e)
         {
             FlyoutBase.ShowAttachedFlyout((FrameworkElement)sender);
-        }
-        private async void closeFlyout(object sender, RoutedEventArgs e)
-        {
-            noteT.Hide();
-            string andext = nt.Text + ".txt";
-            jonny.Text = andext;
-            try { await Windows.Storage.ApplicationData.Current.LocalFolder.CreateFileAsync(andext, Windows.Storage.CreationCollisionOption.FailIfExists); }
-            catch { }
-            showFlyout(sender, e);
         }
     }
 }
