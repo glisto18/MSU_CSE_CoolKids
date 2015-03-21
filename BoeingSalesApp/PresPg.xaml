@@ -20,8 +20,51 @@
                 </StackPanel>
         </StackPanel>
     </DataTemplate>
+        
+       <Flyout x:Name="noteE" x:Key="enterNote">
+            <Flyout.FlyoutPresenterStyle>
+                <Style TargetType="FlyoutPresenter">
+                    <Setter Property="Background" Value="Black"/>
+                    <Setter Property="MaxWidth" Value="550"/>
+                </Style>
+            </Flyout.FlyoutPresenterStyle>
+            <StackPanel>
+                <TextBox PlaceholderText="Notes" x:Name="lines" AcceptsReturn="True" 
+                         TextWrapping="Wrap" Width="500"/>
+                <Button Content="Create" HorizontalAlignment="Right" Tapped="addLines"/>
+            </StackPanel>
+        </Flyout>
+        
+        <Flyout x:Name="noteT" x:Key="titleNote">
+            <Flyout.FlyoutPresenterStyle>
+                <Style TargetType="FlyoutPresenter">
+                    <Setter Property="Background" Value="Black"/>
+                </Style>
+            </Flyout.FlyoutPresenterStyle>
+            <StackPanel>
+                <TextBox PlaceholderText="NoteName" x:Name="nt"/>
+                <Button Content="Create" HorizontalAlignment="Right" Tapped="closeFlyout"
+                        FlyoutBase.AttachedFlyout="{StaticResource enterNote}"/>
+            </StackPanel>
+        </Flyout>
 
     </Page.Resources>
+
+    <Page.BottomAppBar>
+        <AppBar Background="{StaticResource BoeingBlue}" HorizontalContentAlignment="Left">
+            <StackPanel Orientation="Horizontal">
+                <AppBarButton Name="Noter" Label="Note" Icon="Pin"
+                              Tapped="addNote" FlyoutBase.AttachedFlyout="{StaticResource titleNote}">
+                </AppBarButton>
+
+                <AppBarButton Label="Find" Icon="Find" />
+                <AppBarSeparator Foreground="White" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+                <AppBarButton Label="End Meeting" Icon="Stop" Tapped="doneMeet"/>
+                <TextBlock x:Name="jonny" HorizontalAlignment="Right"/>
+            </StackPanel>
+        </AppBar>
+    </Page.BottomAppBar>
+
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 

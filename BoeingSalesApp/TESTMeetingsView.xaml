@@ -31,7 +31,7 @@
                 <TextBlock Text="Description:" Foreground="White" Margin="5" FontSize="20"/>
                 <TextBox PlaceholderText="Description" x:Name="Cbdy"/>
                 <TextBlock Text="Subject:" Foreground="White" Margin="5" FontSize="20"/>
-                <TextBox PlaceholderText="Subject" x:Name="Csub"/>
+                <TextBox PlaceholderText="Subject" x:Name="Csub" AcceptsReturn="True" TextWrapping="Wrap"/>
                 <Button Content="Create" HorizontalAlignment="Right"
                         FontSize="16" Margin="0,10,0,0" Tapped="onCreate"/>
             </StackPanel>
@@ -88,6 +88,7 @@
                     <TextBlock Text="{Binding StartTime}"/>
                     <TextBlock Text="{Binding Subject}"/>
                     <TextBlock Text="{Binding Name}"/>
+                    <TextBlock Text="{Binding Note}"/>
                 </StackPanel>
             </StackPanel>
         </DataTemplate>

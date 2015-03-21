@@ -67,13 +67,23 @@ namespace BoeingSalesApp
         //Function to handle returning to page that called MeetingsView
         private void onBack(object sender, RoutedEventArgs e)
         {
-            this.Frame.GoBack();
+            this.Frame.Navigate(typeof(MainPage));
         }
-        //Function to Launch a meeting and enter "presentation mode"
+        /**************************************************************************
+         * Function to Launch a meeting and enter "presentation mode"
+         * Only if 1 item is selected and there is a salesbag connected
+         ***************************************************************************/
         private void onLaunchMeet(object sender, RoutedEventArgs e)
         {
             if (DatabaseMeetings.SelectedItems.Count == 1)
-                this.Frame.Navigate(typeof(PresPg));//, DatabaseMeetings.SelectedItem);
+            {
+                DataAccess.Entities.Meeting ms = (DataAccess.Entities.Meeting)DatabaseMeetings.SelectedItem;
+                if (ms.SalesBag!=Guid.Empty)
+                {
+                    //DataAccess.Entities.SalesBag ts = await _salesbagRepo.Get(ms.SalesBag);
+                    this.Frame.Navigate(typeof(PresPg), ms); //ts
+                }
+            }
         }
         /*****************************************************************************/
 
