@@ -101,7 +101,7 @@
                        Margin="0,0,30,0"/>
             <TextBlock Grid.Column="2" Name="lblCurrentCategory" Text="All" FontSize="48" FontStyle="Italic" HorizontalAlignment="Left" VerticalAlignment="Center" FontFamily="Segoe UI"/>
             <Button Grid.Column="3" HorizontalAlignment="Left" Height="82" 
-                     VerticalAlignment="Top" Width="97" BorderBrush="Transparent" Click="Button_Click">
+                     VerticalAlignment="Center" Width="97" BorderBrush="Transparent" Click="Button_Click">
                 <StackPanel>
                     <Image Source="Assets/SalesBag.Scale-100.png"/>
                 </StackPanel>
@@ -118,8 +118,8 @@
             </ComboBox>
             <!--<TextBlock Grid.Column="2" Text="All" FontSize="48" FontStyle="Italic" HorizontalAlignment="Left" VerticalAlignment="Center" FontFamily="Segoe UI"/>-->
             
-            <ListBox x:Name="SalesBagComboBox" Grid.Column="2" HorizontalAlignment="Left" Height="295" Margin="613,107,0,-262" 
-                      VerticalAlignment="Top" Width="152" Visibility="Collapsed">
+            <ListBox x:Name="SalesBagComboBox" Grid.Column="3" HorizontalAlignment="Left" Height="295" 
+                      VerticalAlignment="Top" Width="152" Visibility="Collapsed" Margin="0,140,0,-295">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <StackPanel>
