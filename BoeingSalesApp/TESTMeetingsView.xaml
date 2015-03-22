@@ -46,9 +46,9 @@
                 </Style>                    
                 </Flyout.FlyoutPresenterStyle>
             <StackPanel>
-                <Grid x:Name="ImportGrid" MaxWidth="1400" MaxHeight="800">
+                <Grid x:Name="ImportGrid" MaxWidth="2000" MaxHeight="800">
                     <GridView x:Name="ComboBox1" ItemsSource="{Binding}"
-                Foreground="Black" FontSize="65" MaxHeight="800" MaxWidth="1400"
+                Foreground="Black" FontSize="65" MaxHeight="800" MaxWidth="2000"
                 SelectionMode="Multiple"/>
                 </Grid>
                 <Button Content="Import" HorizontalAlignment="Right" Tapped="ImportSelected"/>
