@@ -27,9 +27,12 @@ namespace BoeingSalesApp.Utility
             set { }
         }
 
+        public string DisplayIcon { get; set; }
+
         public DisplayArtifact(Artifact artifact)
         {
             _artifact = artifact;
+            DisplayIcon = "Assets/Artifact.png";
         }
 
         public async Task<bool> DoubleTap()

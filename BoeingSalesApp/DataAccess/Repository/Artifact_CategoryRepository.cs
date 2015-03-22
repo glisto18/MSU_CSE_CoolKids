@@ -121,5 +121,12 @@ namespace BoeingSalesApp.DataAccess.Repository
             return displayArtifacts;
         }
 
+        public async Task<bool> DoesArtifactHaveCategory(Artifact artifact)
+        {
+            var allRelationships = await GetAllAsync();
+            var count = allRelationships.Count(x => x.ArtifactID == artifact.ID);
+            return count > 0;
+        }
+
     }
 }
