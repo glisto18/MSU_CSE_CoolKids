@@ -136,7 +136,7 @@ namespace BoeingSalesApp
                 
         }
 
-        }
+        
 
         private async Task FetchCategoryContents(Guid categoryId)
         {

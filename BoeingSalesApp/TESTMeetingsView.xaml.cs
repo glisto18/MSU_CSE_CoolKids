@@ -334,6 +334,11 @@ namespace BoeingSalesApp
                 }
             }
         }
+        /*******************************************************************
+         * Called every time a meetings object is selected
+         * if one is selected salesbag, launch, and note are viewable
+         * more than one, delete is viewable
+         *********************************************************************/
         private void hideornot(object sender, RoutedEventArgs e)
         {
             if (DatabaseMeetings.SelectedItems.Count == 1)
