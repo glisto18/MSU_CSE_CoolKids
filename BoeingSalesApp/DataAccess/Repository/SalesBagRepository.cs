@@ -17,7 +17,7 @@ namespace BoeingSalesApp.DataAccess.Repository
         /// </summary>
         public SalesBagRepository()
         {
-            var db = new Database(BoeingSalesApp.Utility.TempSettings.DbPath);
+            var db = new Database(Utility.TempSettings.DbPath);
             _database = db.GetAsyncConnection();
         }
 

@@ -73,12 +73,14 @@ namespace BoeingSalesApp.DataAccess.Repository
             return await _database.Table<Artifact>().Where(x => x.FileName == fileName).FirstAsync();
         }
 
-        public async Task<List<Utility.DisplayArtifact>> GetAllDisPlayArtifactsAsync()
+        public async Task<List<Utility.DisplayArtifact>> GetAllDisplayArtifactsAsync()
         {
             var artifacts = await GetAllAsync();
             var displayArtifacts = artifacts.Select(x => new Utility.DisplayArtifact(x)).ToList();
             return displayArtifacts;
         }
+
+        
 
     }
 }
