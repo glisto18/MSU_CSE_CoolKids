@@ -1,6 +1,13 @@
 ﻿using BoeingSalesApp.Common;
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+//using System.Windows.SystemParameters;
+using System.Runtime.InteropServices.WindowsRuntime;
+using Windows.Foundation;
+using Windows.Foundation.Collections;
+using Windows.UI.Xaml;
 using System.Threading.Tasks;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
@@ -124,8 +131,10 @@ namespace BoeingSalesApp
                 double screenWidth = System.Windows.SystemParameters.FullPrimaryScreenWidth;
 
                 
-                //myPopup.IsOpen = true;*/
-           // }
+                //myPopup.IsOpen = true;
+            }*/
+                
+        }
 
         }
 

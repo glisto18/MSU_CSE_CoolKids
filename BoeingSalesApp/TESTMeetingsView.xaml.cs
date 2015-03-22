@@ -40,13 +40,9 @@ namespace BoeingSalesApp
             try
             {
                 var meetings = await _meetingRepo.GetAllAsync();
-                GridView gridView = (GridView)this.FindName("DatabaseMeetings");
-                gridView.ItemsSource = meetings;
+                DatabaseMeetings.ItemsSource = meetings;
             }
-            catch (NullReferenceException e)
-            {
-                //Crashed once did this and then it didnt. ***Need to revisit***
-            }
+            catch (NullReferenceException e) { }
         }
         //gets all salesbags from backend: to do
         private async Task FetchSalesbag()
@@ -71,7 +67,22 @@ namespace BoeingSalesApp
         //Function to handle returning to page that called MeetingsView
         private void onBack(object sender, RoutedEventArgs e)
         {
-            this.Frame.GoBack();
+            this.Frame.Navigate(typeof(MainPage));
+        }
+        /**************************************************************************
+         * Function to Launch a meeting and enter "presentation mode"
+         * Only if 1 item is selected and there is a salesbag connected
+         ***************************************************************************/
+        private void onLaunchMeet(object sender, RoutedEventArgs e)
+        {
+            if (DatabaseMeetings.SelectedItems.Count == 1)
+            {
+                DataAccess.Entities.Meeting ms = (DataAccess.Entities.Meeting)DatabaseMeetings.SelectedItem;
+                if (ms.SalesBag!=Guid.Empty)
+                {
+                    this.Frame.Navigate(typeof(PresPg), ms);
+                }
+            }
         }
         /*****************************************************************************/
 
@@ -107,7 +118,7 @@ namespace BoeingSalesApp
         public System.Collections.ObjectModel.ObservableCollection<Meetin> AllMeets = new System.Collections.ObjectModel.ObservableCollection<Meetin>();
         private async void onImport(object sender, RoutedEventArgs e)
         {
-            //AllMeets.Clear();
+            AllMeets.Clear();
             string nextLine, strt="", end="", loc="", bdy="", bdyln="", ldy="", sub=""; int count = 0, z, o;
             DateTime x; var y = await _meetingRepo.GetAllAsync(); var stayMet = new List<string> { };
             try { await Windows.Storage.KnownFolders.PicturesLibrary.CreateFileAsync("appdata.txt", CreationCollisionOption.FailIfExists); }
@@ -179,7 +190,16 @@ namespace BoeingSalesApp
                 }
                 ComboBox1.DataContext = AllMeets;
             }
-            await Windows.Storage.FileIO.WriteLinesAsync(meetings, stayMet);
+            //await Windows.Storage.FileIO.WriteLinesAsync(meetings, stayMet);
+            using (Windows.Storage.Streams.DataWriter dw = new Windows.Storage.Streams.DataWriter(await meetings.OpenAsync(Windows.Storage.FileAccessMode.ReadWrite)))
+            {
+                foreach (var hu in stayMet)
+                {
+                    dw.WriteString(hu);
+                }
+                dw.Dispose();
+            }
+
             showFlyout(sender, e);
         }
         /****************************************************************************************************
@@ -254,6 +274,7 @@ namespace BoeingSalesApp
          * onDelete removes user selected items from the database
          * For now it appends to a .txt file in the pictures folder for Outlook addin to parse
          * ^ writes relevant lines from user selected objects
+         * recently added delete note if the meeting has one attached
          *****************************************************************************************/
         private async void onDelete(object sender, RoutedEventArgs e)
         {
@@ -264,19 +285,54 @@ namespace BoeingSalesApp
             foreach (DataAccess.Entities.Meeting selectdelete in DatabaseMeetings.SelectedItems)
             {
                 delMet.Add(selectdelete.StartTime.ToString());
+                if(selectdelete.Note!=null)
+                {
+                    try
+                    {
+                        var notefile = await Windows.Storage.ApplicationData.Current.LocalFolder.GetFileAsync(selectdelete.Note);
+                        await notefile.DeleteAsync();
+                    }
+                    catch { }
+                }
                 await _meetingRepo.DeleteAsync(selectdelete);
             }
             await Windows.Storage.FileIO.AppendLinesAsync(deletings, delMet);
             await FetchMeetings();
         }
-        private void onConnect(object sender, RoutedEventArgs e)
+        /********************************************************************************************
+         * Connects one or more meeting to a salesbag
+         * Deletes old meeting from database, then saves new one with salesbag guid and name fields
+         *******************************************************************************************/
+        private async void onConnect(object sender, RoutedEventArgs e)
         {
-            var salesbagto = DatabaseSalesBag.SelectedItem;
+            DataAccess.Entities.SalesBag salesbagto = (DataAccess.Entities.SalesBag)DatabaseSalesBag.SelectedItem;
             foreach (DataAccess.Entities.Meeting selectCon in DatabaseMeetings.SelectedItems)
             {
-                //selectCon.SalesBag = salesbagto.ID;
+                var newMeeting = selectCon;
+                newMeeting.SalesBag = salesbagto.ID;
+                newMeeting.Name = salesbagto.Name;
+                await _meetingRepo.DeleteAsync(selectCon);
+                await _meetingRepo.SaveAsync(newMeeting);
             }
+            await FetchMeetings();
             ConMeetings.Hide();
+        }
+        /*************************************************************
+         * If only one meeting is selected
+         * If the meeting as an associated note
+         * launch the note in notepad
+         ***************************************************************/
+        private async void onNote(object sender, RoutedEventArgs e)
+        {
+            if(DatabaseMeetings.SelectedItems.Count==1)
+            {
+                DataAccess.Entities.Meeting meat = (DataAccess.Entities.Meeting)DatabaseMeetings.SelectedItem;
+                if (meat.Note != null)
+                {
+                    var note = await Windows.Storage.ApplicationData.Current.LocalFolder.GetFileAsync(meat.Note);
+                    await Windows.System.Launcher.LaunchFileAsync(note);
+                }
+            }
         }
     }
 }

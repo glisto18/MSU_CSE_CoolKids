@@ -121,6 +121,9 @@
     <Compile Include="DataAccess\Entities\FolderToken.cs" />
     <Compile Include="DataAccess\Repository\FolderTokenRepository.cs" />
     <Compile Include="DataAccess\Repository\IFolderTokenRepository.cs" />
+    <Compile Include="PresPg.xaml.cs">
+      <DependentUpon>PresPg.xaml</DependentUpon>
+    </Compile>
     <Compile Include="SalesBagsView.xaml.cs">
       <DependentUpon>SalesBagsView.xaml</DependentUpon>
     </Compile>
@@ -216,6 +219,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="NewArtifactsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="PresPg.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
