@@ -26,7 +26,7 @@
                 </AppBarButton>
                 
                 <AppBarButton Label="Find" Icon="Find" />
-                <AppBarButton Label="Delete" Icon="Delete" VerticalAlignment="Top" />
+                <AppBarButton Label="Delete" Icon="Delete" Tapped="deleteArt" VerticalAlignment="Top" />
                 <AppBarButton Label="Change Title" Icon="Edit" Tapped="titleChange"/>
             </StackPanel>
         </AppBar>

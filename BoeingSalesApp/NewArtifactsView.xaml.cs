@@ -171,5 +171,9 @@ namespace BoeingSalesApp
         {
             
         }
+        private void deleteArt(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
