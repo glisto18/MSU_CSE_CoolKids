@@ -10,7 +10,46 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
-    <Page.BottomAppBar>
+    <Page.Resources>
+
+        <Flyout x:Name="titBox" x:Key="enterTit">
+            <Flyout.FlyoutPresenterStyle>
+                <Style TargetType="FlyoutPresenter">
+                    <Setter Property="Background" Value="Black"/>
+                    <Setter Property="MaxWidth" Value="550"/>
+                </Style>
+            </Flyout.FlyoutPresenterStyle>
+            <StackPanel>
+                <TextBox PlaceholderText="Artifact Title:" x:Name="newtitle" Width="500"/>
+                <Button Content="Add" HorizontalAlignment="Right" Tapped="titleChange"/>
+            </StackPanel>
+        </Flyout>
+
+            <x:String x:Key="PageName">New Artifacts View</x:String>
+
+            <DataTemplate x:Key="GridTemplate">
+                <StackPanel x:Name="GridItemContainer" Orientation="Horizontal" Width="250" Height="60" 
+                        DoubleTapped="Item_DoubleTapped"
+                        Tapped="Item_OnTapped">
+                    <Border Width="90" 
+                        Height="{Binding Height, ElementName=GridItemContainer}"
+                        Margin="10,0,0,0" 
+                        Background="LightGray">
+                        <Image Source="{Binding DisplayIcon}" Width="90" Height="60" />
+                    </Border>
+                    <StackPanel Orientation="Vertical" 
+                            VerticalAlignment="Center" 
+                            Background="LightGray"
+                            Height="60"
+                            >
+                        <TextBlock Text="{Binding DisplayName}"  Margin="5,0,0,0" Width="170" Height="20" TextTrimming="WordEllipsis" Foreground="Black" />
+                        <TextBlock Text="{Binding DisplayInfo}" Margin="5,0,0,0" Width="170" Height="20" TextTrimming="WordEllipsis" Foreground="Black"/>
+                    </StackPanel>
+                </StackPanel>
+            </DataTemplate>
+        </Page.Resources>
+
+        <Page.BottomAppBar>
         <AppBar Background="{StaticResource BoeingBlue}" HorizontalContentAlignment="Left" >
             <StackPanel Orientation="Horizontal">
                 <AppBarButton Name="newCat" Label="New Category" 
@@ -24,38 +63,14 @@
                         <TextBlock Text="Name:"/>
                         </Popup>-->
                 </AppBarButton>
-                
+
                 <AppBarButton Label="Find" Icon="Find" />
                 <AppBarButton Label="Delete" Icon="Delete" VerticalAlignment="Top" />
-                <AppBarButton Label="Change Title" Icon="Edit" Tapped="titleChange"/>
+                <AppBarButton Label="Change Title" Icon="Edit" Tapped="titleChange"
+                              FlyoutBase.AttachedFlyout="{StaticResource enterTit}"/>
             </StackPanel>
         </AppBar>
     </Page.BottomAppBar>
-
-    <Page.Resources>
-        <x:String x:Key="PageName">New Artifacts View</x:String>
-
-        <DataTemplate x:Key="GridTemplate">
-            <StackPanel x:Name="GridItemContainer" Orientation="Horizontal" Width="250" Height="60" 
-                        DoubleTapped="Item_DoubleTapped"
-                        Tapped="Item_OnTapped">
-                <Border Width="90" 
-                        Height="{Binding Height, ElementName=GridItemContainer}"
-                        Margin="10,0,0,0" 
-                        Background="LightGray">
-                    <Image Source="{Binding DisplayIcon}" Width="90" Height="60" />
-                </Border>
-                <StackPanel Orientation="Vertical" 
-                            VerticalAlignment="Center" 
-                            Background="LightGray"
-                            Height="60"
-                            >
-                    <TextBlock Text="{Binding DisplayName}"  Margin="5,0,0,0" Width="170" Height="20" TextTrimming="WordEllipsis" Foreground="Black" />
-                    <TextBlock Text="{Binding DisplayInfo}" Margin="5,0,0,0" Width="170" Height="20" TextTrimming="WordEllipsis" Foreground="Black"/>
-                </StackPanel>
-            </StackPanel>
-        </DataTemplate>
-    </Page.Resources>
 
     <!--
         This grid acts as a root panel for the page that defines two rows:

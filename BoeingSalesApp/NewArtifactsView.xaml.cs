@@ -234,7 +234,7 @@ namespace BoeingSalesApp
 
         private async void titleChange(object sender, RoutedEventArgs e)
         {
-            if(ArtifactsGridView.Items.Count==1)
+            if(ArtifactsGridView.SelectedItems.Count==1)
             {
                 DataAccess.Entities.Artifact myart = (DataAccess.Entities.Artifact)ArtifactsGridView.SelectedItem;
             }
