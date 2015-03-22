@@ -237,15 +237,21 @@ namespace BoeingSalesApp
             return bar;
         }
 
+        private void launchme(object sender, RoutedEventArgs e)
+        {
+            Windows.UI.Xaml.Controls.Primitives.FlyoutBase.ShowAttachedFlyout((FrameworkElement)sender);
+        }
+
         private async void titleChange(object sender, RoutedEventArgs e)
         {
             if (ArtifactsGridView.SelectedItems.Count == 1)
             {
-                //DataAccess.Entities.Artifact myart = (DataAccess.Entities.Artifact)ArtifactsGridView.SelectedItem;
+                string arttit = newtitle.Text;
                 var selectItem = ((IDisplayItem)ArtifactsGridView.SelectedItem).Id;
-                _artifactRepo.UpdateTitle(selectItem, "Test");
+                await _artifactRepo.UpdateTitle(selectItem, arttit);
             }
-
+            newtitle.Text = "";
+            titBox.Hide();
             await UpdateUi();
         }
 

@@ -66,8 +66,8 @@
 
                 <AppBarButton Label="Find" Icon="Find" />
                 <AppBarButton Label="Delete" Icon="Delete" VerticalAlignment="Top" />
-                <AppBarButton Label="Change Title" Icon="Edit" Tapped="titleChange"
-                              FlyoutBase.AttachedFlyout="{StaticResource enterTit}"/>
+                <AppBarButton Label="Change Title" Icon="Edit" Tapped="launchme" 
+                             Name="titler" FlyoutBase.AttachedFlyout="{StaticResource enterTit}"/>
             </StackPanel>
         </AppBar>
     </Page.BottomAppBar>

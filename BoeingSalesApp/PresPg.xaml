@@ -47,7 +47,6 @@
                 <AppBarButton Label="Find" Icon="Find" />
                 <AppBarSeparator Foreground="White" VerticalAlignment="Center" HorizontalAlignment="Left"/>
                 <AppBarButton Label="End Meeting" Icon="Stop" Tapped="doneMeet"/>
-                <TextBlock x:Name="jonny" HorizontalAlignment="Right"/>
             </StackPanel>
         </AppBar>
     </Page.BottomAppBar>
