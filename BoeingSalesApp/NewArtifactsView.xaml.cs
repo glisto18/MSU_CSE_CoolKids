@@ -166,5 +166,10 @@ namespace BoeingSalesApp
 
             //await Windows.System.Launcher.LaunchFileAsync(artifact);
         }
+
+        private void changeTitle(object sender, RoutedEventArgs e)
+        {
+            
+        }
     }
 }

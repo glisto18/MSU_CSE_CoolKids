@@ -27,9 +27,7 @@
                 
                 <AppBarButton Label="Find" Icon="Find" />
                 <AppBarButton Label="Delete" Icon="Delete" VerticalAlignment="Top" />
-                <AppBarSeparator Foreground="White" VerticalAlignment="Center" HorizontalAlignment="Left"/>
-                <AppBarButton Label="Start Meeting" Icon="Play" />
-                <AppBarButton Label="End Meeting" Icon="Stop" />
+                <AppBarButton Label="Change Title" Icon="Edit" Tapped="titleChange"/>
             </StackPanel>
         </AppBar>
     </Page.BottomAppBar>
