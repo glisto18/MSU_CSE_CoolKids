@@ -11,7 +11,7 @@
     mc:Ignorable="d">
 
     <Page.BottomAppBar>
-        <AppBar Background="{StaticResource BoeingBlue}" HorizontalContentAlignment="Left">
+        <AppBar Background="{StaticResource BoeingBlue}" HorizontalContentAlignment="Left" >
             <StackPanel Orientation="Horizontal">
                 <AppBarButton Name="newCat" Label="New Category" 
                               Icon="Add"
@@ -26,7 +26,7 @@
                 </AppBarButton>
                 
                 <AppBarButton Label="Find" Icon="Find" />
-                <AppBarButton Label="Delete" Icon="Delete" Tapped="deleteArt" VerticalAlignment="Top" />
+                <AppBarButton Label="Delete" Icon="Delete" VerticalAlignment="Top" />
                 <AppBarButton Label="Change Title" Icon="Edit" Tapped="titleChange"/>
             </StackPanel>
         </AppBar>
@@ -36,17 +36,20 @@
         <x:String x:Key="PageName">New Artifacts View</x:String>
 
         <DataTemplate x:Key="GridTemplate">
-            <StackPanel x:Name="GridItemContainer" Orientation="Horizontal" Width="250" Height="125" DoubleTapped="Item_DoubleTapped">
+            <StackPanel x:Name="GridItemContainer" Orientation="Horizontal" Width="250" Height="60" 
+                        DoubleTapped="Item_DoubleTapped"
+                        Tapped="Item_OnTapped">
                 <Border Width="90" 
                         Height="{Binding Height, ElementName=GridItemContainer}"
                         Margin="10,0,0,0" 
-                        Background="White">
-                    <Image Source="Assets/Artifacts.png" Width="90" Height="120" />
+                        Background="LightGray">
+                    <Image Source="{Binding DisplayIcon}" Width="90" Height="60" />
                 </Border>
                 <StackPanel Orientation="Vertical" 
                             VerticalAlignment="Center" 
                             Background="LightGray"
-                            Height="{Binding Height, ElementName=GridItemContainer}">
+                            Height="60"
+                            >
                     <TextBlock Text="{Binding DisplayName}"  Margin="5,0,0,0" Width="170" Height="20" TextTrimming="WordEllipsis" Foreground="Black" />
                     <TextBlock Text="{Binding DisplayInfo}" Margin="5,0,0,0" Width="170" Height="20" TextTrimming="WordEllipsis" Foreground="Black"/>
                 </StackPanel>
@@ -76,6 +79,8 @@
                 <ColumnDefinition Width="120"/>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <Button x:Name="backButton" Margin="39,59,39,0" 
                     Command="{Binding NavigationHelper.GoBackCommand, ElementName=pageRoot}"
@@ -93,15 +98,34 @@
                        VerticalAlignment="Center" 
                        Margin="0,0,30,0"/>
             <TextBlock Grid.Column="2" Name="lblCurrentCategory" Text="All" FontSize="48" FontStyle="Italic" HorizontalAlignment="Left" VerticalAlignment="Center" FontFamily="Segoe UI"/>
-            <TextBlock Grid.Column="2" Text="All" FontSize="48" FontStyle="Italic" HorizontalAlignment="Left" VerticalAlignment="Center" FontFamily="Segoe UI"/>
-            <!--Button Grid.Column="2" HorizontalAlignment="Left" Height="82" 
-                    Margin="640,25,0,0" VerticalAlignment="Top" Width="97" BorderBrush="Transparent" Click="Button_Click">
+            <Button Grid.Column="3" HorizontalAlignment="Left" Height="82" 
+                     VerticalAlignment="Center" Width="97" BorderBrush="Transparent" Click="Button_Click">
                 <StackPanel>
                     <Image Source="Assets/SalesBag.Scale-100.png"/>
                 </StackPanel>
-            </-->
-            <ComboBox x:Name="SalesBagComboBox" Grid.Column="2" HorizontalAlignment="Left" Height="295" Margin="613,107,0,-262" 
-                      VerticalAlignment="Top" Width="152" Visibility="Collapsed"/>
+            </Button>
+            <ComboBox Grid.Column="4" Name="UxCategoryBox" PlaceholderText="Select Category" HorizontalAlignment="Right">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="{Binding DisplayName}"></TextBlock>
+                        </StackPanel>
+                    </DataTemplate>
+
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+            <!--<TextBlock Grid.Column="2" Text="All" FontSize="48" FontStyle="Italic" HorizontalAlignment="Left" VerticalAlignment="Center" FontFamily="Segoe UI"/>-->
+            
+            <ListBox x:Name="SalesBagComboBox" Grid.Column="3" HorizontalAlignment="Left" Height="295" 
+                      VerticalAlignment="Top" Width="152" Visibility="Collapsed" Margin="0,140,0,-295">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel>
+                            <TextBlock Text="{Binding Path=Name}"/>
+                        </StackPanel>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
         </Grid>
 
         <GridView Grid.Row="1" x:Name="ArtifactsGridView"
@@ -110,11 +134,7 @@
             SelectionMode="Multiple" 
             CanDragItems="True" >
 
-            <!--<Button/>
-            <Button/>
-            <Button/>
-            <Button/>
-            <Button/>-->
+            
         </GridView>
 
     </Grid>

@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using BoeingSalesApp.Utility;
 
 namespace BoeingSalesApp.DataAccess.Repository
 {
@@ -41,7 +42,14 @@ namespace BoeingSalesApp.DataAccess.Repository
         public async Task<List<Utility.DisplayCategory>> GetAllDisPlayCategoriesAsync()
         {
             var categories = await GetAllAsync();
-            var displayCategories = categories.Select(x => new Utility.DisplayCategory(x)).ToList();
+            //var displayCategories = categories.Select(x => new Utility.DisplayCategory(x)).ToList();
+            var displayCategories = new List<DisplayCategory>();
+            foreach (var category in categories)
+            {
+                var displayCategory = new DisplayCategory(category);
+                displayCategory.SetNumOfChildren();
+                displayCategories.Add(displayCategory);
+            }
             return displayCategories;
         }
 

@@ -107,11 +107,41 @@ namespace BoeingSalesApp
             _artifactRepo = new DataAccess.Repository.ArtifactRepository();
             var displayItems = new List<IDisplayItem>();
             var allCategories = await _categoryRepo.GetAllDisPlayCategoriesAsync();
-            var allArtifacts = await _artifactRepo.GetAllDisplayArtifactsAsync();
+            var allArtifacts = await _artifactRepo.GetAllUncategorizedArtifacts();
 
             displayItems.AddRange(allCategories);
             displayItems.AddRange(allArtifacts);
             ArtifactsGridView.ItemsSource = displayItems;
+
+            SetCategoryCombobox(allCategories);
+
+            await CheckForNewArtifacts();
+        }
+
+        private async Task CheckForNewArtifacts()
+        {
+            // added ahl - check for new artifacts to upload
+            var fileStore = new Utility.FileStore();
+            var newArtifacts = await fileStore.CheckForNewArtifacts();
+            if (newArtifacts.Count > 0)
+            {
+                // added ahl 2/25
+                var msg = new Windows.UI.Popups.MessageDialog("New artifacts found.");
+                msg.Commands.Add(new Windows.UI.Popups.UICommand(
+                    "Edit New Artifacts.", null
+                    ));
+                msg.Commands.Add(new Windows.UI.Popups.UICommand(
+                    "Use Defualt Artifacts Attributes.", null
+                    ));
+                await msg.ShowAsync();
+            }
+        }
+
+        private void SetCategoryCombobox(List<DisplayCategory> categories)
+        {
+            // add each category to the combobox
+            UxCategoryBox.ItemsSource = categories;
+
         }
 
         protected override void OnNavigatedFrom(NavigationEventArgs e)
@@ -135,8 +165,6 @@ namespace BoeingSalesApp
             }*/
                 
         }
-
-        
 
         private async Task FetchCategoryContents(Guid categoryId)
         {
@@ -167,13 +195,49 @@ namespace BoeingSalesApp
             //await Windows.System.Launcher.LaunchFileAsync(artifact);
         }
 
-        private void changeTitle(object sender, RoutedEventArgs e)
+        private void Item_OnTapped(object sender, TappedRoutedEventArgs e)
         {
             
         }
-        private void deleteArt(object sender, RoutedEventArgs e)
-        {
 
+        private async void Button_Click(object sender, RoutedEventArgs e)
+        {
+            //DR - On button click, we want to hide and display the listbox
+            //  If the listbox is visible, collapse it.  Otherwise...
+            if (this.SalesBagComboBox.Visibility == Windows.UI.Xaml.Visibility.Visible)
+                this.SalesBagComboBox.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
+            else
+            {
+                //DR - This is a bit hacky but in order to display a "New SalesBag" item in the listbox
+                //  we need to make a salesbag with the name "New SalesBag".  Since the bag isn't saved into
+                //  the database we can do this every time the listbox is made visible.
+                var emptyNewBag = new SalesBag();
+                emptyNewBag.Name = "[New SalesBag]";
+
+                //DR - emptySalesbag is made, make combobox visible, get the list of all salesbags
+                this.SalesBagComboBox.Visibility = Windows.UI.Xaml.Visibility.Visible;
+                List<SalesBag> salesBagList = await GetSalesBags();
+
+                //DR - Add the empty bag to the list and set as the box's item source
+                //  badabing badaboom
+                salesBagList.Add(emptyNewBag);
+                this.SalesBagComboBox.ItemsSource = salesBagList;
+            }
+        }
+
+        private async Task<List<SalesBag>> GetSalesBags()
+        {
+            var foo = new DataAccess.Repository.SalesBagRepository();
+            List<SalesBag> bar = await foo.GetAllAsync();
+            return bar;
+        }
+
+        private async void titleChange(object sender, RoutedEventArgs e)
+        {
+            if(ArtifactsGridView.Items.Count==1)
+            {
+                DataAccess.Entities.Artifact myart = (DataAccess.Entities.Artifact)ArtifactsGridView.SelectedItem;
+            }
         }
     }
 }

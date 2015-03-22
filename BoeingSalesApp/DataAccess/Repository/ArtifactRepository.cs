@@ -80,7 +80,21 @@ namespace BoeingSalesApp.DataAccess.Repository
             return displayArtifacts;
         }
 
-        
+        public async Task<List<Utility.DisplayArtifact>> GetAllUncategorizedArtifacts()
+        {
+            var allArtifacts = await GetAllAsync();
+            var artifactCategoryRepo = new Artifact_CategoryRepository();
+            var uncategorizedArtifacts = new List<Utility.DisplayArtifact>();
+            foreach (var artifact in allArtifacts)
+            {
+                if (!await artifactCategoryRepo.DoesArtifactHaveCategory(artifact))
+                {
+                    uncategorizedArtifacts.Add(new Utility.DisplayArtifact(artifact));
+                }
+            }
+
+            return uncategorizedArtifacts;
+        }
 
     }
 }
