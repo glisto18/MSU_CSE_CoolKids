@@ -128,5 +128,10 @@ namespace BoeingSalesApp
             }*/
 
         }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+//            this.SalesBagComboBox.Visibility = 
+        }
     }
 }
