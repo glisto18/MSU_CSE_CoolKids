@@ -88,7 +88,6 @@
                     <TextBlock Text="{Binding StartTime}"/>
                     <TextBlock Text="{Binding Subject}"/>
                     <TextBlock Text="{Binding Name}"/>
-                    <TextBlock Text="{Binding Note}"/>
                 </StackPanel>
             </StackPanel>
         </DataTemplate>
@@ -123,17 +122,20 @@
         <StackPanel Grid.Column="0" Orientation="Vertical" Margin="0,115,0,0">
             <Button Tapped="onImport" FlyoutBase.AttachedFlyout="{StaticResource CreateFlyout2}" 
                     Content="Import Meetings" Height="108" Width="238"/>
-            <Button Tapped="onDelete" Name="delBut" Content="Delete Meeting" Height="108" Width="238"/>
-            <Button Tapped="onAddButton" Name="SalesbagConnect" Content="Add Salesbag" 
+            <Button Tapped="onDelete" Name="delBut" Content="Delete Meeting" 
+                    Visibility="Collapsed" Height="108" Width="238"/>
+            <Button Tapped="onAddButton" Name="SalesbagConnect" Content="Add Salesbag" Visibility="Collapsed"
                     FlyoutBase.AttachedFlyout="{StaticResource CreateFlyout3}" Height="108" Width="238"/>
-            <Button Tapped="onLaunchMeet" Name="launchBut" Content="Launch Meeting" Height="108" Width="238"/>
-            <Button Tapped="onNote" Name="noteView" Content="View Meeting Note" Height="108" Width="238"/>
+            <Button Tapped="onLaunchMeet" Name="launchBut" Content="Launch Meeting" 
+                    Visibility="Collapsed" Height="108" Width="238"/>
+            <Button Tapped="onNote" Name="noteView" Content="View Meeting Note" 
+                    Visibility="Collapsed" Height="108" Width="238"/>
         </StackPanel>
 
         <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
             <GridView x:Name="DatabaseMeetings" ItemsSource="{Binding}"
                 Foreground="White" FontSize="65" ItemTemplate="{StaticResource MeetingTemplate}"
-                SelectionMode="Multiple"  Margin="229,108,0,10"/>
+                SelectionMode="Multiple"  Margin="229,108,0,10" Tapped="hideornot"/>
         </Grid>
 
     </Grid>

@@ -334,5 +334,27 @@ namespace BoeingSalesApp
                 }
             }
         }
+        private void hideornot(object sender, RoutedEventArgs e)
+        {
+            if (DatabaseMeetings.SelectedItems.Count == 1)
+            {
+                DataAccess.Entities.Meeting ms = (DataAccess.Entities.Meeting)DatabaseMeetings.SelectedItem;
+                if(ms.Note!=null)
+                    noteView.Visibility = Windows.UI.Xaml.Visibility.Visible;
+                SalesbagConnect.Visibility = Windows.UI.Xaml.Visibility.Visible;
+                launchBut.Visibility = Windows.UI.Xaml.Visibility.Visible;
+            }
+            else if(DatabaseMeetings.SelectedItems.Count > 0)
+            {
+                delBut.Visibility = Windows.UI.Xaml.Visibility.Visible;
+            }
+            else
+            {
+                noteView.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
+                delBut.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
+                SalesbagConnect.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
+                launchBut.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
+            }
+        }
     }
 }
