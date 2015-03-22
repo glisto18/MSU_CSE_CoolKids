@@ -107,11 +107,20 @@ namespace BoeingSalesApp
             _artifactRepo = new DataAccess.Repository.ArtifactRepository();
             var displayItems = new List<IDisplayItem>();
             var allCategories = await _categoryRepo.GetAllDisPlayCategoriesAsync();
-            var allArtifacts = await _artifactRepo.GetAllDisplayArtifactsAsync();
+            var allArtifacts = await _artifactRepo.GetAllUncategorizedArtifacts();
 
             displayItems.AddRange(allCategories);
             displayItems.AddRange(allArtifacts);
             ArtifactsGridView.ItemsSource = displayItems;
+
+            SetCategoryCombobox(allCategories);
+        }
+
+        private void SetCategoryCombobox(List<DisplayCategory> categories)
+        {
+            // add each category to the combobox
+            UxCategoryBox.ItemsSource = categories;
+
         }
 
         protected override void OnNavigatedFrom(NavigationEventArgs e)

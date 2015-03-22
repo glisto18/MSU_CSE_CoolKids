@@ -21,6 +21,8 @@ namespace BoeingSalesApp.Utility
             set {  }
         }
 
+        public string DisplayIcon { get; set; }
+
         public string DisplayInfo
         {
             get { return string.Format("{0} Artifacts.", _numOfChildren); }
@@ -33,8 +35,14 @@ namespace BoeingSalesApp.Utility
         public DisplayCategory(DataAccess.Entities.Category category)
         {
             _category = category;
+            DisplayIcon = "Assets/Artifacts.png";
+        }
 
-            // set _numOfChildren here
+        public async Task SetNumOfChildren()
+        {
+            var artifactCategoryRepo = new DataAccess.Repository.Artifact_CategoryRepository();
+            var artifactsInCategory = await artifactCategoryRepo.GetAllArtifactsForCategory(_category);
+            _numOfChildren = artifactsInCategory.Count;
         }
 
         public async Task<bool> DoubleTap()

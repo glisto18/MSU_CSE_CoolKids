@@ -69,6 +69,7 @@ namespace BoeingSalesApp
             var listadd = await Windows.Storage.FileIO.ReadLinesAsync(notefile);
             listadd.Add(lines.Text);
             await Windows.Storage.FileIO.WriteLinesAsync(notefile, listadd);
+            lines.Text = "";
             noteE.Hide();
         }
         /****************************************************************
