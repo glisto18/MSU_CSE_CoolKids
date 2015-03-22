@@ -24,7 +24,7 @@
                         <TextBlock Text="Name:"/>
                         </Popup>-->
                 </AppBarButton>
-
+                
                 <AppBarButton Label="Find" Icon="Find" />
                 <AppBarButton Label="Delete" Icon="Delete" VerticalAlignment="Top" />
                 <AppBarSeparator Foreground="White" VerticalAlignment="Center" HorizontalAlignment="Left"/>
@@ -38,7 +38,7 @@
         <x:String x:Key="PageName">New Artifacts View</x:String>
 
         <DataTemplate x:Key="GridTemplate">
-            <StackPanel x:Name="GridItemContainer" Orientation="Horizontal" Width="250" Height="125">
+            <StackPanel x:Name="GridItemContainer" Orientation="Horizontal" Width="250" Height="125" DoubleTapped="Item_DoubleTapped">
                 <Border Width="90" 
                         Height="{Binding Height, ElementName=GridItemContainer}"
                         Margin="10,0,0,0" 
@@ -94,6 +94,7 @@
                        TextWrapping="NoWrap" 
                        VerticalAlignment="Center" 
                        Margin="0,0,30,0"/>
+            <TextBlock Grid.Column="2" Name="lblCurrentCategory" Text="All" FontSize="48" FontStyle="Italic" HorizontalAlignment="Left" VerticalAlignment="Center" FontFamily="Segoe UI"/>
             <TextBlock Grid.Column="2" Text="All" FontSize="48" FontStyle="Italic" HorizontalAlignment="Left" VerticalAlignment="Center" FontFamily="Segoe UI"/>
             <Button Grid.Column="2" HorizontalAlignment="Left" Height="82" 
                     Margin="640,25,0,0" VerticalAlignment="Top" Width="97" BorderBrush="Transparent" Click="Button_Click">

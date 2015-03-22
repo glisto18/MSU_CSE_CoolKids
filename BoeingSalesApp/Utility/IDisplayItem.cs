@@ -1,4 +1,8 @@
 ﻿
+
+using System;
+using System.Threading.Tasks;
+
 namespace BoeingSalesApp.Utility
 {
     /// <summary>
@@ -9,5 +13,10 @@ namespace BoeingSalesApp.Utility
         string DisplayName { get; set; }
 
         string DisplayInfo { get; set; }
+
+        Guid Id { get; set; }
+
+        // returns true or false, if true the caller will know to do an action, if false, the caller does nothing.
+        Task<bool> DoubleTap();
     }
 }

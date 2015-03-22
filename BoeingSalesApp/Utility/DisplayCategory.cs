@@ -9,6 +9,12 @@ namespace BoeingSalesApp.Utility
     class DisplayCategory : IDisplayItem
     {
         private DataAccess.Entities.Category _category;
+
+        public Guid Id
+        {
+            get { return _category.ID; }
+            set { }
+        }
         public string DisplayName
         {
             get { return _category.Name; }
@@ -29,6 +35,11 @@ namespace BoeingSalesApp.Utility
             _category = category;
 
             // set _numOfChildren here
+        }
+
+        public async Task<bool> DoubleTap()
+        {
+            return true;
         }
     }
 }

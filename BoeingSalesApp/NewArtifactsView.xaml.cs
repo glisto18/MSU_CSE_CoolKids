@@ -8,9 +8,13 @@ using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
+using System.Threading.Tasks;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Navigation;
+using BoeingSalesApp.DataAccess.Entities;
+using BoeingSalesApp.Utility;
+
 
 // The Basic Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234237
 
@@ -25,6 +29,9 @@ namespace BoeingSalesApp
         private NavigationHelper navigationHelper;
         private ObservableDictionary defaultViewModel = new ObservableDictionary();
         String categoryShown = "All";
+
+        private DataAccess.Repository.CategoryRepository _categoryRepo;
+        private DataAccess.Repository.ArtifactRepository _artifactRepo;
 
 
         /// <summary>
@@ -86,8 +93,8 @@ namespace BoeingSalesApp
         /// NavigationHelper to respond to the page's navigation methods.
         /// 
         /// Page specific logic should be placed in event handlers for the  
-        /// <see cref="GridCS.Common.NavigationHelper.LoadState"/>
-        /// and <see cref="GridCS.Common.NavigationHelper.SaveState"/>.
+        /// <see cref="Common.NavigationHelper.LoadState"/>
+        /// and <see cref="Common.NavigationHelper.SaveState"/>.
         /// The navigation parameter is available in the LoadState method 
         /// in addition to page state preserved during an earlier session.
 
@@ -96,11 +103,11 @@ namespace BoeingSalesApp
             navigationHelper.OnNavigatedTo(e);
 
             // added ahl
-            var categoryRepo = new DataAccess.Repository.CategoryRepository();
-            var artifactRepo = new DataAccess.Repository.ArtifactRepository();
-            var displayItems = new List<Utility.IDisplayItem>();
-            var allCategories = await categoryRepo.GetAllDisPlayCategoriesAsync();
-            var allArtifacts = await artifactRepo.GetAllDisPlayArtifactsAsync();
+            _categoryRepo = new DataAccess.Repository.CategoryRepository();
+            _artifactRepo = new DataAccess.Repository.ArtifactRepository();
+            var displayItems = new List<IDisplayItem>();
+            var allCategories = await _categoryRepo.GetAllDisPlayCategoriesAsync();
+            var allArtifacts = await _artifactRepo.GetAllDisplayArtifactsAsync();
 
             displayItems.AddRange(allCategories);
             displayItems.AddRange(allArtifacts);
@@ -126,12 +133,38 @@ namespace BoeingSalesApp
                 
                 //myPopup.IsOpen = true;
             }*/
+                
+        }
 
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private async Task FetchCategoryContents(Guid categoryId)
         {
-//            this.SalesBagComboBox.Visibility = 
+            var artifactCategoryRepo = new DataAccess.Repository.Artifact_CategoryRepository();
+            var category = await _categoryRepo.Get(categoryId);
+            var allArtifacts = await artifactCategoryRepo.GetAllDisplayArtifactsForCategory(category);
+
+            ArtifactsGridView.ItemsSource = allArtifacts;
+            lblCurrentCategory.Text = category.Name;
+        }
+
+        private async void Item_DoubleTapped(object sender, DoubleTappedRoutedEventArgs e)
+        {
+            var artifactPanel = (StackPanel)sender;
+            var displayItem = (IDisplayItem)artifactPanel.DataContext;
+            var doSomething = await displayItem.DoubleTap();
+
+            if (doSomething)
+            {
+                // if doSomething in this context is true, show the Category on the page
+                await FetchCategoryContents(displayItem.Id);
+            }
+
+
+            //var fileStore = new Utility.FileStore();
+            //var artifact = await fileStore.GetArtifact(artifactContext.FileName);
+
+            //await Windows.System.Launcher.LaunchFileAsync(artifact);
         }
     }
 }
