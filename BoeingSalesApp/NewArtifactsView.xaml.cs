@@ -163,7 +163,7 @@ namespace BoeingSalesApp
                 
                 //myPopup.IsOpen = true;
             }*/
-
+                
         }
 
         private async Task FetchCategoryContents(Guid categoryId)
@@ -197,7 +197,7 @@ namespace BoeingSalesApp
 
         private void Item_OnTapped(object sender, TappedRoutedEventArgs e)
         {
-
+            
         }
 
         private async void Button_Click(object sender, RoutedEventArgs e)
@@ -230,6 +230,14 @@ namespace BoeingSalesApp
             var foo = new DataAccess.Repository.SalesBagRepository();
             List<SalesBag> bar = await foo.GetAllAsync();
             return bar;
+        }
+
+        private async void titleChange(object sender, RoutedEventArgs e)
+        {
+            if(ArtifactsGridView.Items.Count==1)
+            {
+                DataAccess.Entities.Artifact myart = (DataAccess.Entities.Artifact)ArtifactsGridView.SelectedItem;
+            }
         }
 
         private void UxCategoryBox_OnDragOver(object sender, DragEventArgs e)

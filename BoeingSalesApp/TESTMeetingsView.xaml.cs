@@ -334,6 +334,11 @@ namespace BoeingSalesApp
                 }
             }
         }
+        /*******************************************************************
+         * Called every time a meetings object is selected
+         * if one is selected salesbag, launch, and note are viewable
+         * more than one, delete is viewable
+         *********************************************************************/
         private void hideornot(object sender, RoutedEventArgs e)
         {
             if (DatabaseMeetings.SelectedItems.Count == 1)
@@ -343,10 +348,12 @@ namespace BoeingSalesApp
                     noteView.Visibility = Windows.UI.Xaml.Visibility.Visible;
                 SalesbagConnect.Visibility = Windows.UI.Xaml.Visibility.Visible;
                 launchBut.Visibility = Windows.UI.Xaml.Visibility.Visible;
+                delBut.Visibility = Windows.UI.Xaml.Visibility.Visible;
             }
             else if(DatabaseMeetings.SelectedItems.Count > 0)
             {
-                delBut.Visibility = Windows.UI.Xaml.Visibility.Visible;
+                noteView.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
+                launchBut.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
             }
             else
             {
