@@ -21,6 +21,7 @@ namespace BoeingSalesApp
         private DataAccess.Repository.SalesBagRepository _salesbagRepo;
         private DataAccess.Repository.MeetingRepository _meetingRepo;
         private DataAccess.Repository.ArtifactRepository _artRepo;
+        private DataAccess.Repository.CategoryRepository _catRepo;
         private DataAccess.Entities.Meeting launchmeet;
         public PresPg()
         {
@@ -29,6 +30,7 @@ namespace BoeingSalesApp
             _salesbagRepo = new DataAccess.Repository.SalesBagRepository();
             _meetingRepo = new DataAccess.Repository.MeetingRepository();
             _artRepo = new DataAccess.Repository.ArtifactRepository();
+            _catRepo = new DataAccess.Repository.CategoryRepository();
         }
         /********************************************************************
          * Note field is the meeting unique ID + ".txt"
@@ -89,13 +91,15 @@ namespace BoeingSalesApp
         
         private async void onFind(object sender, RoutedEventArgs e)
         {
+            botBar.Visibility = Visibility.Collapsed;
             var allarts = await _artRepo.GetAllAsync();
             ArtView.ItemsSource = allarts;
-            //var fewarts = await _artRepo.FindArtifact(magicmaker.Text);
-            foreach (var thisart in allarts)
-            {
-                
-            }
+            var fewarts = Utility.DisplayConverter.ToDisplayArtifacts(await _artRepo.Search(magicmaker.Text));
+            var fewcat = Utility.DisplayConverter.ToDisplayCategories(await _catRepo.Search(magicmaker.Text));
+            var dispitems = new List<Utility.IDisplayItem>();
+            dispitems.AddRange(fewarts);
+            dispitems.AddRange(fewcat);
+            ArtView.ItemsSource = dispitems;
         }
     }
 }
