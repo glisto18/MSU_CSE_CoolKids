@@ -116,6 +116,27 @@ namespace BoeingSalesApp
             ArtifactsGridView.ItemsSource = displayItems;
 
             SetCategoryCombobox(allCategories);
+
+            await CheckForNewArtifacts();
+        }
+
+        private async Task CheckForNewArtifacts()
+        {
+            // added ahl - check for new artifacts to upload
+            var fileStore = new Utility.FileStore();
+            var newArtifacts = await fileStore.CheckForNewArtifacts();
+            if (newArtifacts.Count > 0)
+            {
+                // added ahl 2/25
+                var msg = new Windows.UI.Popups.MessageDialog("New artifacts found.");
+                msg.Commands.Add(new Windows.UI.Popups.UICommand(
+                    "Edit New Artifacts.", null
+                    ));
+                msg.Commands.Add(new Windows.UI.Popups.UICommand(
+                    "Use Defualt Artifacts Attributes.", null
+                    ));
+                await msg.ShowAsync();
+            }
         }
 
         private void SetCategoryCombobox(List<DisplayCategory> categories)
@@ -176,6 +197,11 @@ namespace BoeingSalesApp
             //var artifact = await fileStore.GetArtifact(artifactContext.FileName);
 
             //await Windows.System.Launcher.LaunchFileAsync(artifact);
+        }
+
+        private void Item_OnTapped(object sender, TappedRoutedEventArgs e)
+        {
+            
         }
     }
 }
