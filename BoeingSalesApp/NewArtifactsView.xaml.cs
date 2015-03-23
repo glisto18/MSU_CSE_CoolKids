@@ -9,7 +9,6 @@ using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
 using System.Threading.Tasks;
-
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Navigation;
@@ -110,7 +109,6 @@ namespace BoeingSalesApp
             var allCategories = await _categoryRepo.GetAllDisPlayCategoriesAsync();
             var allArtifacts = await _artifactRepo.GetAllUncategorizedArtifacts();
 
-            
             displayItems.AddRange(allCategories);
             displayItems.AddRange(allArtifacts);
             ArtifactsGridView.ItemsSource = displayItems;
@@ -168,8 +166,6 @@ namespace BoeingSalesApp
                 
         }
 
-        
-
         private async Task FetchCategoryContents(Guid categoryId)
         {
             var artifactCategoryRepo = new DataAccess.Repository.Artifact_CategoryRepository();
@@ -202,6 +198,38 @@ namespace BoeingSalesApp
         private void Item_OnTapped(object sender, TappedRoutedEventArgs e)
         {
             
+        }
+
+        private async void Button_Click(object sender, RoutedEventArgs e)
+        {
+            //DR - On button click, we want to hide and display the listbox
+            //  If the listbox is visible, collapse it.  Otherwise...
+            if (this.SalesBagComboBox.Visibility == Windows.UI.Xaml.Visibility.Visible)
+                this.SalesBagComboBox.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
+            else
+            {
+                //DR - This is a bit hacky but in order to display a "New SalesBag" item in the listbox
+                //  we need to make a salesbag with the name "New SalesBag".  Since the bag isn't saved into
+                //  the database we can do this every time the listbox is made visible.
+                var emptyNewBag = new SalesBag();
+                emptyNewBag.Name = "[New SalesBag]";
+
+                //DR - emptySalesbag is made, make combobox visible, get the list of all salesbags
+                this.SalesBagComboBox.Visibility = Windows.UI.Xaml.Visibility.Visible;
+                List<SalesBag> salesBagList = await GetSalesBags();
+
+                //DR - Add the empty bag to the list and set as the box's item source
+                //  badabing badaboom
+                salesBagList.Add(emptyNewBag);
+                this.SalesBagComboBox.ItemsSource = salesBagList;
+            }
+        }
+
+        private async Task<List<SalesBag>> GetSalesBags()
+        {
+            var foo = new DataAccess.Repository.SalesBagRepository();
+            List<SalesBag> bar = await foo.GetAllAsync();
+            return bar;
         }
     }
 }

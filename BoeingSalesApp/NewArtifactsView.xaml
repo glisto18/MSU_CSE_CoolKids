@@ -117,9 +117,17 @@
                 <StackPanel>
                     <Image Source="Assets/SalesBag.Scale-100.png"/>
                 </StackPanel>
-            </Button>-->
-            <ComboBox x:Name="SalesBagComboBox" Grid.Column="2" HorizontalAlignment="Left" Height="295" Margin="613,107,0,-262" 
-                      VerticalAlignment="Top" Width="152" Visibility="Collapsed"/>
+            </Button>
+            <ListBox x:Name="SalesBagComboBox" Grid.Column="2" HorizontalAlignment="Left" Height="295" Margin="613,107,0,-262" 
+                      VerticalAlignment="Top" Width="152" Visibility="Collapsed">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel>
+                            <TextBlock Text="{Binding Path=Name}"/>
+                        </StackPanel>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
         </Grid>
 
         <GridView Grid.Row="1" x:Name="ArtifactsGridView"
@@ -134,8 +142,6 @@
             <Button/>
             <Button/>-->
         </GridView>
-        
-        
-        
+
     </Grid>
 </Page>
