@@ -28,7 +28,7 @@ namespace BoeingSalesApp
 
         private NavigationHelper navigationHelper;
         private ObservableDictionary defaultViewModel = new ObservableDictionary();
-        String categoryShown = "All";
+        private String categoryShown = "All";
 
         private DataAccess.Repository.CategoryRepository _categoryRepo;
         private DataAccess.Repository.ArtifactRepository _artifactRepo;
@@ -98,7 +98,7 @@ namespace BoeingSalesApp
         /// The navigation parameter is available in the LoadState method 
         /// in addition to page state preserved during an earlier session.
 
-        protected async override void OnNavigatedTo(NavigationEventArgs e)
+        protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
             navigationHelper.OnNavigatedTo(e);
 
@@ -163,7 +163,7 @@ namespace BoeingSalesApp
                 
                 //myPopup.IsOpen = true;
             }*/
-                
+
         }
 
         private async Task FetchCategoryContents(Guid categoryId)
@@ -178,8 +178,8 @@ namespace BoeingSalesApp
 
         private async void Item_DoubleTapped(object sender, DoubleTappedRoutedEventArgs e)
         {
-            var artifactPanel = (StackPanel)sender;
-            var displayItem = (IDisplayItem)artifactPanel.DataContext;
+            var artifactPanel = (StackPanel) sender;
+            var displayItem = (IDisplayItem) artifactPanel.DataContext;
             var doSomething = await displayItem.DoubleTap();
 
             if (doSomething)
@@ -197,7 +197,7 @@ namespace BoeingSalesApp
 
         private void Item_OnTapped(object sender, TappedRoutedEventArgs e)
         {
-            
+
         }
 
         private async void Button_Click(object sender, RoutedEventArgs e)
@@ -230,6 +230,11 @@ namespace BoeingSalesApp
             var foo = new DataAccess.Repository.SalesBagRepository();
             List<SalesBag> bar = await foo.GetAllAsync();
             return bar;
+        }
+
+        private void UxCategoryBox_OnDragOver(object sender, DragEventArgs e)
+        {
+            UxCategoryBox.IsDropDownOpen = true;
         }
     }
 }
