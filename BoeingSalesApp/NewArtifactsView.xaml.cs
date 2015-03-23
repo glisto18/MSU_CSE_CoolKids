@@ -13,6 +13,7 @@ using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Navigation;
 using BoeingSalesApp.DataAccess.Entities;
+using BoeingSalesApp.DataAccess.Repository;
 using BoeingSalesApp.Utility;
 
 
@@ -100,6 +101,9 @@ namespace BoeingSalesApp
 
         protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
+            _categoryRepo = new DataAccess.Repository.CategoryRepository();
+            _artifactRepo = new DataAccess.Repository.ArtifactRepository();
+
             navigationHelper.OnNavigatedTo(e);
 
             await UpdateUi();
@@ -110,8 +114,7 @@ namespace BoeingSalesApp
         private async Task UpdateUi()
         {
             // added ahl
-            _categoryRepo = new DataAccess.Repository.CategoryRepository();
-            _artifactRepo = new DataAccess.Repository.ArtifactRepository();
+            
             var displayItems = new List<IDisplayItem>();
             var allCategories = await _categoryRepo.GetAllDisPlayCategoriesAsync();
             var allArtifacts = await _artifactRepo.GetAllUncategorizedArtifacts();
@@ -202,6 +205,15 @@ namespace BoeingSalesApp
 
         private void Item_OnTapped(object sender, TappedRoutedEventArgs e)
         {
+            //if (ArtifactsGridView.SelectedItems.Count > 0)
+            //{
+            //    uxAppBar.
+            //    uxAppBar.IsOpen = true;
+            //}
+            //else
+            //{
+            //    uxAppBar.IsOpen = false;
+            //}
             
         }
 
@@ -258,6 +270,41 @@ namespace BoeingSalesApp
         private void UxCategoryBox_OnDragOver(object sender, DragEventArgs e)
         {
             UxCategoryBox.IsDropDownOpen = true;
+        }
+
+        private async void Item_OnDrop(object sender, DragEventArgs e)
+        {
+            var selectedItems = ArtifactsGridView.SelectedItems;
+            var destinationItem = (IDisplayItem)((StackPanel) sender).DataContext;
+            if (destinationItem.GetType() != typeof (DisplayCategory))
+            {
+                return;
+            }
+            var destinationCategory = ((DisplayCategory)destinationItem).GetCategory();
+            var artifactCategoryRepo = new Artifact_CategoryRepository();
+            foreach (IDisplayItem item in selectedItems)
+            {
+                if (item.GetType() != typeof (DisplayArtifact))
+                {
+                    return;
+                }
+                var artifact = ((DisplayArtifact)item).GetArtifact();
+                await artifactCategoryRepo.AddRelationship(artifact, destinationCategory);
+            }
+            
+            await UpdateUi();
+        }
+
+        private void ArtifactsGridView_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (ArtifactsGridView.SelectedItems.Count > 0 && lblCurrentCategory.Text != "All" && lblCurrentCategory.Text != "")
+            {
+                uxRemoveFromCategory.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                uxRemoveFromCategory.Visibility = Visibility.Collapsed;
+            }
         }
     }
 }
