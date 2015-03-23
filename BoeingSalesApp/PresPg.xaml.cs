@@ -86,12 +86,15 @@ namespace BoeingSalesApp
         {
             FlyoutBase.ShowAttachedFlyout((FrameworkElement)sender);
         }
+        
         private async void onFind(object sender, RoutedEventArgs e)
         {
             var allarts = await _artRepo.GetAllAsync();
-            foreach(var thisart in allarts)
+            ArtView.ItemsSource = allarts;
+            //var fewarts = await _artRepo.FindArtifact(magicmaker.Text);
+            foreach (var thisart in allarts)
             {
-                //stuff
+                
             }
         }
     }
