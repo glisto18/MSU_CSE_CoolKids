@@ -48,7 +48,20 @@
                     </StackPanel>
                 </StackPanel>
             </DataTemplate>
-        </Page.Resources>
+
+        <Flyout x:Name="finder" x:Key="artlookup">
+            <Flyout.FlyoutPresenterStyle>
+                <Style TargetType="FlyoutPresenter">
+                    <Setter Property="Background" Value="Black"/>
+                    <Setter Property="MaxWidth" Value="550"/>
+                </Style>
+            </Flyout.FlyoutPresenterStyle>
+            <StackPanel>
+                <TextBox PlaceholderText="SearchByTitle" x:Name="magicmaker" 
+                         TextWrapping="Wrap" Width="500" TextChanged="onFind"/>
+            </StackPanel>
+        </Flyout>
+    </Page.Resources>
 
         <Page.BottomAppBar>
         <AppBar Background="{StaticResource BoeingBlue}" HorizontalContentAlignment="Left" 
@@ -66,7 +79,8 @@
                         </Popup>-->
                 </AppBarButton>
 
-                <AppBarButton Label="Find" Icon="Find" />
+                <AppBarButton Label="Find" Icon="Find" Tapped="launchme" 
+                              FlyoutBase.AttachedFlyout="{StaticResource artlookup}"/>
                 <AppBarButton Label="Delete" Icon="Delete" VerticalAlignment="Top" />
                 <AppBarButton Label="Change Title" Icon="Edit" Tapped="launchme" 
                              Name="titler" FlyoutBase.AttachedFlyout="{StaticResource enterTit}"/>
