@@ -96,5 +96,24 @@ namespace BoeingSalesApp.DataAccess.Repository
             return uncategorizedArtifacts;
         }
 
+        /// <summary>
+        /// Returns true on update, false on no update
+        /// </summary>
+        /// <param name="artifactId"></param>
+        /// <param name="newTitle"></param>
+        /// <returns></returns>
+        public async Task<bool> UpdateTitle(Guid artifactId, string newTitle)
+        {
+            var artifact = await Get(artifactId);
+            if (artifact != null)
+            {
+                artifact.Title = newTitle;
+                await _database.UpdateAsync(artifact);
+                return true;
+            }
+            return false;
+
+        }
+
     }
 }

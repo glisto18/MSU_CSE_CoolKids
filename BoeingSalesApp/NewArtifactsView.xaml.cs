@@ -102,6 +102,13 @@ namespace BoeingSalesApp
         {
             navigationHelper.OnNavigatedTo(e);
 
+            await UpdateUi();
+
+            await CheckForNewArtifacts();
+        }
+
+        private async Task UpdateUi()
+        {
             // added ahl
             _categoryRepo = new DataAccess.Repository.CategoryRepository();
             _artifactRepo = new DataAccess.Repository.ArtifactRepository();
@@ -114,8 +121,6 @@ namespace BoeingSalesApp
             ArtifactsGridView.ItemsSource = displayItems;
 
             SetCategoryCombobox(allCategories);
-
-            await CheckForNewArtifacts();
         }
 
         private async Task CheckForNewArtifacts()
@@ -234,10 +239,14 @@ namespace BoeingSalesApp
 
         private async void titleChange(object sender, RoutedEventArgs e)
         {
-            if(ArtifactsGridView.Items.Count==1)
+            if (ArtifactsGridView.SelectedItems.Count == 1)
             {
-                DataAccess.Entities.Artifact myart = (DataAccess.Entities.Artifact)ArtifactsGridView.SelectedItem;
+                //DataAccess.Entities.Artifact myart = (DataAccess.Entities.Artifact)ArtifactsGridView.SelectedItem;
+                var selectItem = ((IDisplayItem)ArtifactsGridView.SelectedItem).Id;
+                _artifactRepo.UpdateTitle(selectItem, "Test");
             }
+
+            await UpdateUi();
         }
 
         private void UxCategoryBox_OnDragOver(object sender, DragEventArgs e)
