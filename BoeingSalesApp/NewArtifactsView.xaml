@@ -38,17 +38,18 @@
         <x:String x:Key="PageName">New Artifacts View</x:String>
 
         <DataTemplate x:Key="GridTemplate">
-            <StackPanel x:Name="GridItemContainer" Orientation="Horizontal" Width="250" Height="100" DoubleTapped="Item_DoubleTapped">
+            <StackPanel x:Name="GridItemContainer" Orientation="Horizontal" Width="250" Height="60" DoubleTapped="Item_DoubleTapped">
                 <Border Width="90" 
                         Height="{Binding Height, ElementName=GridItemContainer}"
                         Margin="10,0,0,0" 
-                        Background="White">
-                    <Image Source="{Binding DisplayIcon}" Width="90" Height="120" />
+                        Background="LightGray">
+                    <Image Source="{Binding DisplayIcon}" Width="90" Height="60" />
                 </Border>
                 <StackPanel Orientation="Vertical" 
                             VerticalAlignment="Center" 
                             Background="LightGray"
-                            Height="{Binding Height, ElementName=GridItemContainer}">
+                            Height="60"
+                            >
                     <TextBlock Text="{Binding DisplayName}"  Margin="5,0,0,0" Width="170" Height="20" TextTrimming="WordEllipsis" Foreground="Black" />
                     <TextBlock Text="{Binding DisplayInfo}" Margin="5,0,0,0" Width="170" Height="20" TextTrimming="WordEllipsis" Foreground="Black"/>
                 </StackPanel>
