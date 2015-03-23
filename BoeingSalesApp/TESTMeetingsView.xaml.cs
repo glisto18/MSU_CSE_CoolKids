@@ -267,7 +267,8 @@ namespace BoeingSalesApp
             };
             await _meetingRepo.SaveAsync(newMeeting);
             await FetchMeetings();
-            
+
+            Cloc.Text = ""; Cbdy.Text = ""; Csub.Text = "";
             MeetingsAdd.Hide();
         }
         /*****************************************************************************************
