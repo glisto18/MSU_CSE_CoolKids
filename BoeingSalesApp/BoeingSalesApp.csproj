@@ -178,6 +178,7 @@
     </Compile>
     <Compile Include="Utility\DisplayArtifact.cs" />
     <Compile Include="Utility\DisplayCategory.cs" />
+    <Compile Include="Utility\DisplayConverter.cs" />
     <Compile Include="Utility\IDisplayItem.cs" />
     <Compile Include="Utility\FakeSeeder.cs" />
     <Compile Include="Utility\FileStore.cs" />
