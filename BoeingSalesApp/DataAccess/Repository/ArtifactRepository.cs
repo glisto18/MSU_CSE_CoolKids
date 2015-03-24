@@ -48,7 +48,14 @@ namespace BoeingSalesApp.DataAccess.Repository
 
         public async Task<Artifact> Get(Guid artifactId)
         {
-            return await _database.GetAsync<Artifact>(artifactId);
+            try
+            {
+                return await _database.GetAsync<Artifact>(artifactId);
+            }
+            catch
+            {
+                return null;
+            }        
         }
 
         public async Task<bool> DoesExist(Guid artifactId)

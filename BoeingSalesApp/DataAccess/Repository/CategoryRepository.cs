@@ -55,7 +55,17 @@ namespace BoeingSalesApp.DataAccess.Repository
 
         public async Task<Category> Get(Guid categoryId)
         {
-            return await _database.GetAsync<Category>(categoryId);
+            Category category;
+            try
+            {
+                category = await _database.GetAsync<Category>(categoryId);
+            }
+            catch(InvalidOperationException e)
+            {
+                return null;
+            }
+            return category;
+
         }
 
         public async Task<Category> Get(string name)

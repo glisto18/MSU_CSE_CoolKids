@@ -30,6 +30,7 @@
             <DataTemplate x:Key="GridTemplate">
                 <StackPanel x:Name="GridItemContainer" Orientation="Horizontal" Width="250" Height="60" 
                         DoubleTapped="Item_DoubleTapped"
+                        Drop="Item_OnDrop" AllowDrop="True"
                         Tapped="Item_OnTapped">
                     <Border Width="90" 
                         Height="{Binding Height, ElementName=GridItemContainer}"
@@ -50,7 +51,7 @@
         </Page.Resources>
 
         <Page.BottomAppBar>
-        <AppBar Background="{StaticResource BoeingBlue}" HorizontalContentAlignment="Left" >
+        <AppBar Background="{StaticResource BoeingBlue}" HorizontalContentAlignment="Left" Name="uxAppBar">
             <StackPanel Orientation="Horizontal">
                 <AppBarButton Name="newCat" Label="New Category" 
                               Icon="Add"

@@ -28,6 +28,11 @@ namespace BoeingSalesApp.Utility
             set { }
         }
 
+        public Artifact GetArtifact()
+        {
+            return _artifact;
+        }
+
         public string DisplayIcon { get; set; }
 
         public DisplayArtifact(Artifact artifact)
