@@ -15,6 +15,7 @@ using Windows.UI.Xaml.Navigation;
 using BoeingSalesApp.DataAccess.Entities;
 using BoeingSalesApp.DataAccess.Repository;
 using BoeingSalesApp.Utility;
+using Microsoft.Office.Interop.Outlook;
 
 
 // The Basic Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234237
@@ -34,6 +35,8 @@ namespace BoeingSalesApp
         private DataAccess.Repository.CategoryRepository _categoryRepo;
         private DataAccess.Repository.ArtifactRepository _artifactRepo;
 
+        private bool _isInCategory = false;
+
 
         /// <summary>
         /// This can be changed to a strongly typed view model.
@@ -50,6 +53,20 @@ namespace BoeingSalesApp
         public NavigationHelper NavigationHelper
         {
             get { return this.navigationHelper; }
+        }
+
+        private async void onBack(object sender, RoutedEventArgs e)
+        {
+            if (_isInCategory)
+            {
+                _isInCategory = false;
+                await UpdateUi();
+            }
+            else
+            {
+                Frame.GoBack();
+            }
+            
         }
 
 
@@ -103,6 +120,9 @@ namespace BoeingSalesApp
         {
             _categoryRepo = new DataAccess.Repository.CategoryRepository();
             _artifactRepo = new DataAccess.Repository.ArtifactRepository();
+
+
+            var foo = await _categoryRepo.Search("cat");
 
             navigationHelper.OnNavigatedTo(e);
 
@@ -194,6 +214,7 @@ namespace BoeingSalesApp
             {
                 // if doSomething in this context is true, show the Category on the page
                 await FetchCategoryContents(displayItem.Id);
+                _isInCategory = true;
             }
 
 
@@ -297,7 +318,7 @@ namespace BoeingSalesApp
 
         private void ArtifactsGridView_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (ArtifactsGridView.SelectedItems.Count > 0 && lblCurrentCategory.Text != "All" && lblCurrentCategory.Text != "")
+            if (ArtifactsGridView.SelectedItems.Count > 0 && _isInCategory == true)
             {
                 uxRemoveFromCategory.Visibility = Visibility.Visible;
             }

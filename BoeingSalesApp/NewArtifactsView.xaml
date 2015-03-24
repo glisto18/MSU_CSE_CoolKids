@@ -101,7 +101,8 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <Button x:Name="backButton" Margin="39,59,39,0" 
-                    Command="{Binding NavigationHelper.GoBackCommand, ElementName=pageRoot}"
+                    Tapped="onBack"
+                    
                     Style="{StaticResource NavigationBackButtonNormalStyle}"
                     VerticalAlignment="Top"
                     AutomationProperties.Name="Back"
