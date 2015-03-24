@@ -118,16 +118,16 @@
             </ComboBox>
             <!--<TextBlock Grid.Column="2" Text="All" FontSize="48" FontStyle="Italic" HorizontalAlignment="Left" VerticalAlignment="Center" FontFamily="Segoe UI"/>-->
             
-            <ListBox x:Name="SalesBagComboBox" Grid.Column="3" HorizontalAlignment="Left" Height="295" 
+            <ComboBox x:Name="SalesBagComboBox" Grid.Column="3" HorizontalAlignment="Left" Height="295" 
                       VerticalAlignment="Top" Width="152" Visibility="Collapsed" Margin="0,140,0,-295">
-                <ListBox.ItemTemplate>
+                <ComboBox.ItemTemplate>
                     <DataTemplate>
                         <StackPanel>
                             <TextBlock Text="{Binding Path=Name}"/>
                         </StackPanel>
                     </DataTemplate>
-                </ListBox.ItemTemplate>
-            </ListBox>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
         </Grid>
 
         <GridView Grid.Row="1" x:Name="ArtifactsGridView"
