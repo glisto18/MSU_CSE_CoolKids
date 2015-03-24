@@ -101,6 +101,9 @@ namespace BoeingSalesApp
 
         protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
+            _categoryRepo = new DataAccess.Repository.CategoryRepository();
+            _artifactRepo = new DataAccess.Repository.ArtifactRepository();
+
             navigationHelper.OnNavigatedTo(e);
 
             await UpdateUi();
@@ -111,8 +114,7 @@ namespace BoeingSalesApp
         private async Task UpdateUi()
         {
             // added ahl
-            _categoryRepo = new DataAccess.Repository.CategoryRepository();
-            _artifactRepo = new DataAccess.Repository.ArtifactRepository();
+            
             var displayItems = new List<IDisplayItem>();
             var allCategories = await _categoryRepo.GetAllDisPlayCategoriesAsync();
             var allArtifacts = await _artifactRepo.GetAllUncategorizedArtifacts();
@@ -291,6 +293,18 @@ namespace BoeingSalesApp
             }
             
             await UpdateUi();
+        }
+
+        private void ArtifactsGridView_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (ArtifactsGridView.SelectedItems.Count > 0 && lblCurrentCategory.Text != "All" && lblCurrentCategory.Text != "")
+            {
+                uxRemoveFromCategory.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                uxRemoveFromCategory.Visibility = Visibility.Collapsed;
+            }
         }
     }
 }

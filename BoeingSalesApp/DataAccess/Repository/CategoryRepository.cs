@@ -90,5 +90,15 @@ namespace BoeingSalesApp.DataAccess.Repository
            return count > 0;
        }
 
+       public async Task<List<Category>> Search(string searchTerm)
+       {
+           var query = string.Format(@"SELECT * 
+                    FROM Category
+                    WHERE LOWER(Name) LIKE '%{0}%' ", searchTerm.ToLower());
+           var results = await _database.QueryAsync<Category>(query);
+
+           return results.ToList();
+       }
+
     }
 }

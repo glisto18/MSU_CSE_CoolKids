@@ -122,5 +122,16 @@ namespace BoeingSalesApp.DataAccess.Repository
 
         }
 
+        public async Task<List<Artifact>> Search(string searchTerm)
+        {
+
+            var query = string.Format(@"SELECT * 
+                    FROM Artifact
+                    WHERE LOWER(Title) LIKE '%{0}%' or LOWER(FileName) LIKE '%{0}%' ", searchTerm.ToLower());
+            var results = await _database.QueryAsync<Artifact>(query);
+
+            return results.ToList();
+        }
+
     }
 }
