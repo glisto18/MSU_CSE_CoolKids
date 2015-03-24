@@ -20,6 +20,7 @@ namespace BoeingSalesApp
         private DataAccess.Repository.SalesBag_ArtifactRepository _asalesbagRepo;
         private DataAccess.Repository.SalesBagRepository _salesbagRepo;
         private DataAccess.Repository.MeetingRepository _meetingRepo;
+        private DataAccess.Repository.ArtifactRepository _artRepo;
         private DataAccess.Entities.Meeting launchmeet;
         public PresPg()
         {
@@ -27,6 +28,7 @@ namespace BoeingSalesApp
             _asalesbagRepo = new DataAccess.Repository.SalesBag_ArtifactRepository();
             _salesbagRepo = new DataAccess.Repository.SalesBagRepository();
             _meetingRepo = new DataAccess.Repository.MeetingRepository();
+            _artRepo = new DataAccess.Repository.ArtifactRepository();
         }
         /********************************************************************
          * Note field is the meeting unique ID + ".txt"
@@ -83,6 +85,14 @@ namespace BoeingSalesApp
         private void showFlyout(object sender, RoutedEventArgs e)
         {
             FlyoutBase.ShowAttachedFlyout((FrameworkElement)sender);
+        }
+        private async void onFind(object sender, RoutedEventArgs e)
+        {
+            var allarts = await _artRepo.GetAllAsync();
+            foreach(var thisart in allarts)
+            {
+                //stuff
+            }
         }
     }
 }
