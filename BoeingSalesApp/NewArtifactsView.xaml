@@ -10,36 +10,28 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
-    <Page.BottomAppBar>
-        <AppBar Background="{StaticResource BoeingBlue}" HorizontalContentAlignment="Left" >
-            <StackPanel Orientation="Horizontal">
-                <AppBarButton Name="newCat" Label="New Category" 
-                              Icon="Add"
-                              Tapped="newCat_Tapped">
-                    <Popup Name="myPopup"
-                           >
-                        <TextBlock Text="Name:"/>
-                    </Popup>
-                    <!--<Popup Name="myPopup" IsOpen="{Binding ElementName=newCat, Path=Is, Mode=OneWay}">
-                        <TextBlock Text="Name:"/>
-                        </Popup>-->
-                </AppBarButton>
-                
-                <AppBarButton Label="Find" Icon="Find" />
-                <AppBarButton Label="Delete" Icon="Delete" VerticalAlignment="Top" />
-                <AppBarSeparator Foreground="White" VerticalAlignment="Center" HorizontalAlignment="Left"/>
-                <AppBarButton Label="Start Meeting" Icon="Play" />
-                <AppBarButton Label="End Meeting" Icon="Stop" />
-            </StackPanel>
-        </AppBar>
-    </Page.BottomAppBar>
-
     <Page.Resources>
+                
+        <Flyout x:Name="titBox" x:Key="enterTit">
+            <Flyout.FlyoutPresenterStyle>
+                <Style TargetType="FlyoutPresenter">
+                    <Setter Property="Background" Value="Black"/>
+                    <Setter Property="MaxWidth" Value="550"/>
+                </Style>
+            </Flyout.FlyoutPresenterStyle>
+            <StackPanel>
+                <TextBox PlaceholderText="Artifact Title:" x:Name="newtitle" Width="500"/>
+                <Button Content="Add" HorizontalAlignment="Right" Tapped="titleChange"/>
+            </StackPanel>
+        </Flyout>
+
         <x:String x:Key="PageName">New Artifacts View</x:String>
 
         <DataTemplate x:Key="GridTemplate">
             <StackPanel x:Name="GridItemContainer" Orientation="Horizontal" Width="250" Height="60" 
                         DoubleTapped="Item_DoubleTapped"
+                        Drop="Item_OnDrop" 
+                        AllowDrop="True"
                         Tapped="Item_OnTapped">
                 <Border Width="90" 
                         Height="{Binding Height, ElementName=GridItemContainer}"
@@ -57,7 +49,46 @@
                 </StackPanel>
             </StackPanel>
         </DataTemplate>
+
+        <Flyout x:Name="finder" x:Key="artlookup">
+            <Flyout.FlyoutPresenterStyle>
+                <Style TargetType="FlyoutPresenter">
+                    <Setter Property="Background" Value="Black"/>
+                    <Setter Property="MaxWidth" Value="550"/>
+                </Style>
+            </Flyout.FlyoutPresenterStyle>
+            <StackPanel>
+                <TextBox PlaceholderText="SearchByTitle" x:Name="magicmaker" 
+                         TextWrapping="Wrap" Width="500" TextChanged="onFind"/>
+            </StackPanel>
+        </Flyout>
     </Page.Resources>
+
+        <Page.BottomAppBar>
+        <AppBar Background="{StaticResource BoeingBlue}" HorizontalContentAlignment="Left" 
+                Name="uxAppBar">
+            <StackPanel Orientation="Horizontal">
+                <AppBarButton Name="newCat" Label="New Category" 
+                              Icon="Add"
+                              Tapped="newCat_Tapped">
+                    <Popup Name="myPopup"
+                           >
+                        <TextBlock Text="Name:"/>
+                    </Popup>
+                    <!--<Popup Name="myPopup" IsOpen="{Binding ElementName=newCat, Path=Is, Mode=OneWay}">
+                        <TextBlock Text="Name:"/>
+                        </Popup>-->
+                </AppBarButton>
+
+                <AppBarButton Label="Find" Icon="Find" Tapped="launchme" 
+                              FlyoutBase.AttachedFlyout="{StaticResource artlookup}"/>
+                <AppBarButton Label="Delete" Icon="Delete" VerticalAlignment="Top" />
+                <AppBarButton Label="Change Title" Icon="Edit" Tapped="launchme" 
+                             Name="titler" FlyoutBase.AttachedFlyout="{StaticResource enterTit}"/>
+                <AppBarButton Label="Remove From Category" Icon="Remove" Visibility="Collapsed" Name="uxRemoveFromCategory" />
+            </StackPanel>
+        </AppBar>
+    </Page.BottomAppBar>
 
     <!--
         This grid acts as a root panel for the page that defines two rows:
@@ -85,7 +116,7 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <Button x:Name="backButton" Margin="39,59,39,0" 
-                    Command="{Binding NavigationHelper.GoBackCommand, ElementName=pageRoot}"
+                    Tapped="onBack"
                     Style="{StaticResource NavigationBackButtonNormalStyle}"
                     VerticalAlignment="Top"
                     AutomationProperties.Name="Back"
@@ -106,11 +137,15 @@
                     <Image Source="Assets/SalesBag.Scale-100.png"/>
                 </StackPanel>
             </Button>
-            <ComboBox Grid.Column="4" Name="UxCategoryBox" PlaceholderText="Select Category" HorizontalAlignment="Right">
+            <ComboBox Grid.Column="4" Name="UxCategoryBox" PlaceholderText="Select Category"
+                      
+                      HorizontalAlignment="Right">
                 <ComboBox.ItemTemplate>
                     <DataTemplate>
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="{Binding DisplayName}"></TextBlock>
+                        <StackPanel Orientation="Horizontal"
+                                    DragOver="UxCategoryBox_OnDragOver">
+                            <Image Source="{Binding DisplayIcon}"  Height="30" />
+                            <TextBlock Text="{Binding DisplayName}" Margin="5"></TextBlock>
                         </StackPanel>
                     </DataTemplate>
 
@@ -132,12 +167,14 @@
 
         <GridView Grid.Row="1" x:Name="ArtifactsGridView"
             ItemTemplate="{StaticResource GridTemplate}"
+            SelectionChanged="ArtifactsGridView_OnSelectionChanged"
             VerticalAlignment="Top"
             SelectionMode="Multiple" 
             CanDragItems="True" >
 
             
         </GridView>
+
 
     </Grid>
 </Page>

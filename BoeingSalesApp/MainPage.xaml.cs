@@ -17,6 +17,7 @@ using BoeingSalesApp.DataAccess.Entities;
 using BoeingSalesApp.DataAccess.Repository;
 using SQLite;
 using System.Threading.Tasks;
+using Core = Windows.ApplicationModel.Core;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234238
 // hello world
@@ -59,5 +60,10 @@ namespace BoeingSalesApp
         {
             this.Frame.Navigate(typeof(SalesBagsView));
         }
+        /*
+        private void theWindowMaker(object sender, RoutedEventArgs e)
+        {
+           Core.CoreApplicationView newView = Core.CoreApplication.CreateNewView();
+        }*/
     }
 }
