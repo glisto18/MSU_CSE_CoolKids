@@ -327,5 +327,17 @@ namespace BoeingSalesApp
                 uxRemoveFromCategory.Visibility = Visibility.Collapsed;
             }
         }
+
+        private async void onFind(object sender, RoutedEventArgs e)
+        {
+            var allarts = await _artifactRepo.GetAllAsync();
+            ArtifactsGridView.ItemsSource = allarts;
+            var fewarts = Utility.DisplayConverter.ToDisplayArtifacts(await _artifactRepo.Search(magicmaker.Text));
+            var fewcat = Utility.DisplayConverter.ToDisplayCategories(await _categoryRepo.Search(magicmaker.Text));
+            var dispitems = new List<Utility.IDisplayItem>();
+            dispitems.AddRange(fewarts);
+            dispitems.AddRange(fewcat);
+            ArtifactsGridView.ItemsSource = dispitems;
+        }
     }
 }

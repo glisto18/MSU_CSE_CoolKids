@@ -12,11 +12,11 @@
     <DataTemplate x:Key="ArtTemplate">
         <StackPanel Orientation="Horizontal" Width="300" Height="125">
             <Border Width="90" Height="100" Margin="10">
-                <Image Source="Assets/Artifact.png" Width="90" Height="120" />
+                    <Image Source="{Binding DisplayIcon}" Width="90" Height="120" />
             </Border>
             <StackPanel Orientation="Vertical" VerticalAlignment="Center">
-                <TextBlock Text="{Binding Title}"/>
-                <TextBlock Text="{Binding FileType}"/>
+                <TextBlock Text="{Binding DisplayName}"/>
+                <TextBlock Text="{Binding DisplayInfo}"/>
                 </StackPanel>
         </StackPanel>
     </DataTemplate>
@@ -51,14 +51,14 @@
     </Page.Resources>
 
     <Page.BottomAppBar>
-        <AppBar Background="{StaticResource BoeingBlue}" HorizontalContentAlignment="Left">
+        <AppBar Background="{StaticResource BoeingBlue}" HorizontalContentAlignment="Left" Name="botBar">
             <StackPanel Orientation="Horizontal">
                 <AppBarButton Name="Noter" Label="Note" Icon="Pin"
                               Tapped="addNote" FlyoutBase.AttachedFlyout="{StaticResource enterNote}">
                 </AppBarButton>
                 
                 <AppBarButton Label="Find" Icon="Find" Tapped="showFlyout"
-                              FlyoutBase.AttachedFlyout="{StaticResource enterNote}"/>
+                              FlyoutBase.AttachedFlyout="{StaticResource artlookup}"/>
                 <AppBarSeparator Foreground="White" VerticalAlignment="Center" HorizontalAlignment="Left"/>
                 <AppBarButton Label="End Meeting" Icon="Stop" Tapped="doneMeet"/>
             </StackPanel>
