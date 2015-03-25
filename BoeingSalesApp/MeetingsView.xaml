@@ -112,18 +112,18 @@
             <!-- Left-side pane with Import/Delete/Launch Meeting Buttons -->
             <StackPanel Grid.Column="0" Orientation="Vertical">
                 <Button Tapped="onImport" Content="Import Meetings" Height="108" Width="238"/>
-                <TextBlock Name="cdstrt"></TextBlock>
-                <TextBlock Name="cdend"></TextBlock>
-                <TextBlock Name="cdloc"></TextBlock>
-                <TextBlock Name="cdbdy"></TextBlock>
-                <TextBlock Name="cdldy"></TextBlock>
-                <TextBlock Name="cdsub"></TextBlock>
+                <TextBlock Name="Cstrt"></TextBlock>
+                <TextBlock Name="Cend"></TextBlock>
+                <TextBlock Name="Cloc"></TextBlock>
+                <TextBlock Name="Cbdy"></TextBlock>
+                <TextBlock Name="Cldy"></TextBlock>
+                <TextBlock Name="Csub"></TextBlock>
                 <Button Content="Delete Meeting" Height="108" Width="238"/>
                 <Button Name="impBut" Content="Launch Meeting" Height="108" Width="238"/>
             </StackPanel>
 
             <!-- Meetings GridView -->
-            <GridView x:Name="MeetingsGridView" Background="White"
+            <GridView x:Name="DatabaseMeetings" Background="White"
                 Grid.Column="1" 
                 ItemTemplate="{StaticResource MeetingsTemplate}" 
                 SelectionMode="Multiple" 
