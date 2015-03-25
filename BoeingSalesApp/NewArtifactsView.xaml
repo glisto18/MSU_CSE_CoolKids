@@ -74,9 +74,6 @@
                            >
                         <TextBlock Text="Name:"/>
                     </Popup>
-                    <!--<Popup Name="myPopup" IsOpen="{Binding ElementName=newCat, Path=Is, Mode=OneWay}">
-                        <TextBlock Text="Name:"/>
-                        </Popup>-->
                 </AppBarButton>
 
                 <AppBarButton Label="Find" Icon="Find" Tapped="launchme" 
