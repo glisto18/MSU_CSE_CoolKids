@@ -342,5 +342,12 @@ namespace BoeingSalesApp
             lblCurrentCategory.Text = "Search";
             _isInCategory = true;
         }
+
+
+        //Test Comment for branch sync testing
+        private void StackPanel_Drop(object sender, DragEventArgs e)
+        {
+            var selectedItems = ArtifactsGridView.SelectedItems;
+        }
     }
 }
