@@ -37,6 +37,7 @@ namespace BoeingSalesApp
         private DataAccess.Repository.ArtifactRepository _artifactRepo;
 
         private bool _isInCategory = false;
+        private DataAccess.Entities.Category _currentCategory = null;
 
 
         /// <summary>
@@ -61,6 +62,7 @@ namespace BoeingSalesApp
             if (_isInCategory)
             {
                 _isInCategory = false;
+                _currentCategory = null;
                 lblCurrentCategory.Text = "All";
                 await UpdateUi();
             }
@@ -217,6 +219,7 @@ namespace BoeingSalesApp
                 // if doSomething in this context is true, show the Category on the page
                 await FetchCategoryContents(displayItem.Id);
                 _isInCategory = true;
+                _currentCategory = await _categoryRepo.Get(displayItem.Id);
             }
 
 
@@ -307,12 +310,12 @@ namespace BoeingSalesApp
             var artifactCategoryRepo = new Artifact_CategoryRepository();
             foreach (IDisplayItem item in selectedItems)
             {
-                if (item.GetType() != typeof (DisplayArtifact))
+                if (item.GetType() == typeof (DisplayArtifact))
                 {
-                    return;
+                    var artifact = ((DisplayArtifact)item).GetArtifact();
+                    await artifactCategoryRepo.AddRelationship(artifact, destinationCategory);
                 }
-                var artifact = ((DisplayArtifact)item).GetArtifact();
-                await artifactCategoryRepo.AddRelationship(artifact, destinationCategory);
+                
             }
             
             await UpdateUi();
@@ -342,6 +345,26 @@ namespace BoeingSalesApp
             ArtifactsGridView.ItemsSource = dispitems;
             lblCurrentCategory.Text = "Search";
             _isInCategory = true;
+        }
+
+
+        private async void UxRemoveFromCategory_OnTapped(object sender, TappedRoutedEventArgs e)
+        {
+            if (ArtifactsGridView.SelectedItems.Count < 1)
+            {
+                return;
+            }
+            var artifactCategoryRepo = new Artifact_CategoryRepository();
+            foreach (var item in ArtifactsGridView.SelectedItems)
+            {
+                if (item.GetType() == typeof(DisplayArtifact))
+                {
+                    var artifact = ((DisplayArtifact)item).GetArtifact();
+                    await artifactCategoryRepo.RemoveArtifactFromCategory(artifact, _currentCategory);
+                    
+                }
+            }
+            await FetchCategoryContents(_currentCategory.ID);
         }
     }
 }

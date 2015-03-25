@@ -84,7 +84,8 @@
                 <AppBarButton Label="Delete" Icon="Delete" VerticalAlignment="Top" />
                 <AppBarButton Label="Change Title" Icon="Edit" Tapped="launchme" 
                              Name="titler" FlyoutBase.AttachedFlyout="{StaticResource enterTit}"/>
-                <AppBarButton Label="Remove From Category" Icon="Remove" Visibility="Collapsed" Name="uxRemoveFromCategory" />
+                <AppBarButton Label="Remove From Category" Tapped="UxRemoveFromCategory_OnTapped"
+                              Icon="Remove" Visibility="Collapsed" Name="uxRemoveFromCategory" />
             </StackPanel>
         </AppBar>
     </Page.BottomAppBar>
