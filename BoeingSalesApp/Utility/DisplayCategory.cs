@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using BoeingSalesApp.DataAccess.Entities;
 
 namespace BoeingSalesApp.Utility
 {
     class DisplayCategory : IDisplayItem
     {
-        private DataAccess.Entities.Category _category;
+        private Category _category;
 
         public Guid Id
         {
@@ -27,6 +28,11 @@ namespace BoeingSalesApp.Utility
         {
             get { return string.Format("{0} Artifacts.", _numOfChildren); }
             set { }
+        }
+
+        public Category GetCategory()
+        {
+            return _category;
         }
 
         // number of child entities contained within this category, for now children can only be artifacts.

@@ -6,7 +6,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
-    
+
     <Page.Resources>
         <x:String x:Key="ChevronGlyph">&#xE26B;</x:String>
         <!--
@@ -74,7 +74,7 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
-        
+
         <!-- Back button and "Sales Bags" header -->
         <StackPanel Grid.Row="0" Orientation="Horizontal">
             <Button x:Name="backButton2" Tapped="onBack"
@@ -108,7 +108,7 @@
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
-            
+
             <!-- Left-side pane with Import/Delete/Launch Meeting Buttons -->
             <StackPanel Grid.Column="0" Orientation="Vertical">
                 <Button Tapped="onImport" Content="Import Meetings" Height="108" Width="238"/>
@@ -121,7 +121,7 @@
                 <Button Content="Delete Meeting" Height="108" Width="238"/>
                 <Button Name="impBut" Content="Launch Meeting" Height="108" Width="238"/>
             </StackPanel>
-        
+
             <!-- Meetings GridView -->
             <GridView x:Name="MeetingsGridView" Background="White"
                 Grid.Column="1" 
@@ -144,5 +144,3 @@
         </Grid>
     </Grid>
 </Page>
-    
-

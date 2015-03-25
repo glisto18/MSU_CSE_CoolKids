@@ -12,11 +12,11 @@
     <DataTemplate x:Key="ArtTemplate">
         <StackPanel Orientation="Horizontal" Width="300" Height="125">
             <Border Width="90" Height="100" Margin="10">
-                <Image Source="Assets/Artifact.png" Width="90" Height="120" />
+                    <Image Source="{Binding DisplayIcon}" Width="90" Height="120" />
             </Border>
             <StackPanel Orientation="Vertical" VerticalAlignment="Center">
-                <TextBlock Text="{Binding Title}"/>
-                <TextBlock Text="{Binding FileType}"/>
+                <TextBlock Text="{Binding DisplayName}"/>
+                <TextBlock Text="{Binding DisplayInfo}"/>
                 </StackPanel>
         </StackPanel>
     </DataTemplate>
@@ -35,19 +35,32 @@
             </StackPanel>
         </Flyout>
 
+        <Flyout x:Name="finder" x:Key="artlookup">
+            <Flyout.FlyoutPresenterStyle>
+                <Style TargetType="FlyoutPresenter">
+                    <Setter Property="Background" Value="Black"/>
+                    <Setter Property="MaxWidth" Value="550"/>
+                </Style>
+            </Flyout.FlyoutPresenterStyle>
+            <StackPanel>
+                <TextBox PlaceholderText="SearchByTitle" x:Name="magicmaker" 
+                         TextWrapping="Wrap" Width="500" TextChanged="onFind"/>
+            </StackPanel>
+        </Flyout>
+
     </Page.Resources>
 
     <Page.BottomAppBar>
-        <AppBar Background="{StaticResource BoeingBlue}" HorizontalContentAlignment="Left">
+        <AppBar Background="{StaticResource BoeingBlue}" HorizontalContentAlignment="Left" Name="botBar">
             <StackPanel Orientation="Horizontal">
                 <AppBarButton Name="Noter" Label="Note" Icon="Pin"
                               Tapped="addNote" FlyoutBase.AttachedFlyout="{StaticResource enterNote}">
                 </AppBarButton>
-
-                <AppBarButton Label="Find" Icon="Find" />
+                
+                <AppBarButton Label="Find" Icon="Find" Tapped="showFlyout"
+                              FlyoutBase.AttachedFlyout="{StaticResource artlookup}"/>
                 <AppBarSeparator Foreground="White" VerticalAlignment="Center" HorizontalAlignment="Left"/>
                 <AppBarButton Label="End Meeting" Icon="Stop" Tapped="doneMeet"/>
-                <TextBlock x:Name="jonny" HorizontalAlignment="Right"/>
             </StackPanel>
         </AppBar>
     </Page.BottomAppBar>

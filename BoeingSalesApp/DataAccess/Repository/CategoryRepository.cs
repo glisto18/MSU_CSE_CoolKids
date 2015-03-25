@@ -55,7 +55,17 @@ namespace BoeingSalesApp.DataAccess.Repository
 
         public async Task<Category> Get(Guid categoryId)
         {
-            return await _database.GetAsync<Category>(categoryId);
+            Category category;
+            try
+            {
+                category = await _database.GetAsync<Category>(categoryId);
+            }
+            catch(InvalidOperationException e)
+            {
+                return null;
+            }
+            return category;
+
         }
 
         public async Task<Category> Get(string name)
@@ -78,6 +88,16 @@ namespace BoeingSalesApp.DataAccess.Repository
        {
            var count = await _database.Table<Category>().Where(x => x.Name == name).CountAsync();
            return count > 0;
+       }
+
+       public async Task<List<Category>> Search(string searchTerm)
+       {
+           var query = string.Format(@"SELECT * 
+                    FROM Category
+                    WHERE LOWER(Name) LIKE '%{0}%' ", searchTerm.ToLower());
+           var results = await _database.QueryAsync<Category>(query);
+
+           return results.ToList();
        }
 
     }
