@@ -82,7 +82,7 @@ namespace BoeingSalesApp
          *****************************************************************/
         private void doneMeet(object sender, RoutedEventArgs e)
         {
-            this.Frame.Navigate(typeof(TESTMeetingsView));
+            this.Frame.Navigate(typeof(MeetingsView));
         }
         private void showFlyout(object sender, RoutedEventArgs e)
         {
@@ -91,7 +91,7 @@ namespace BoeingSalesApp
         
         private async void onFind(object sender, RoutedEventArgs e)
         {
-            botBar.Visibility = Visibility.Collapsed;
+            //botBar.Visibility = Visibility.Collapsed;
             var allarts = await _artRepo.GetAllAsync();
             ArtView.ItemsSource = allarts;
             var fewarts = Utility.DisplayConverter.ToDisplayArtifacts(await _artRepo.Search(magicmaker.Text));
