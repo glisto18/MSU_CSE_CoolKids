@@ -341,6 +341,6 @@ namespace BoeingSalesApp
             ArtifactsGridView.ItemsSource = dispitems;
             lblCurrentCategory.Text = "Search";
             _isInCategory = true;
-        }
+        } 
     }
 }
