@@ -88,18 +88,26 @@ namespace BoeingSalesApp
         {
             FlyoutBase.ShowAttachedFlyout((FrameworkElement)sender);
         }
-        
+        /*******************************************************************
+         * Displays all artifacts and categories based on any string
+         *      currently in "magicmaker"
+         **********************************************************************/
         private async void onFind(object sender, RoutedEventArgs e)
         {
-            //botBar.Visibility = Visibility.Collapsed;
-            var allarts = await _artRepo.GetAllAsync();
-            ArtView.ItemsSource = allarts;
             var fewarts = Utility.DisplayConverter.ToDisplayArtifacts(await _artRepo.Search(magicmaker.Text));
             var fewcat = Utility.DisplayConverter.ToDisplayCategories(await _catRepo.Search(magicmaker.Text));
             var dispitems = new List<Utility.IDisplayItem>();
             dispitems.AddRange(fewarts);
             dispitems.AddRange(fewcat);
             ArtView.ItemsSource = dispitems;
+        }
+        /**********************************************
+         * initialize base case view and launch flyout
+         ************************************************/
+        private void onFindTap(object sender, RoutedEventArgs e)
+        {
+            onFind(sender, e);
+            showFlyout(sender, e);
         }
     }
 }

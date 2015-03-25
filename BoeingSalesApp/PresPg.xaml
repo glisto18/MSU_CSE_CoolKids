@@ -57,7 +57,7 @@
                               Tapped="addNote" FlyoutBase.AttachedFlyout="{StaticResource enterNote}">
                 </AppBarButton>
                 
-                <AppBarButton Label="Find" Icon="Find" Tapped="showFlyout"
+                <AppBarButton Label="Find" Icon="Find" Tapped="onFindTap"
                               FlyoutBase.AttachedFlyout="{StaticResource artlookup}"/>
                 <AppBarSeparator Foreground="White" VerticalAlignment="Center" HorizontalAlignment="Left"/>
                 <AppBarButton Label="End Meeting" Icon="Stop" Tapped="doneMeet"/>

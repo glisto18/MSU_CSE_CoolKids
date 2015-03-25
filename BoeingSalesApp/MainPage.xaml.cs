@@ -37,6 +37,7 @@ namespace BoeingSalesApp
 
         private void onMeetings(object sender, RoutedEventArgs e)
         {
+            //theWindowMaker(sender, e);
             this.Frame.Navigate(typeof(TESTMeetingsView));
         }
 
@@ -60,10 +61,19 @@ namespace BoeingSalesApp
         {
             this.Frame.Navigate(typeof(SalesBagsView));
         }
-        /*
-        private void theWindowMaker(object sender, RoutedEventArgs e)
+        
+        private async void theWindowMaker(object sender, RoutedEventArgs e)
         {
            Core.CoreApplicationView newView = Core.CoreApplication.CreateNewView();
-        }*/
+           int viewID = 0;
+           await newView.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
+           {
+               var frame = new Frame();
+               frame.Navigate(typeof(TESTMeetingsView), null);
+               Window.Current.Content = frame;
+               viewID = Windows.UI.ViewManagement.ApplicationView.GetForCurrentView().Id;
+           });
+           bool viewShown = await Windows.UI.ViewManagement.ApplicationViewSwitcher.TryShowAsStandaloneAsync(viewID);
+        }
     }
 }

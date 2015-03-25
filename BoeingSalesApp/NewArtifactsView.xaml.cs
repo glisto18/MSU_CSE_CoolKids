@@ -127,9 +127,11 @@ namespace BoeingSalesApp
 
             navigationHelper.OnNavigatedTo(e);
 
-            await UpdateUi();
+            //await UpdateUi();
 
             await CheckForNewArtifacts();
+
+            await UpdateUi();
         }
 
         private async Task UpdateUi()
@@ -343,8 +345,6 @@ namespace BoeingSalesApp
             _isInCategory = true;
         }
 
-
-        //Test Comment for branch sync testing
         private void StackPanel_Drop(object sender, DragEventArgs e)
         {
             var selectedItems = ArtifactsGridView.SelectedItems;
