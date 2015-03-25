@@ -15,6 +15,7 @@ using Windows.UI.Xaml.Navigation;
 using BoeingSalesApp.DataAccess.Entities;
 using BoeingSalesApp.DataAccess.Repository;
 using BoeingSalesApp.Utility;
+using Microsoft.Office.Interop.Outlook;
 
 
 // The Basic Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234237
@@ -59,7 +60,6 @@ namespace BoeingSalesApp
             if (_isInCategory)
             {
                 _isInCategory = false;
-                lblCurrentCategory.Text = "All";
                 await UpdateUi();
             }
             else
@@ -339,8 +339,6 @@ namespace BoeingSalesApp
             dispitems.AddRange(fewarts);
             dispitems.AddRange(fewcat);
             ArtifactsGridView.ItemsSource = dispitems;
-            lblCurrentCategory.Text = "Search";
-            _isInCategory = true;
-        } 
+        }
     }
 }
