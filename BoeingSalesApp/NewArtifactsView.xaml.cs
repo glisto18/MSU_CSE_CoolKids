@@ -15,7 +15,6 @@ using Windows.UI.Xaml.Navigation;
 using BoeingSalesApp.DataAccess.Entities;
 using BoeingSalesApp.DataAccess.Repository;
 using BoeingSalesApp.Utility;
-using Microsoft.Office.Interop.Outlook;
 
 
 // The Basic Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234237
@@ -36,8 +35,6 @@ namespace BoeingSalesApp
 
         private DataAccess.Repository.CategoryRepository _categoryRepo;
         private DataAccess.Repository.ArtifactRepository _artifactRepo;
-
-        private bool _isInCategory = false;
 
 
         /// <summary>
@@ -71,7 +68,6 @@ namespace BoeingSalesApp
             }
             
         }
-
 
         public NewArtifactsView()
         {
