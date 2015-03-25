@@ -60,7 +60,6 @@ namespace BoeingSalesApp
             if (_isInCategory)
             {
                 _isInCategory = false;
-                lblCurrentCategory.Text = "All";
                 await UpdateUi();
             }
             else
@@ -70,6 +69,7 @@ namespace BoeingSalesApp
             
         }
 
+        // my comment
 
         public NewArtifactsView()
         {
@@ -339,8 +339,6 @@ namespace BoeingSalesApp
             dispitems.AddRange(fewarts);
             dispitems.AddRange(fewcat);
             ArtifactsGridView.ItemsSource = dispitems;
-            lblCurrentCategory.Text = "Search";
-            _isInCategory = true;
         }
     }
 }
