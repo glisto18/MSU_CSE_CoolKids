@@ -20,6 +20,8 @@ using Microsoft.Office.Interop.Outlook;
 
 // The Basic Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234237
 
+//This page needs to be here
+
 namespace BoeingSalesApp
 {
     /// <summary>
