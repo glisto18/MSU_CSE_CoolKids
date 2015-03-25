@@ -36,13 +36,12 @@ namespace BoeingSalesApp
 
         private void onMeetings(object sender, RoutedEventArgs e)
         {
-            this.Frame.Navigate(typeof(TESTMeetingsView));
+            this.Frame.Navigate(typeof(MeetingsView));
         }
 
         private void onArtifacts(object sender, RoutedEventArgs e)
         {
-            //this.Frame.Navigate(typeof(ArtifactsView));
-            this.Frame.Navigate(typeof(NewArtifactsView));
+            this.Frame.Navigate(typeof(ArtifactsView));
         }
 
         private void onSalesBags(object sender, RoutedEventArgs e)

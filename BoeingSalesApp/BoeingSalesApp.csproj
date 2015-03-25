@@ -106,17 +106,14 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ArtifactsView.xaml.cs">
-      <DependentUpon>ArtifactsView.xaml</DependentUpon>
-    </Compile>
     <Compile Include="BagCreationView.xaml.cs">
       <DependentUpon>BagCreationView.xaml</DependentUpon>
     </Compile>
     <Compile Include="DataAccess\Entities\SalesBag_Category.cs" />
     <Compile Include="DataAccess\Repository\ISalesBag_CategoryRepository.cs" />
     <Compile Include="DataAccess\Repository\SalesBag_CategoryRepository.cs" />
-    <Compile Include="NewArtifactsView.xaml.cs">
-      <DependentUpon>NewArtifactsView.xaml</DependentUpon>
+    <Compile Include="ArtifactsView.xaml.cs">
+      <DependentUpon>ArtifactsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="DataAccess\Entities\FolderToken.cs" />
     <Compile Include="DataAccess\Repository\FolderTokenRepository.cs" />
@@ -164,14 +161,11 @@
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="MeetingsView.xaml.cs">
-      <DependentUpon>MeetingsView.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SQLite.cs" />
     <Compile Include="SQLiteAsync.cs" />
-    <Compile Include="TESTMeetingsView.xaml.cs">
-      <DependentUpon>TESTMeetingsView.xaml</DependentUpon>
+    <Compile Include="MeetingsView.xaml.cs">
+      <DependentUpon>MeetingsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Utility\DisplayArtifact.cs" />
     <Compile Include="Utility\DisplayCategory.cs" />
@@ -207,15 +201,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Page Include="ArtifactsView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="BagCreationView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="NewArtifactsView.xaml">
+    <Page Include="ArtifactsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -236,10 +226,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="MeetingsView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="TESTMeetingsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

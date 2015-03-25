@@ -1,162 +1,105 @@
 ﻿<Page
-    x:Name="pageRoot"
+    x:Name="ArtifactsPage"
     x:Class="BoeingSalesApp.ArtifactsView"
-    DataContext="{Binding DefaultViewModel, RelativeSource={RelativeSource Self}}"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:BoeingSalesApp"
     xmlns:common="using:BoeingSalesApp.Common"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d" >
+    mc:Ignorable="d">
 
     <Page.Resources>
-        <x:String x:Key="ChevronGlyph">&#xE26B;</x:String>
-        <!--
-            Collection of grouped items displayed by this page, bound to a subset
-            of the complete item list because items in groups cannot be virtualized
-        -->
-        <CollectionViewSource
-            x:Name="groupedItemsViewSource"
-            Source="{Binding Groups}"
-            IsSourceGrouped="true"
-            ItemsPath="TopItems"/>
+        <x:String x:Key="PageName">Artifacts </x:String>
 
-        <DataTemplate x:Key="ArtifactTemplate">
-            <StackPanel Orientation="Horizontal" Width="250" Height="125" DoubleTapped="Artifact_DoubleTapped">
-                <Border Width="90" Height="100" Margin="10">
-                    <Image Source="Assets/Artifact.png" Width="90" Height="120" />
+        <DataTemplate x:Key="GridTemplate">
+            <StackPanel x:Name="GridItemContainer" Orientation="Horizontal" Width="250" Height="125">
+                <Border Width="90" 
+                        Height="{Binding Height, ElementName=GridItemContainer}"
+                        Margin="10,0,0,0" 
+                        Background="White">
+                    <Image Source="Assets/Artifacts.png" Width="90" Height="120" />
                 </Border>
-                <StackPanel Orientation="Vertical" VerticalAlignment="Center">
-                    <TextBlock Text="{Binding Title}"  Margin="5,0,0,0" Width="170" Height="20" TextTrimming="WordEllipsis" Foreground="Black" />
-                    <TextBlock Text="{Binding FileType}" Margin="5,0,0,0" Width="170" Height="20" TextTrimming="WordEllipsis" Foreground="Black"/>
+                <StackPanel Orientation="Vertical" 
+                            VerticalAlignment="Center" 
+                            Background="LightGray"
+                            Height="{Binding Height, ElementName=GridItemContainer}">
+                    <TextBlock Text="{Binding DisplayName}"  Margin="5,0,0,0" Width="170" Height="20" TextTrimming="WordEllipsis" Foreground="Black" />
+                    <TextBlock Text="{Binding DisplayInfo}" Margin="5,0,0,0" Width="170" Height="20" TextTrimming="WordEllipsis" Foreground="Black"/>
                 </StackPanel>
             </StackPanel>
         </DataTemplate>
-
-        <!-- Template for the list of categories -->
-        <DataTemplate x:Key="ArtifactCategoryTemplate">
-            <StackPanel x:Name="CatStackPanel" Orientation="Vertical">
-                <TextBlock Text="{Binding Name}" 
-                           Foreground="#FF060606" 
-                           FontSize="24" 
-                           Margin="10,0,5,10" 
-                           Width="{Binding Width, ElementName=myCanvas}"
-                           Drop="TextBlock_Drop" AllowDrop="True"
-                           />
-            </StackPanel>
-        </DataTemplate>
-
-        <!-- Flyout for creating a new Category -->
-        <Flyout x:Key="CreateCategoryFlyout" x:Name="myFlyout">
-            <Flyout.FlyoutPresenterStyle>
-                <Style TargetType="FlyoutPresenter">
-                    <Setter Property="Background" Value="Black"/>
-                    <Setter Property="MinHeight" Value="300"/>
-                    <Setter Property="MinWidth" Value="300"/>
-                </Style>
-            </Flyout.FlyoutPresenterStyle>
-
-            <StackPanel>
-                <TextBlock Text="Enter name for Category:"/>
-                <TextBox x:Name="categoryInput" PlaceholderText="Category ..." />
-                <Button Content="Create" HorizontalAlignment="Right"
-                        FontSize="16" Margin="0,10,0,0" Click="onCreateCategory"/>
-            </StackPanel>
-        </Flyout>
- 
     </Page.Resources>
 
+    <Page.BottomAppBar>
+        <AppBar Background="{StaticResource BoeingBlue}" HorizontalContentAlignment="Left">
+            <StackPanel Orientation="Horizontal">
+                <AppBarButton Name="newCat" Label="New Category" 
+                              Icon="Add"
+                              Tapped="newCat_Tapped">
+                    <Popup Name="myPopup"
+                           >
+                        <TextBlock Text="Name:"/>
+                    </Popup>
+                    <!--<Popup Name="myPopup" IsOpen="{Binding ElementName=newCat, Path=Is, Mode=OneWay}">
+                        <TextBlock Text="Name:"/>
+                        </Popup>-->
+                </AppBarButton>
+
+                <AppBarButton Label="Find" Icon="Find" />
+                <AppBarButton Label="Delete" Icon="Delete" VerticalAlignment="Top" />
+                <AppBarSeparator 
+                    Foreground="White" IsCompact="True" Margin="0,10,0,0" />
+                <AppBarButton Label="Start Meeting" Icon="Play" />
+                <AppBarButton Label="End Meeting" Icon="Stop" />
+            </StackPanel>
+        </AppBar>
+    </Page.BottomAppBar>
+    
     <!--
         This grid acts as a root panel for the page that defines two rows:
         * Row 0 contains the back button and page title
-        * Row 1 contains the rest of the page layout
+        * Row 1 contains the rest of the page content
     -->
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*" />
-        </Grid.ColumnDefinitions>
 
-        <!-- Header containing Back Button, title, and upload icon -->
-        <StackPanel Grid.Row="0" Orientation="Horizontal">
-            <Button x:Name="backButton" Command="{Binding NavigationHelper.GoBackCommand, ElementName=pageRoot}"
-                        Style="{StaticResource NavigationBackButtonNormalStyle}"
-                        VerticalAlignment="Center"
-                        AutomationProperties.Name="Back"
-                        AutomationProperties.AutomationId="BackButton"
-                        AutomationProperties.ItemType="Navigation Button" RequestedTheme="Dark" Margin="30"/>
-            <TextBlock Grid.Column="1" Text="Artifacts" Style="{StaticResource HeaderTextBlockStyle}" 
-                        IsHitTestVisible="false" TextWrapping="NoWrap" VerticalAlignment="Center" />
-            <Button x:Name="uploadButton" 
-                    Height="80" 
-                    Width="80" 
-                    BorderBrush="{x:Null}" 
-                    Margin="5,0,0,0" >
-                <Image Source="Assets/Upload.png"></Image>
-            </Button>
+        <!-- Back button and "Artifacts" header -->
+        <StackPanel Orientation="Horizontal" Grid.Row="0">
+            <Button x:Name="backButton"  
+                    Command="{Binding NavigationHelper.GoBackCommand, ElementName=ArtifactsPage}"
+                    Style="{StaticResource NavigationBackButtonNormalStyle}"
+                    AutomationProperties.Name="Back"
+                    AutomationProperties.AutomationId="BackButton"
+                    AutomationProperties.ItemType="Navigation Button"
+                    Margin="30"/>
+            <TextBlock x:Name="pageTitle" 
+                        Text="{StaticResource PageName}" 
+                        Style="{StaticResource HeaderTextBlockStyle}" 
+                        Grid.Column="1" 
+                        IsHitTestVisible="false" 
+                        TextWrapping="NoWrap"  
+                        Margin="30"/>
+            <TextBlock 
+                Grid.Column="2" 
+                Text="All" 
+                FontSize="48" 
+                FontStyle="Italic" 
+                HorizontalAlignment="Left" 
+                VerticalAlignment="Center" 
+                FontFamily="Segoe UI"/>
         </StackPanel>
         
-        <!-- Grid for lower portion of UI containing Grid View and gray panel -->
-        <Grid Background="#FFEAE5E5" Margin="9,100,-9,1" Grid.RowSpan="2">
-            <Grid.RowDefinitions>
-                <RowDefinition />
-            </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="*" />
-            </Grid.ColumnDefinitions>
+        <GridView 
+            Grid.Row="1" 
+            x:Name="ArtifactsGridView"
+            ItemTemplate="{StaticResource GridTemplate}"
+            SelectionMode="Multiple" 
+            CanDragItems="True" 
+            Background="White"/>
 
-            <!-- Gray panel on the left side-->
-            <StackPanel x:Name="myPanel" Grid.Column="0" Background="#FFB6B0B0" HorizontalAlignment="Left" Width="271">
-                <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
-                    <TextBlock 
-                           Style="{StaticResource TitleTextBlockStyle}"
-                           Padding="10,0,0,0"
-                           Text="Categories" 
-                           Foreground="Black" 
-                           FontSize="26" 
-                           FontWeight="Bold" 
-                           VerticalAlignment="Center"/>
-
-                    <Button x:Name="CreateCategoryButton" BorderBrush="{x:Null}" 
-                            VerticalAlignment="Center" 
-                            Tapped="showFlyout"
-                            FlyoutBase.AttachedFlyout="{StaticResource CreateCategoryFlyout}">
-                        <Image Source="Assets/Plus_Black.png" Height="30"/>
-                    </Button>
-                </StackPanel>
-                
-    
-                <!-- List of category items -->
-                <ListView x:Name="CategoryList" VerticalContentAlignment="Center"
-                          ItemTemplate="{StaticResource ArtifactCategoryTemplate}" 
-                          HorizontalAlignment="Left"
-                          HorizontalContentAlignment="Center"
-                          VerticalAlignment="Top"  
-                          Width="{Binding Width, ElementName=myPanel}"
-                          Height="{Binding Height, ElementName=myPanel}"
-                          Foreground="Black" SelectionMode="Single" SelectionChanged="CategoryList_SelectionChanged">
-                </ListView>
-            </StackPanel>
-
-            <!-- Grid of artifacts -->
-            <GridView x:Name="ArtifactsGridView" 
-                    Grid.Column="2" 
-                            ItemTemplate="{StaticResource ArtifactTemplate}" 
-                            Height="{Binding}"
-                            VerticalAlignment="Top"
-                            SelectionMode="Multiple" 
-                            CanDragItems="True">
-                <GridView.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <ItemsWrapGrid MaximumRowsOrColumns="7"/>
-                    </ItemsPanelTemplate>
-                </GridView.ItemsPanel>
-            </GridView>
-        </Grid>
     </Grid>
 </Page>
