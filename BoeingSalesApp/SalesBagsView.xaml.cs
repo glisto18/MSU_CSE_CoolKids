@@ -38,7 +38,7 @@ namespace BoeingSalesApp
 
         private void onBack(object sender, RoutedEventArgs e)
         {
-            this.Frame.GoBack();
+            this.Frame.Navigate(typeof(MainPage));
         }
 
         private async Task FetchSalesBags()

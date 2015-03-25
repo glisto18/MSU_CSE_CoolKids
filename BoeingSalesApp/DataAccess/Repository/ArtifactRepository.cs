@@ -48,7 +48,14 @@ namespace BoeingSalesApp.DataAccess.Repository
 
         public async Task<Artifact> Get(Guid artifactId)
         {
+            try
+            {
             return await _database.GetAsync<Artifact>(artifactId);
+        }
+            catch
+            {
+                return null;
+            }        
         }
 
         public async Task<bool> DoesExist(Guid artifactId)
@@ -73,11 +80,57 @@ namespace BoeingSalesApp.DataAccess.Repository
             return await _database.Table<Artifact>().Where(x => x.FileName == fileName).FirstAsync();
         }
 
-        public async Task<List<Utility.DisplayArtifact>> GetAllDisPlayArtifactsAsync()
+        public async Task<List<Utility.DisplayArtifact>> GetAllDisplayArtifactsAsync()
         {
             var artifacts = await GetAllAsync();
             var displayArtifacts = artifacts.Select(x => new Utility.DisplayArtifact(x)).ToList();
             return displayArtifacts;
+        }
+
+        public async Task<List<Utility.DisplayArtifact>> GetAllUncategorizedArtifacts()
+        {
+            var allArtifacts = await GetAllAsync();
+            var artifactCategoryRepo = new Artifact_CategoryRepository();
+            var uncategorizedArtifacts = new List<Utility.DisplayArtifact>();
+            foreach (var artifact in allArtifacts)
+            {
+                if (!await artifactCategoryRepo.DoesArtifactHaveCategory(artifact))
+                {
+                    uncategorizedArtifacts.Add(new Utility.DisplayArtifact(artifact));
+                }
+            }
+
+            return uncategorizedArtifacts;
+        }
+
+        /// <summary>
+        /// Returns true on update, false on no update
+        /// </summary>
+        /// <param name="artifactId"></param>
+        /// <param name="newTitle"></param>
+        /// <returns></returns>
+        public async Task<bool> UpdateTitle(Guid artifactId, string newTitle)
+        {
+            var artifact = await Get(artifactId);
+            if (artifact != null)
+            {
+                artifact.Title = newTitle;
+                await _database.UpdateAsync(artifact);
+                return true;
+            }
+            return false;
+
+        }
+
+        public async Task<List<Artifact>> Search(string searchTerm)
+        {
+
+            var query = string.Format(@"SELECT * 
+                    FROM Artifact
+                    WHERE LOWER(Title) LIKE '%{0}%' or LOWER(FileName) LIKE '%{0}%' ", searchTerm.ToLower());
+            var results = await _database.QueryAsync<Artifact>(query);
+
+            return results.ToList();
         }
 
     }

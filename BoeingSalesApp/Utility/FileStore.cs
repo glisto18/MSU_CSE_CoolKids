@@ -145,7 +145,15 @@ namespace BoeingSalesApp.Utility
             if (_token != null)
             {
                 _artifactFolder = await StorageApplicationPermissions.MostRecentlyUsedList.GetFolderAsync(_token);
-                return await _artifactFolder.GetFileAsync(path);
+                // get the Relative path to the _artifactFolder
+                // artifact folder path ==> C\downloads\foldername
+                // path of the artifact ==> c\downloads\foldername\category\file     
+                int index = path.IndexOf(_artifactFolder.Path);
+                string cleanPath = (index < 0)
+                    ? path
+                    : path.Remove(index, _artifactFolder.Path.Length+1);
+
+                return await _artifactFolder.GetFileAsync(cleanPath);
             }
             else
             {

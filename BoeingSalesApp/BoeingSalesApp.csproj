@@ -118,6 +118,9 @@
     <Compile Include="DataAccess\Entities\FolderToken.cs" />
     <Compile Include="DataAccess\Repository\FolderTokenRepository.cs" />
     <Compile Include="DataAccess\Repository\IFolderTokenRepository.cs" />
+    <Compile Include="PresPg.xaml.cs">
+      <DependentUpon>PresPg.xaml</DependentUpon>
+    </Compile>
     <Compile Include="SalesBagsView.xaml.cs">
       <DependentUpon>SalesBagsView.xaml</DependentUpon>
     </Compile>
@@ -169,6 +172,7 @@
     </Compile>
     <Compile Include="Utility\DisplayArtifact.cs" />
     <Compile Include="Utility\DisplayCategory.cs" />
+    <Compile Include="Utility\DisplayConverter.cs" />
     <Compile Include="Utility\IDisplayItem.cs" />
     <Compile Include="Utility\FakeSeeder.cs" />
     <Compile Include="Utility\FileStore.cs" />
@@ -185,16 +189,22 @@
     <Content Include="Assets\Artifact.scale-100.png" />
     <Content Include="Assets\Artifacts.scale-100.png" />
     <Content Include="Assets\BoeingLogo.scale-100.png" />
+    <Content Include="Assets\image100x100.png" />
     <Content Include="Assets\Logo.scale-100.png" />
     <Content Include="Assets\Meetings.scale-100.png" />
+    <Content Include="Assets\pdf100x100.png" />
     <Content Include="Assets\Plus.scale-100.png" />
     <Content Include="Assets\Plus_Black.scale-100.png" />
+    <Content Include="Assets\pp100x100.png" />
     <Content Include="Assets\SalesBag.scale-100.png" />
     <Content Include="Assets\Salesforce.scale-100.png" />
     <Content Include="Assets\SmallLogo.scale-100.png" />
     <Content Include="Assets\SplashScreen.scale-100.png" />
     <Content Include="Assets\StoreLogo.scale-100.png" />
+    <Content Include="Assets\txt100x100.png" />
     <Content Include="Assets\Upload.scale-100.png" />
+    <Content Include="Assets\video100x100.png" />
+    <Content Include="Assets\w100x100.png" />
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
@@ -206,6 +216,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="ArtifactsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="PresPg.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using BoeingSalesApp.DataAccess.Entities;
+using BoeingSalesApp.Utility;
 using SQLite;
 
 namespace BoeingSalesApp.DataAccess.Repository
@@ -106,6 +107,26 @@ namespace BoeingSalesApp.DataAccess.Repository
             return artifacts;
         }
 
+
+        public async Task<List<DisplayArtifact>> GetAllDisplayArtifactsForCategory(Category category)
+        {
+            var relationships = await _database.Table<Artifact_Category>().Where(x => x.CategoryID == category.ID).ToListAsync();
+            var artifacts = new List<Artifact>();
+            foreach (var relationship in relationships)
+            {
+                artifacts.Add(await _database.FindAsync<Artifact>(relationship.ArtifactID));
+            }
+
+            var displayArtifacts = artifacts.Select(x => new DisplayArtifact(x)).ToList();
+            return displayArtifacts;
+        }
+
+        public async Task<bool> DoesArtifactHaveCategory(Artifact artifact)
+        {
+            var allRelationships = await GetAllAsync();
+            var count = allRelationships.Count(x => x.ArtifactID == artifact.ID);
+            return count > 0;
+        }
 
     }
 }

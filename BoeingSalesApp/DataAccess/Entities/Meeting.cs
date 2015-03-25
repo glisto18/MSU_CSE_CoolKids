@@ -13,6 +13,7 @@ namespace BoeingSalesApp.DataAccess.Entities
         [PrimaryKey, Unique, AutoIncrement]
         public Guid ID { get; set; }
 
+        //using this as the name of the connected salesbag
         public string Name { get; set; }
 
         public DateTime DateCreated { get; set; }
@@ -51,5 +52,8 @@ namespace BoeingSalesApp.DataAccess.Entities
         public string TimeZone { get; set; }
 
         public bool AllDay { get; set; }
+
+        //using this as the name of the note file
+        public string Note { get; set; }
     }
 }

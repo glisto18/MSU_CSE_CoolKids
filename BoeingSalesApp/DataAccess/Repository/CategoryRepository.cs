@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using BoeingSalesApp.Utility;
 
 namespace BoeingSalesApp.DataAccess.Repository
 {
@@ -41,13 +42,30 @@ namespace BoeingSalesApp.DataAccess.Repository
         public async Task<List<Utility.DisplayCategory>> GetAllDisPlayCategoriesAsync()
         {
             var categories = await GetAllAsync();
-            var displayCategories = categories.Select(x => new Utility.DisplayCategory(x)).ToList();
+            //var displayCategories = categories.Select(x => new Utility.DisplayCategory(x)).ToList();
+            var displayCategories = new List<DisplayCategory>();
+            foreach (var category in categories)
+            {
+                var displayCategory = new DisplayCategory(category);
+                displayCategory.SetNumOfChildren();
+                displayCategories.Add(displayCategory);
+            }
             return displayCategories;
         }
 
         public async Task<Category> Get(Guid categoryId)
         {
-            return await _database.GetAsync<Category>(categoryId);
+            Category category;
+            try
+            {
+                category = await _database.GetAsync<Category>(categoryId);
+            }
+            catch(InvalidOperationException e)
+            {
+                return null;
+            }
+            return category;
+
         }
 
         public async Task<Category> Get(string name)
@@ -70,6 +88,16 @@ namespace BoeingSalesApp.DataAccess.Repository
        {
            var count = await _database.Table<Category>().Where(x => x.Name == name).CountAsync();
            return count > 0;
+       }
+
+       public async Task<List<Category>> Search(string searchTerm)
+       {
+           var query = string.Format(@"SELECT * 
+                    FROM Category
+                    WHERE LOWER(Name) LIKE '%{0}%' ", searchTerm.ToLower());
+           var results = await _database.QueryAsync<Category>(query);
+
+           return results.ToList();
        }
 
     }
