@@ -150,16 +150,16 @@
             </ComboBox>
             <!--<TextBlock Grid.Column="2" Text="All" FontSize="48" FontStyle="Italic" HorizontalAlignment="Left" VerticalAlignment="Center" FontFamily="Segoe UI"/>-->
             
-            <ComboBox x:Name="SalesBagComboBox" Grid.Column="3" HorizontalAlignment="Left" Height="295" 
-                      VerticalAlignment="Top" Width="152" Visibility="Collapsed" Margin="0,140,0,-295">
-                <ComboBox.ItemTemplate>
+            <ListBox x:Name="SalesBagComboBox" AllowDrop="True" Grid.Column="3" HorizontalAlignment="Left" Height="295"
+                      VerticalAlignment="Top" Width="152" Visibility="Collapsed" Margin="0,140,0,-295" Canvas.ZIndex="100">
+                <ListBox.ItemTemplate>
                     <DataTemplate>
-                        <StackPanel>
+                        <StackPanel Drop="StackPanel_Drop" AllowDrop="True">
                             <TextBlock Text="{Binding Path=Name}"/>
                         </StackPanel>
                     </DataTemplate>
-                </ComboBox.ItemTemplate>
-            </ComboBox>
+                </ListBox.ItemTemplate>
+            </ListBox>
         </Grid>
 
         <GridView Grid.Row="1" x:Name="ArtifactsGridView"

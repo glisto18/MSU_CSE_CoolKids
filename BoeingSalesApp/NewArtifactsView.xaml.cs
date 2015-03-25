@@ -340,5 +340,12 @@ namespace BoeingSalesApp
             dispitems.AddRange(fewcat);
             ArtifactsGridView.ItemsSource = dispitems;
         }
+
+
+        //Test Comment for branch sync testing
+        private void StackPanel_Drop(object sender, DragEventArgs e)
+        {
+            var selectedItems = ArtifactsGridView.SelectedItems;
+        }
     }
 }
