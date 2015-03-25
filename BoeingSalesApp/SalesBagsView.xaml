@@ -35,9 +35,6 @@
         <!-- Template for GridView containing sales bags -->
         <ControlTemplate x:Key="SalesbagPropertyGridTemplate">
             <Grid>
-                <Grid.Resources>
-                </Grid.Resources>
-
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
@@ -76,6 +73,16 @@
         </Flyout>
     </Page.Resources>
 
+    <Page.BottomAppBar>
+        <AppBar Background="{StaticResource BoeingBlue}" HorizontalContentAlignment="Left">
+            <StackPanel Orientation="Horizontal">    
+                <AppBarButton 
+                    Label="Create" 
+                    Icon="Add"
+                    Tapped="onCreate"/>
+            </StackPanel>
+        </AppBar>
+    </Page.BottomAppBar>
     <!--
         This grid acts as a root panel for the page that defines two rows:
         * Row 0 contains the back button and page title
@@ -103,7 +110,7 @@
                            IsHitTestVisible="false" 
                            TextWrapping="NoWrap" 
                            VerticalAlignment="Center" />
-            <HyperlinkButton x:Name="newSalesBagButton"
+            <!--<HyperlinkButton x:Name="newSalesBagButton"
                         Grid.Column="2"
                         Height="80" 
                         Width="80" 
@@ -113,7 +120,7 @@
                         Click="onCreate">
 
                 <Image Source="Assets/Plus.png"></Image>
-            </HyperlinkButton>
+            </HyperlinkButton>-->
         </StackPanel>
 
         <GridView Grid.Row="1" x:Name="SalesBagsGridView" 
