@@ -86,10 +86,7 @@ namespace BoeingSalesApp
             navigationHelper.OnNavigatedTo(e);
             await FetchMeetings();
         }
-        /*private void onBack(object sender, RoutedEventArgs e)
-        {
-            this.Frame.GoBack();
-        }*/
+       
 
         /*****************************************************************************/
 

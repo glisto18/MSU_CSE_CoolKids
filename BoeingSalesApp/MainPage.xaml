@@ -45,9 +45,6 @@
                 <Style TargetType="TextBlock" BasedOn="{StaticResource MyTextStyle}" />
             </StackPanel.Resources>
               
-
-            <!-- Artifacts button -->
-            <!-- Meetings button -->
             <!-- Artifacts button -->
             <Button x:Name="ArtifactsButton" Tapped="onArtifacts">
             	<StackPanel Orientation="Vertical">
@@ -55,7 +52,6 @@
             		<TextBlock Text="Artifacts"/>
             	</StackPanel>
             </Button>
-        
         
             <!-- Meetings button -->
             <Button x:Name="MeetingsButton" Tapped="onMeetings">
@@ -73,5 +69,10 @@
                 </StackPanel>
             </Button>
         </StackPanel>
+        
+        <StackPanel Orientation="Horizontal" Grid.Row="2">
+            <HyperlinkButton Tapped="generatePDF">Gen PDF</HyperlinkButton>
+        </StackPanel>
+        <Button Content="Button" HorizontalAlignment="Left" Margin="82,213,0,0" Grid.Row="2" VerticalAlignment="Top"/>
     </Grid>
 </Page>
