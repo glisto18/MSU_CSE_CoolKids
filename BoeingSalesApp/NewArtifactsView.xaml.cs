@@ -30,7 +30,7 @@ namespace BoeingSalesApp
 
         private NavigationHelper navigationHelper;
         private ObservableDictionary defaultViewModel = new ObservableDictionary();
-        private String categoryShown = "All";
+        
 
         private DataAccess.Repository.CategoryRepository _categoryRepo;
         private DataAccess.Repository.ArtifactRepository _artifactRepo;

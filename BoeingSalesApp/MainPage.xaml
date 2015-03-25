@@ -31,9 +31,6 @@
             <RowDefinition Height="403*" />
             <RowDefinition Height="256*" />
         </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-        </Grid.ColumnDefinitions>
         
         <Image Grid.Row="0" Source="Assets/BoeingLogo.png" Height="97" Width="358" Margin="40,20,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Grid.RowSpan="2"/>
 
@@ -45,8 +42,7 @@
             </StackPanel.Resources>
               
 
-            <!-- Artifacts button -->
-            <!-- Meetings button -->
+           
             <!-- Artifacts button -->
             <Button x:Name="ArtifactsButton" Tapped="onArtifacts">
             	<StackPanel Orientation="Vertical">
@@ -72,5 +68,7 @@
                 </StackPanel>
             </Button>
         </StackPanel>
+        
+        <HyperlinkButton Grid.Row="2" Tapped="genpdf">Gen PDF</HyperlinkButton>
     </Grid>
 </Page>
