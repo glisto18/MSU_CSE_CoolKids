@@ -81,7 +81,7 @@
 
                 <AppBarButton Label="Find" Icon="Find" Tapped="launchme" 
                               FlyoutBase.AttachedFlyout="{StaticResource artlookup}"/>
-                <AppBarButton Label="Delete" Icon="Delete" VerticalAlignment="Top" />
+                <AppBarButton Label="Delete" Icon="Delete" VerticalAlignment="Top" Tapped="delete_OnTapped" />
                 <AppBarButton Label="Change Title" Icon="Edit" Tapped="launchme" 
                              Name="titler" FlyoutBase.AttachedFlyout="{StaticResource enterTit}"/>
                 <AppBarButton Label="Remove From Category" Tapped="UxRemoveFromCategory_OnTapped"

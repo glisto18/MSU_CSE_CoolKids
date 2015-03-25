@@ -116,16 +116,18 @@ namespace BoeingSalesApp.Utility
                     // artifact doesn't exist, create one
                     newArtifact = await InsertArtifact(artifact);
                     artifactsInserted.Add(newArtifact.ID);
-                }
-                else
-                {
-                    newArtifact = await _artifactRepo.GetArtifactByFileName(artifact.Name);
-                }
-                if (!await _artifactCategoryRepository.DoesExist(newArtifact, category))
-                {
-                    // need to add the artifact to the newly created category
+                    // ahl - added 3/25
                     await _artifactCategoryRepository.AddRelationship(newArtifact, category);
                 }
+                //else
+                //{
+                //    newArtifact = await _artifactRepo.GetArtifactByFileName(artifact.Name);
+                //}
+                //if (!await _artifactCategoryRepository.DoesExist(newArtifact, category))
+                //{
+                //    // need to add the artifact to the newly created category
+                //    await _artifactCategoryRepository.AddRelationship(newArtifact, category);
+                //}
             }
 
             var moreSubFolders = await subFolder.GetFoldersAsync();
@@ -254,7 +256,28 @@ namespace BoeingSalesApp.Utility
             picker.FileTypeFilter.Add("*");
             var folder = await picker.PickSingleFolderAsync();
             return folder;
-        }    
+        }
+
+        public async Task DeleteArtifact(string path)
+        {
+             var folderToken = await _tokenRepo.Get();
+            _token = folderToken.Token;
+            if (_token != null)
+            {
+                _artifactFolder = await StorageApplicationPermissions.MostRecentlyUsedList.GetFolderAsync(_token);
+
+                // get the Relative path to the _artifactFolder
+                // artifact folder path ==> C\downloads\foldername
+                // path of the artifact ==> c\downloads\foldername\category\file     
+                int index = path.IndexOf(_artifactFolder.Path);
+                string cleanPath = (index < 0)
+                    ? path
+                    : path.Remove(index, _artifactFolder.Path.Length + 1);
+
+                var artifact = await _artifactFolder.GetFileAsync(cleanPath);
+                await artifact.DeleteAsync(StorageDeleteOption.Default);
+            }
+        }
 
     }
 }

@@ -118,5 +118,14 @@ namespace BoeingSalesApp.DataAccess.Repository
             var relationships = await _database.Table<SalesBag_Artifact>().Where(x => (x.Artifact == artifact.ID) && (x.SalesBag == salesbag.ID)).CountAsync();
             return relationships > 0;
         }
+
+        public async Task DeleteAllArtifactReferences(Artifact artifact)
+        {
+            var relationships = await _database.Table<SalesBag_Artifact>().Where(x => (x.Artifact == artifact.ID)).ToListAsync();
+            foreach (var relationship in relationships)
+            {
+                await _database.DeleteAsync(relationship);
+            }
+        }
     }
 }
