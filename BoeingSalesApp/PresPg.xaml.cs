@@ -38,8 +38,7 @@ namespace BoeingSalesApp
          *********************************************************************/
         protected async override void OnNavigatedTo(NavigationEventArgs e) 
         {
-            var dudes = await Windows.ApplicationModel.Package.Current.InstalledLocation.GetFolderAsync("Assets");
-            //var dudes = "Assets/start.pdf";
+            var dudes = await Windows.ApplicationModel.Package.Current.InstalledLocation.GetFolderAsync("StartPDF");
             var dudebro = await dudes.GetFileAsync("start.pdf");
 
             var options = new Windows.System.LauncherOptions();
