@@ -38,6 +38,13 @@ namespace BoeingSalesApp
          *********************************************************************/
         protected async override void OnNavigatedTo(NavigationEventArgs e) 
         {
+            var dudes = await Windows.ApplicationModel.Package.Current.InstalledLocation.GetFolderAsync("Assets");
+            var dudebro = await dudes.GetFileAsync("start.pdf");
+
+            var options = new Windows.System.LauncherOptions();
+            options.DesiredRemainingView = Windows.UI.ViewManagement.ViewSizePreference.UseMinimum;
+            await Windows.System.Launcher.LaunchFileAsync(dudebro, options);
+
             launchmeet = (DataAccess.Entities.Meeting)e.Parameter;
             launchmeet.Note = launchmeet.ID.ToString() + ".txt";
             try 
