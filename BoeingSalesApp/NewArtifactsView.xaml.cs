@@ -138,9 +138,11 @@ namespace BoeingSalesApp
 
             navigationHelper.OnNavigatedTo(e);
 
-            await UpdateUi();
+            //await UpdateUi();
 
             await CheckForNewArtifacts();
+
+            await UpdateUi();
         }
 
         private async Task UpdateUi()
@@ -399,7 +401,7 @@ namespace BoeingSalesApp
                     {
                         artifactsToAdd.Add(((DisplayArtifact)item).GetArtifact());
                     }
-                }
+        }
 
                 var salesbagArtifactRepo = new SalesBag_ArtifactRepository();
                 var salesbagCategoryRepo = new SalesBag_CategoryRepository();
@@ -415,7 +417,7 @@ namespace BoeingSalesApp
                         }
 
                         foreach (var category in categoriesToAdd)
-                        {
+        {
                             await salesbagCategoryRepo.AddCategoryToSalesBag(category, bag);
                         }
                     } 

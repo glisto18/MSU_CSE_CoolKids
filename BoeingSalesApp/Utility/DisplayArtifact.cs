@@ -89,7 +89,10 @@ namespace BoeingSalesApp.Utility
             var fileStore = new FileStore();
             var artifactFile = await fileStore.GetArtifact(_artifact.Path);
 
-            await Windows.System.Launcher.LaunchFileAsync(artifactFile);
+            var options = new Windows.System.LauncherOptions();
+            options.DesiredRemainingView = Windows.UI.ViewManagement.ViewSizePreference.UseMinimum;
+
+            await Windows.System.Launcher.LaunchFileAsync(artifactFile, options);
             return false;
         }
     }

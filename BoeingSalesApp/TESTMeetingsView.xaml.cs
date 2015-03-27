@@ -348,7 +348,8 @@ namespace BoeingSalesApp
                 if(ms.Note!=null)
                     noteView.Visibility = Windows.UI.Xaml.Visibility.Visible;
                 SalesbagConnect.Visibility = Windows.UI.Xaml.Visibility.Visible;
-                launchBut.Visibility = Windows.UI.Xaml.Visibility.Visible;
+                if(ms.SalesBag!=Guid.Empty)
+                    launchBut.Visibility = Windows.UI.Xaml.Visibility.Visible;
                 delBut.Visibility = Windows.UI.Xaml.Visibility.Visible;
             }
             else if(DatabaseMeetings.SelectedItems.Count > 0)
