@@ -83,7 +83,7 @@ namespace BoeingSalesApp.DataAccess.Repository
         {
             var relationships = await _database.Table<Artifact_Category>().Where(x => (x.ArtifactID == artifact.ID) && (x.CategoryID == category.ID)).ToListAsync();
 
-            foreach(var relationship in relationships)
+            foreach (var relationship in relationships)
             {
                 await _database.DeleteAsync(relationship);
             }

@@ -74,6 +74,7 @@ namespace BoeingSalesApp
             if (_currentState == PageState.Category)
             {
                 _currentState = PageState.All;
+                _currentCategory = null;
                 lblCurrentCategory.Text = "All";
                 await UpdateUi();
             }
@@ -230,6 +231,7 @@ namespace BoeingSalesApp
                 await FetchCategoryContents(displayItem.Id);
                 //_isInCategory = true;
                 _currentState = PageState.Category;
+                _currentCategory = await _categoryRepo.Get(displayItem.Id);
             }
 
 
