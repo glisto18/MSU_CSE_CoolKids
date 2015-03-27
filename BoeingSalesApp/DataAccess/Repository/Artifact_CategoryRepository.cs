@@ -89,6 +89,20 @@ namespace BoeingSalesApp.DataAccess.Repository
             }
         }
 
+        /// <summary>
+        /// Used when deleting an artifact
+        /// </summary>
+        /// <param name="artifact"></param>
+        /// <returns></returns>
+        public async Task DeleteAllArtifactReferences(Artifact artifact)
+        {
+            var relationships = await _database.Table<Artifact_Category>().Where(x => (x.ArtifactID == artifact.ID)).ToListAsync();
+            foreach (var relationship in relationships)
+            {
+                await _database.DeleteAsync(relationship);
+            }
+        }
+
 
         /// <summary>
         /// Get the Artifacts for a specific category

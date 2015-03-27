@@ -9,6 +9,7 @@ using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
 using System.Threading.Tasks;
+using Windows.Storage.Provider;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Navigation;
@@ -17,6 +18,7 @@ using BoeingSalesApp.DataAccess.Repository;
 using BoeingSalesApp.Utility;
 using Microsoft.Office.Interop.Outlook;
 
+// andys branch
 
 // The Basic Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234237
 
@@ -45,6 +47,7 @@ namespace BoeingSalesApp
         private DataAccess.Repository.ArtifactRepository _artifactRepo;
 
         private bool _isInCategory = false;
+        private DataAccess.Entities.Category _currentCategory = null;
 
         private PageState _currentState = PageState.All;
 
@@ -132,9 +135,6 @@ namespace BoeingSalesApp
         {
             _categoryRepo = new DataAccess.Repository.CategoryRepository();
             _artifactRepo = new DataAccess.Repository.ArtifactRepository();
-
-
-            var foo = await _categoryRepo.Search("cat");
 
             navigationHelper.OnNavigatedTo(e);
 
@@ -321,12 +321,12 @@ namespace BoeingSalesApp
             var artifactCategoryRepo = new Artifact_CategoryRepository();
             foreach (IDisplayItem item in selectedItems)
             {
-                if (item.GetType() != typeof (DisplayArtifact))
+                if (item.GetType() == typeof (DisplayArtifact))
                 {
-                    return;
-                }
                 var artifact = ((DisplayArtifact)item).GetArtifact();
                 await artifactCategoryRepo.AddRelationship(artifact, destinationCategory);
+            }
+            
             }
             
             await UpdateUi();
@@ -424,6 +424,71 @@ namespace BoeingSalesApp
                 }
 
                 
+                await UpdateUi();
+            }
+            
+        }
+
+
+        private async void UxRemoveFromCategory_OnTapped(object sender, TappedRoutedEventArgs e)
+        {
+            if (ArtifactsGridView.SelectedItems.Count < 1)
+            {
+                return;
+            }
+            var artifactCategoryRepo = new Artifact_CategoryRepository();
+            foreach (var item in ArtifactsGridView.SelectedItems)
+            {
+                if (item.GetType() == typeof(DisplayArtifact))
+                {
+                    var artifact = ((DisplayArtifact)item).GetArtifact();
+                    await artifactCategoryRepo.RemoveArtifactFromCategory(artifact, _currentCategory);
+                    
+                }
+            }
+            await FetchCategoryContents(_currentCategory.ID);
+        }
+
+        private async void delete_OnTapped(object sender, TappedRoutedEventArgs e)
+        {
+            // call delete on repo
+            // use file store to delete the artifact from the machine
+
+            if (ArtifactsGridView.SelectedItems.Count < 1)
+            {
+                return;
+            }
+
+            foreach (var item in ArtifactsGridView.SelectedItems)
+            {
+                if (item.GetType() == typeof(DisplayArtifact))
+                {
+                    var artifact = ((DisplayArtifact)item).GetArtifact();
+                   
+                    // remove from artifact_category table
+                    var artifactCategoryRepo = new Artifact_CategoryRepository();
+                    await artifactCategoryRepo.DeleteAllArtifactReferences(artifact);
+
+                    // remove from salesbag_artifact table
+                    var salesbagArtifactRepo = new SalesBag_ArtifactRepository();
+                    await salesbagArtifactRepo.DeleteAllArtifactReferences(artifact);
+
+                    // remove from file system
+                    var fileStore = new FileStore();
+                    await fileStore.DeleteArtifact(artifact.Path);
+
+                    // remove from artifact table
+                    await _artifactRepo.DeleteAsync(artifact);
+                }
+            }
+
+
+            if (_isInCategory)
+            {
+                await FetchCategoryContents(_currentCategory.ID);
+            }
+            else
+            {
                 await UpdateUi();
             }
             
