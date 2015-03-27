@@ -16,5 +16,10 @@ namespace BoeingSalesApp.Utility
         {
             return categories.Select(c => new DisplayCategory(c)).ToList();
         }
+
+        public static List<DisplaySalesbag> ToDisplaySalebsag(List<SalesBag> bags)
+        {
+            return bags.Select(c => new DisplaySalesbag(c)).ToList();
+        }
     }
 }

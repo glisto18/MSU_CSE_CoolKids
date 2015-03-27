@@ -23,10 +23,12 @@ namespace BoeingSalesApp
         private DataAccess.Repository.ArtifactRepository _artRepo;
         private DataAccess.Repository.CategoryRepository _catRepo;
         private DataAccess.Entities.Meeting launchmeet;
+        private DataAccess.Repository.SalesBag_CategoryRepository _categorySalesbagRepo;
         public PresPg()
         {
             this.InitializeComponent();
             _asalesbagRepo = new DataAccess.Repository.SalesBag_ArtifactRepository();
+            _categorySalesbagRepo = new DataAccess.Repository.SalesBag_CategoryRepository();
             _salesbagRepo = new DataAccess.Repository.SalesBagRepository();
             _meetingRepo = new DataAccess.Repository.MeetingRepository();
             _artRepo = new DataAccess.Repository.ArtifactRepository();
@@ -43,8 +45,16 @@ namespace BoeingSalesApp
             try 
             {
                 DataAccess.Entities.SalesBag salesbagChosen = await _salesbagRepo.Get(launchmeet.SalesBag);
-                List<DataAccess.Entities.Artifact> sa = await _asalesbagRepo.GetAllSalesBagArtifacts(salesbagChosen); 
-                ArtView.ItemsSource = sa;
+                var all = new List<Utility.IDisplayItem>();
+                var displayArtifacts = Utility.DisplayConverter.ToDisplayArtifacts(await _asalesbagRepo.GetAllSalesBagArtifacts(salesbagChosen)); 
+                var displayCategories = Utility.DisplayConverter.ToDisplayCategories(await _categorySalesbagRepo.GetAllSalesBagCategories(salesbagChosen));
+                foreach (var category in displayCategories)
+                {
+                    await category.SetNumOfChildren();
+                }
+                all.AddRange(displayArtifacts);
+                all.AddRange(displayCategories);
+                ArtView.ItemsSource = all;
             }
             catch (NullReferenceException) { }
         }
@@ -100,6 +110,27 @@ namespace BoeingSalesApp
             dispitems.AddRange(fewarts);
             dispitems.AddRange(fewcat);
             ArtView.ItemsSource = dispitems;
+        }
+
+        private async void Item_DoubleTapped(object sender, DoubleTappedRoutedEventArgs e)
+        {
+            var artifactPanel = (StackPanel)sender;
+            var displayItem = (Utility.IDisplayItem)artifactPanel.DataContext;
+            var doSomething = await displayItem.DoubleTap();
+
+            //if (doSomething)
+            //{
+            //    // if doSomething in this context is true, show the Category on the page
+            //    await FetchCategoryContents(displayItem.Id);
+            //    //_isInCategory = true;
+            //    _currentState = PageState.Category;
+            //}
+
+
+            //var fileStore = new Utility.FileStore();
+            //var artifact = await fileStore.GetArtifact(artifactContext.FileName);
+
+            //await Windows.System.Launcher.LaunchFileAsync(artifact);
         }
     }
 }

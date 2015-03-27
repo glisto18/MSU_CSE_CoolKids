@@ -364,5 +364,6 @@ namespace BoeingSalesApp
                 launchBut.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
             }
         }
+
     }
 }

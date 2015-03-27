@@ -132,11 +132,15 @@
                        Margin="0,0,30,0"/>
             <TextBlock Grid.Column="2" Name="lblCurrentCategory" Text="All" FontSize="48" FontStyle="Italic" HorizontalAlignment="Left" VerticalAlignment="Center" FontFamily="Segoe UI"/>
             <Button Grid.Column="3" HorizontalAlignment="Left" Height="82" 
-                     VerticalAlignment="Center" Width="97" BorderBrush="Transparent" Click="Button_Click">
+                     VerticalAlignment="Center" Width="97" BorderBrush="Transparent" Click="AddToExistingSalesbag_Click">
+                
                 <StackPanel>
                     <Image Source="Assets/SalesBag.Scale-100.png"/>
+                    
+                    
                 </StackPanel>
             </Button>
+            <TextBlock Grid.Column="3" VerticalAlignment="Bottom" Text="Add to Existing" FontStyle="Italic" HorizontalAlignment="Left"  FontFamily="Segoe UI"></TextBlock>
             <ComboBox Grid.Column="4" Name="UxCategoryBox" PlaceholderText="Select Category"
                       
                       HorizontalAlignment="Right">
@@ -152,17 +156,6 @@
                 </ComboBox.ItemTemplate>
             </ComboBox>
             <!--<TextBlock Grid.Column="2" Text="All" FontSize="48" FontStyle="Italic" HorizontalAlignment="Left" VerticalAlignment="Center" FontFamily="Segoe UI"/>-->
-            
-            <ListBox x:Name="SalesBagComboBox" AllowDrop="True" Grid.Column="3" HorizontalAlignment="Left" Height="295"
-                      VerticalAlignment="Top" Width="152" Visibility="Collapsed" Margin="0,140,0,-295" Canvas.ZIndex="100">
-                <ListBox.ItemTemplate>
-                    <DataTemplate>
-                        <StackPanel Drop="StackPanel_Drop" AllowDrop="True">
-                            <TextBlock Text="{Binding Path=Name}"/>
-                        </StackPanel>
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-            </ListBox>
         </Grid>
 
         <GridView Grid.Row="1" x:Name="ArtifactsGridView"
