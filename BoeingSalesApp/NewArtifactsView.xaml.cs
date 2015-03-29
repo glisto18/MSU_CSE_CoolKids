@@ -180,7 +180,7 @@ namespace BoeingSalesApp
         private void SetCategoryCombobox(List<DisplayCategory> categories)
         {
             // add each category to the combobox
-            UxCategoryBox.ItemsSource = categories;
+            //UxCategoryBox.ItemsSource = categories;
 
         }
 
@@ -304,7 +304,7 @@ namespace BoeingSalesApp
 
         private void UxCategoryBox_OnDragOver(object sender, DragEventArgs e)
         {
-            UxCategoryBox.IsDropDownOpen = true;
+            //UxCategoryBox.IsDropDownOpen = true;
         }
 
         private async void Item_OnDrop(object sender, DragEventArgs e)
@@ -425,6 +425,73 @@ namespace BoeingSalesApp
                 await UpdateUi();
             }
             
+        }
+
+        private async void AddToNewSalesBag_Click(object sender, RoutedEventArgs e)
+        {
+            //DR - Create SalesBag object to be used for association
+            //  If we wanted to we could put this stuff in the constructor of a salesbag
+            //  I can't help but feel like it's bad practice to set it all manually
+            SalesBag newBag = new SalesBag();
+            newBag.Name = newBagName.Text;
+            newBag.Active = true;
+            newBag.DateCreated = DateTime.Now;
+            newBag.ID = Guid.NewGuid();
+
+            //DR - Save the new salesbag
+            SalesBagRepository salesBagRepo = new SalesBagRepository();
+            await salesBagRepo.SaveAsync(newBag);
+
+            //DR - If there are no selected items, simply add the salesbag to the database and return
+            if(ArtifactsGridView.SelectedItems == null)
+            {
+                return;
+            }
+            //DR - If there are selected items, iterate through them and associate them with the new salesbag
+            else
+            {
+                //DR - We need these to create the artifact's and category's associations with the salesbag
+                SalesBag_CategoryRepository bagCatRepo = new SalesBag_CategoryRepository();
+                SalesBag_ArtifactRepository bagArtRepo = new SalesBag_ArtifactRepository();
+
+                //DR - We need these to find the actual artifact and category objects to be used by the repo
+                //  for adding to the db
+                ArtifactRepository artRepo = new ArtifactRepository();
+                CategoryRepository catRepo = new CategoryRepository();
+                List<Artifact> artList = new List<Artifact>();
+
+                //DR - Note, there are two Category classes, one in the BoeingSalesApp and one in the outlook plugin
+                //  If we have time it would be convenient to refactor them so there is no ambiguity
+                List<BoeingSalesApp.DataAccess.Entities.Category> catList = new List<DataAccess.Entities.Category>();
+
+                //DR - This foreach iterates through each selected item on the grid and checks whether the item is a
+                //  category or an artifact and adds the item to a list.  Those two lists will be used to associate
+                //  objects with the salesbag.
+                foreach(IDisplayItem i in ArtifactsGridView.SelectedItems)
+                {
+                    if(i.GetType() == typeof(DisplayArtifact))
+                    {
+                        artList.Add(((DisplayArtifact)i).GetArtifact());
+                    }
+                    else if(i.GetType() == typeof(DisplayCategory))
+                    {
+                        catList.Add(((DisplayCategory)i).GetCategory());
+                    }
+                }
+
+                //DR - Iterate through the artifact list and add an association to the new Salesbag
+                foreach(Artifact i in artList)
+                {
+                    await bagArtRepo.AddArtifactToSalesbag(i, newBag);
+                }
+
+                //DR - Iterate through the category list and add an association to the new salesbag
+                foreach(BoeingSalesApp.DataAccess.Entities.Category i in catList)
+                {
+                    await bagCatRepo.AddCategoryToSalesBag(i, newBag);
+                }
+                return;
+            }
         }
     }
 }
