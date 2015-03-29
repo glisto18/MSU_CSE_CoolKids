@@ -25,7 +25,7 @@
             </StackPanel>
         </Flyout>
 
-        <x:String x:Key="PageName">Artifacts View</x:String>
+        <x:String x:Key="PageName">Artifacts</x:String>
 
             <DataTemplate x:Key="GridTemplate">
                 <StackPanel x:Name="GridItemContainer" Orientation="Horizontal" Width="250" Height="60" 
