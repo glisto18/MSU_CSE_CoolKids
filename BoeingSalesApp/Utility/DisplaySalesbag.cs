@@ -44,7 +44,7 @@ namespace BoeingSalesApp.Utility
 
         public async Task<bool> DoubleTap()
         {
-            return false;
+            return true;
         }
     }
 }

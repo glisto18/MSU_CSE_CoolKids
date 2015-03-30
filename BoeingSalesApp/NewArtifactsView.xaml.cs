@@ -216,6 +216,13 @@ namespace BoeingSalesApp
             lblCurrentCategory.Text = category.Name;
         }
 
+        private async Task FetchSalesBagContents(Guid salesBagId)
+        {
+            //DR - Fetch the category display items first and add them to the refreshed grid
+
+            //DR - Fetch the artifact display items and add them to the grid after the categories
+        }
+
         private async void Item_DoubleTapped(object sender, DoubleTappedRoutedEventArgs e)
         {
             var artifactPanel = (StackPanel) sender;
@@ -224,10 +231,21 @@ namespace BoeingSalesApp
 
             if (doSomething)
             {
-                // if doSomething in this context is true, show the Category on the page
-                await FetchCategoryContents(displayItem.Id);
-                //_isInCategory = true;
-                _currentState = PageState.Category;
+                //DR - It is the worst practice in the world to typecheck using string names, do not
+                //  ever do this in the real world.  If anyone has any suggestions for how to typecheck these
+                //  objects please let me know.  Cuz this makes me ashamed of myself.
+                var foo = displayItem.GetType().Name;
+                if (foo == "DisplayCategory")
+                {
+                    // if doSomething in this context is true, show the Category on the page
+                    await FetchCategoryContents(displayItem.Id);
+                    //_isInCategory = true;
+                    _currentState = PageState.Category;
+                }
+                else if(foo == "DisplaySalesbag")
+                {
+                    await FetchSalesBagContents(displayItem.Id);
+                }
             }
 
 
@@ -250,32 +268,6 @@ namespace BoeingSalesApp
             //}
             
         }
-
-/*        private async void Button_Click(object sender, RoutedEventArgs e)
-        {
-            //DR - On click, we want to hide and display the listbox
-            //  If the listbox is visible, collapse it.  Otherwise...
-            if (this.SalesBagComboBox.Visibility == Windows.UI.Xaml.Visibility.Visible)
-                this.SalesBagComboBox.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
-            else
-            {
-                //DR - This is a bit hacky but in order to display a "New SalesBag" item in the listbox
-                //  we need to make a salesbag with the name "New SalesBag".  Since the bag isn't saved into
-                //  the database we can do this every time the listbox is made visible.
-                var emptyNewBag = new SalesBag();
-                emptyNewBag.Name = "[New SalesBag]";
-
-                //DR - emptySalesbag is made, make combobox visible, get the list of all salesbags
-                this.SalesBagComboBox.Visibility = Windows.UI.Xaml.Visibility.Visible;
-                List<SalesBag> salesBagList = await GetSalesBags();
-
-                //DR - Add the empty bag to the list and set as the box's item source
-                //  badabing badaboom
-                salesBagList.Add(emptyNewBag);
-                this.SalesBagComboBox.ItemsSource = salesBagList;
-            }
-        }
- */
 
         private async Task<List<SalesBag>> GetSalesBags()
         {
@@ -332,9 +324,6 @@ namespace BoeingSalesApp
 
         private void ArtifactsGridView_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-
-            //DR - Clear the contents of the selectd artifcats property and add each selected item to the property
-            //  soa as to access selected items after the grid is rebound
             if (_currentState != PageState.AllSalesBags)
             {
                 _selectedItems.Clear();
@@ -346,7 +335,6 @@ namespace BoeingSalesApp
             
 
             if (ArtifactsGridView.SelectedItems.Count > 0 && _currentState == PageState.Category)
-            //if (ArtifactsGridView.SelectedItems.Count > 0 && _isInCategory == true)
             {
                 uxRemoveFromCategory.Visibility = Visibility.Visible;
             }
@@ -429,6 +417,8 @@ namespace BoeingSalesApp
 
         private async void AddToNewSalesBag_Click(object sender, RoutedEventArgs e)
         {
+            NewBagButton.Flyout.Hide();
+
             //DR - Create SalesBag object to be used for association
             //  If we wanted to we could put this stuff in the constructor of a salesbag
             //  I can't help but feel like it's bad practice to set it all manually
@@ -492,6 +482,15 @@ namespace BoeingSalesApp
                 }
                 return;
             }
+        }
+
+        private async void EditButton_Click(object sender, RoutedEventArgs e)
+        {
+            //DR - Bind the grid to just the salesbags
+            ArtifactsGridView.SelectedItems.Clear();
+            var salesbagRepo = new SalesBagRepository();
+            var displaySalesbags = DisplayConverter.ToDisplaySalebsag(await salesbagRepo.GetAllAsync());
+            ArtifactsGridView.ItemsSource = displaySalesbags;
         }
     }
 }
