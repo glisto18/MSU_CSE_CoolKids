@@ -87,6 +87,7 @@
                 <StackPanel Orientation="Vertical" VerticalAlignment="Center">
                     <TextBlock Text="{Binding StartTime}"/>
                     <TextBlock Text="{Binding Subject}"/>
+                    <TextBlock Text="{Binding Location}"/>
                     <TextBlock Text="{Binding Name}"/>
                 </StackPanel>
             </StackPanel>
@@ -122,13 +123,15 @@
         <StackPanel Grid.Column="0" Orientation="Vertical" Margin="0,115,0,0">
             <Button Tapped="onImport" FlyoutBase.AttachedFlyout="{StaticResource CreateFlyout2}" 
                     Content="Import Meetings" Height="108" Width="238"/>
-            <Button Tapped="onDelete" Name="delBut" Content="Delete Meeting" 
+            <Button Tapped="onRemove" Name="remBut" Content="Remove Meeting" 
                     Visibility="Collapsed" Height="108" Width="238"/>
             <Button Tapped="onAddButton" Name="SalesbagConnect" Content="Add Salesbag" Visibility="Collapsed"
                     FlyoutBase.AttachedFlyout="{StaticResource CreateFlyout3}" Height="108" Width="238"/>
             <Button Tapped="onLaunchMeet" Name="launchBut" Content="Launch Meeting" 
                     Visibility="Collapsed" Height="108" Width="238"/>
             <Button Tapped="onNote" Name="noteView" Content="View Meeting Note" 
+                    Visibility="Collapsed" Height="108" Width="238"/>
+            <Button Tapped="onDelete" Name="delBut" Content="Delete Meeting" 
                     Visibility="Collapsed" Height="108" Width="238"/>
         </StackPanel>
 

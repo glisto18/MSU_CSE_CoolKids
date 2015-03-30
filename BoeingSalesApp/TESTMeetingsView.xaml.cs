@@ -351,6 +351,7 @@ namespace BoeingSalesApp
                 if(ms.SalesBag!=Guid.Empty)
                     launchBut.Visibility = Windows.UI.Xaml.Visibility.Visible;
                 delBut.Visibility = Windows.UI.Xaml.Visibility.Visible;
+                remBut.Visibility = Windows.UI.Xaml.Visibility.Visible;
             }
             else if(DatabaseMeetings.SelectedItems.Count > 0)
             {
@@ -363,8 +364,29 @@ namespace BoeingSalesApp
                 delBut.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
                 SalesbagConnect.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
                 launchBut.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
+                remBut.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
             }
         }
-
+        /****************************************************************
+         * Instead of deleting meeting from outlook only removes
+         *      meeting from salesbagapp
+         ***************************************************************/
+        private async void onRemove(object sender, RoutedEventArgs e)
+        {
+            foreach (DataAccess.Entities.Meeting selectdelete in DatabaseMeetings.SelectedItems)
+            {
+                if (selectdelete.Note != null)
+                {
+                    try
+                    {
+                        var notefile = await Windows.Storage.ApplicationData.Current.LocalFolder.GetFileAsync(selectdelete.Note);
+                        await notefile.DeleteAsync();
+                    }
+                    catch { }
+                }
+                await _meetingRepo.DeleteAsync(selectdelete);
+            }
+            await FetchMeetings();
+        }
     }
 }
