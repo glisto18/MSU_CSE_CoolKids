@@ -16,6 +16,7 @@ using BoeingSalesApp.DataAccess.Entities;
 using BoeingSalesApp.DataAccess.Repository;
 using BoeingSalesApp.Utility;
 using Microsoft.Office.Interop.Outlook;
+using Category = BoeingSalesApp.DataAccess.Entities.Category;
 
 
 // The Basic Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234237
@@ -218,9 +219,24 @@ namespace BoeingSalesApp
 
         private async Task FetchSalesBagContents(Guid salesBagId)
         {
+
+            /*
+
+            //DR - Fetch the salesbag object itself
+            SalesBagRepository bagRepo = new SalesBagRepository();
+            SalesBag bag = await bagRepo.Get(salesBagId);
+
             //DR - Fetch the category display items first and add them to the refreshed grid
+            SalesBag_CategoryRepository catBagRepo = new SalesBag_CategoryRepository();
+            List<BoeingSalesApp.DataAccess.Entities.Category> catList = new List<Category>();
+            catList = await catBagRepo.GetAllSalesBagCategories(bag);
 
             //DR - Fetch the artifact display items and add them to the grid after the categories
+            SalesBag_ArtifactRepository artBagRepo = new SalesBag_ArtifactRepository();
+            List<Artifact> artList = await artBagRepo.GetAllSalesBagArtifacts(bag);
+
+            */
+
         }
 
         private async void Item_DoubleTapped(object sender, DoubleTappedRoutedEventArgs e)
