@@ -54,7 +54,30 @@
                 <Button Content="Import" HorizontalAlignment="Right" Tapped="ImportSelected"/>
             </StackPanel>
         </Flyout>
-        
+
+        <DataTemplate x:Key="GridTemplate">
+            <StackPanel x:Name="GridItemContainer" Orientation="Horizontal" Width="250" Height="80" >
+                      
+                <Border Width="90" 
+                        Height="{Binding Height, ElementName=GridItemContainer}"
+                        Margin="10,0,0,0" 
+                        Background="LightGray">
+                    <Image Source="{Binding DisplayIcon}" Width="90" Height="80" />
+                </Border>
+                <StackPanel Orientation="Vertical" 
+                            VerticalAlignment="Center" 
+                            Background="LightGray"
+                            Height="80"
+                            >
+                    <TextBlock Text="{Binding DisplayTime}"  Margin="5,0,0,0" Width="170" Height="20" TextTrimming="WordEllipsis" Foreground="Black" />
+                    <TextBlock Text="{Binding DisplaySubject}"  Margin="5,0,0,0" Width="170" Height="20" TextTrimming="WordEllipsis" Foreground="Black" />
+                    <TextBlock Text="{Binding DisplayLocation}"  Margin="5,0,0,0" Width="170" Height="20" TextTrimming="WordEllipsis" Foreground="Black" />
+                    <TextBlock Text="{Binding DisplayName}" Margin="5,0,0,0" Width="170" Height="20" TextTrimming="WordEllipsis" Foreground="Black"/>
+                </StackPanel>
+            </StackPanel>
+        </DataTemplate>
+
+
         <DataTemplate x:Key="SalesbagTemplate">
             <StackPanel Orientation="Horizontal" Width="100" Height="50">
                 <StackPanel Orientation="Vertical" VerticalAlignment="Center">
@@ -79,7 +102,7 @@
             </StackPanel>
         </Flyout>
 
-        <DataTemplate x:Key="MeetingTemplate">
+        <!--<DataTemplate x:Key="MeetingTemplate">
             <StackPanel Orientation="Horizontal" Width="300" Height="125">
                 <Border Width="90" Height="100" Margin="10">
                     <Image Source="Assets/Meetings.png" Width="90" Height="120" />
@@ -91,7 +114,7 @@
                     <TextBlock Text="{Binding Name}"/>
                 </StackPanel>
             </StackPanel>
-        </DataTemplate>
+        </DataTemplate>-->
 
     </Page.Resources>
 
@@ -137,7 +160,7 @@
 
         <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
             <GridView x:Name="DatabaseMeetings" ItemsSource="{Binding}"
-                Foreground="White" FontSize="65" ItemTemplate="{StaticResource MeetingTemplate}"
+                Foreground="White" FontSize="65" ItemTemplate="{StaticResource GridTemplate}"
                 SelectionMode="Multiple"  Margin="229,108,0,10" Tapped="hideornot"/>
         </Grid>
 

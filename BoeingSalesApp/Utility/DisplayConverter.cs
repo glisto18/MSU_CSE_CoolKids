@@ -21,5 +21,10 @@ namespace BoeingSalesApp.Utility
         {
             return bags.Select(c => new DisplaySalesbag(c)).ToList();
         }
+
+        public static List<DisplayMeeting> ToDisplayMeetings(List<Meeting> meetings)
+        {
+            return meetings.Select(c => new DisplayMeeting(c)).ToList();
+        }
     }
 }

@@ -40,7 +40,8 @@ namespace BoeingSalesApp
             try
             {
                 var meetings = await _meetingRepo.GetAllAsync();
-                DatabaseMeetings.ItemsSource = meetings;
+                var displayMeetings = Utility.DisplayConverter.ToDisplayMeetings(meetings);
+                DatabaseMeetings.ItemsSource = displayMeetings;
             }
             catch (NullReferenceException e) { }
         }
@@ -77,7 +78,8 @@ namespace BoeingSalesApp
         {
             if (DatabaseMeetings.SelectedItems.Count == 1)
             {
-                DataAccess.Entities.Meeting ms = (DataAccess.Entities.Meeting)DatabaseMeetings.SelectedItem;
+                var displayMeeting = (Utility.DisplayMeeting)DatabaseMeetings.SelectedItem;
+                var ms = displayMeeting.GetMeeting();
                 if (ms.SalesBag!=Guid.Empty)
                 {
                     this.Frame.Navigate(typeof(PresPg), ms);
@@ -283,8 +285,9 @@ namespace BoeingSalesApp
             catch { }
             var deletings = await KnownFolders.PicturesLibrary.GetFileAsync("appdatadeletion.txt");
             var delMet = new List<string> { };
-            foreach (DataAccess.Entities.Meeting selectdelete in DatabaseMeetings.SelectedItems)
+            foreach (Utility.DisplayMeeting displayMeeting in DatabaseMeetings.SelectedItems)
             {
+                var selectdelete = displayMeeting.GetMeeting();
                 delMet.Add(selectdelete.StartTime.ToString());
                 if(selectdelete.Note!=null)
                 {
@@ -307,8 +310,9 @@ namespace BoeingSalesApp
         private async void onConnect(object sender, RoutedEventArgs e)
         {
             DataAccess.Entities.SalesBag salesbagto = (DataAccess.Entities.SalesBag)DatabaseSalesBag.SelectedItem;
-            foreach (DataAccess.Entities.Meeting selectCon in DatabaseMeetings.SelectedItems)
+            foreach (Utility.DisplayMeeting displayMeeting in DatabaseMeetings.SelectedItems)
             {
+                var selectCon = displayMeeting.GetMeeting();
                 var newMeeting = selectCon;
                 newMeeting.SalesBag = salesbagto.ID;
                 newMeeting.Name = salesbagto.Name;
@@ -327,7 +331,8 @@ namespace BoeingSalesApp
         {
             if(DatabaseMeetings.SelectedItems.Count==1)
             {
-                DataAccess.Entities.Meeting meat = (DataAccess.Entities.Meeting)DatabaseMeetings.SelectedItem;
+                var meaty = (Utility.DisplayMeeting)DatabaseMeetings.SelectedItem;
+                var meat = meaty.GetMeeting();
                 if (meat.Note != null)
                 {
                     var note = await Windows.Storage.ApplicationData.Current.LocalFolder.GetFileAsync(meat.Note);
@@ -344,16 +349,17 @@ namespace BoeingSalesApp
         {
             if (DatabaseMeetings.SelectedItems.Count == 1)
             {
-                DataAccess.Entities.Meeting ms = (DataAccess.Entities.Meeting)DatabaseMeetings.SelectedItem;
-                if(ms.Note!=null)
+                var selectedItem = (Utility.DisplayMeeting)DatabaseMeetings.SelectedItem;
+                var ms = selectedItem.GetMeeting();
+                if (ms.Note != null)
                     noteView.Visibility = Windows.UI.Xaml.Visibility.Visible;
                 SalesbagConnect.Visibility = Windows.UI.Xaml.Visibility.Visible;
-                if(ms.SalesBag!=Guid.Empty)
+                if (ms.SalesBag != Guid.Empty)
                     launchBut.Visibility = Windows.UI.Xaml.Visibility.Visible;
                 delBut.Visibility = Windows.UI.Xaml.Visibility.Visible;
                 remBut.Visibility = Windows.UI.Xaml.Visibility.Visible;
             }
-            else if(DatabaseMeetings.SelectedItems.Count > 0)
+            else if (DatabaseMeetings.SelectedItems.Count > 0)
             {
                 noteView.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
                 launchBut.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
@@ -373,8 +379,9 @@ namespace BoeingSalesApp
          ***************************************************************/
         private async void onRemove(object sender, RoutedEventArgs e)
         {
-            foreach (DataAccess.Entities.Meeting selectdelete in DatabaseMeetings.SelectedItems)
+            foreach (Utility.DisplayMeeting displayMeeting in DatabaseMeetings.SelectedItems)
             {
+                var selectdelete = displayMeeting.GetMeeting();
                 if (selectdelete.Note != null)
                 {
                     try

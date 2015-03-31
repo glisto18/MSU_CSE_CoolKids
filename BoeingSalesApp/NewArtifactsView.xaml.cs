@@ -29,12 +29,7 @@ namespace BoeingSalesApp
     /// </summary>
     public sealed partial class NewArtifactsView : Page
     {
-        private enum PageState
-        {
-            All = 0,
-            Category = 1,
-            AllSalesBags = 2
-        }
+        
 
         private NavigationHelper navigationHelper;
         private ObservableDictionary defaultViewModel = new ObservableDictionary();
@@ -49,7 +44,7 @@ namespace BoeingSalesApp
         private bool _isInCategory = false;
         private DataAccess.Entities.Category _currentCategory = null;
 
-        private PageState _currentState = PageState.All;
+        private Enums.PageState _currentState = Enums.PageState.All;
 
 
         /// <summary>
@@ -71,9 +66,9 @@ namespace BoeingSalesApp
 
         private async void onBack(object sender, RoutedEventArgs e)
         {
-            if (_currentState == PageState.Category)
+            if (_currentState == Enums.PageState.Category || _currentState == Enums.PageState.AllSalesBags)
             {
-                _currentState = PageState.All;
+                _currentState = Enums.PageState.All;
                 _currentCategory = null;
                 lblCurrentCategory.Text = "All";
                 await UpdateUi();
@@ -230,7 +225,7 @@ namespace BoeingSalesApp
                 // if doSomething in this context is true, show the Category on the page
                 await FetchCategoryContents(displayItem.Id);
                 //_isInCategory = true;
-                _currentState = PageState.Category;
+                _currentState = Enums.PageState.Category;
                 _currentCategory = await _categoryRepo.Get(displayItem.Id);
             }
 
@@ -339,7 +334,7 @@ namespace BoeingSalesApp
 
             //DR - Clear the contents of the selectd artifcats property and add each selected item to the property
             //  soa as to access selected items after the grid is rebound
-            if (_currentState != PageState.AllSalesBags)
+            if (_currentState != Enums.PageState.AllSalesBags)
             {
                 _selectedItems.Clear();
                 foreach (IDisplayItem item in ArtifactsGridView.SelectedItems)
@@ -347,9 +342,9 @@ namespace BoeingSalesApp
                     _selectedItems.Add(item);
                 }
             }
-            
 
-            if (ArtifactsGridView.SelectedItems.Count > 0 && _currentState == PageState.Category)
+
+            if (ArtifactsGridView.SelectedItems.Count > 0 && _currentState == Enums.PageState.Category)
             //if (ArtifactsGridView.SelectedItems.Count > 0 && _isInCategory == true)
             {
                 uxRemoveFromCategory.Visibility = Visibility.Visible;
@@ -372,15 +367,15 @@ namespace BoeingSalesApp
             ArtifactsGridView.ItemsSource = dispitems;
             lblCurrentCategory.Text = "Search";
             //_isInCategory = true;
-            _currentState = PageState.Category;
+            _currentState = Enums.PageState.Category;
         }
 
         private async void AddToExistingSalesbag_Click(object sender, RoutedEventArgs e)
         {
             // if current state is not the salesbag, then we just want to view the existing salesbags
-            if(_currentState != PageState.AllSalesBags)
+            if (_currentState != Enums.PageState.AllSalesBags)
             {
-                _currentState = PageState.AllSalesBags;
+                _currentState = Enums.PageState.AllSalesBags;
                 ArtifactsGridView.SelectedItems.Clear();
                 
                 var salesbagRepo = new SalesBagRepository();
@@ -389,7 +384,7 @@ namespace BoeingSalesApp
             }
             else // else means that we are already viewing the existing salesbags, and want to save the selected artifacts/categories to the selected salesbags.
             {
-                _currentState = PageState.All;
+                _currentState = Enums.PageState.All;
                 // save categories and artifacts to salesbags here.
                 var categoriesToAdd = new List<DataAccess.Entities.Category>();
                 var artifactsToAdd = new List<Artifact>();
