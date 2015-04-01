@@ -16,6 +16,7 @@ using BoeingSalesApp.DataAccess.Entities;
 using BoeingSalesApp.DataAccess.Repository;
 using BoeingSalesApp.Utility;
 using Microsoft.Office.Interop.Outlook;
+using Category = BoeingSalesApp.DataAccess.Entities.Category;
 
 
 // The Basic Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234237
