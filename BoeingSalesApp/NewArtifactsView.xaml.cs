@@ -228,8 +228,6 @@ namespace BoeingSalesApp
                 _currentState = Enums.PageState.Category;
                 _currentCategory = await _categoryRepo.Get(displayItem.Id);
             }
-
-
             //var fileStore = new Utility.FileStore();
             //var artifact = await fileStore.GetArtifact(artifactContext.FileName);
 
