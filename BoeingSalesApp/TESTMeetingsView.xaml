@@ -37,23 +37,6 @@
             </StackPanel>
 
         </Flyout>
-        <Flyout x:Name="SelectedMeetings" x:Key="CreateFlyout2">
-                <Flyout.FlyoutPresenterStyle>
-                    <Style TargetType="FlyoutPresenter">
-                    <Setter Property="Background" Value="LightBlue"/>
-                    <Setter Property="MaxWidth" Value="5000"/>
-                    <Setter Property="MaxHeight" Value="900"/>
-                </Style>                    
-                </Flyout.FlyoutPresenterStyle>
-            <StackPanel>
-                <Grid x:Name="ImportGrid" MaxWidth="2000" MaxHeight="800">
-                    <GridView x:Name="ComboBox1" ItemsSource="{Binding}"
-                Foreground="Black" FontSize="65" MaxHeight="800" MaxWidth="2000"
-                SelectionMode="Multiple"/>
-                </Grid>
-                <Button Content="Import" HorizontalAlignment="Right" Tapped="ImportSelected"/>
-            </StackPanel>
-        </Flyout>
 
         <DataTemplate x:Key="GridTemplate">
             <StackPanel x:Name="GridItemContainer" Orientation="Horizontal" Width="250" Height="80" >
@@ -77,6 +60,23 @@
             </StackPanel>
         </DataTemplate>
 
+        <Flyout x:Name="SelectedMeetings" x:Key="CreateFlyout2">
+            <Flyout.FlyoutPresenterStyle>
+                <Style TargetType="FlyoutPresenter">
+                    <Setter Property="Background" Value="Black"/>
+                    <Setter Property="MaxWidth" Value="5000"/>
+                    <Setter Property="MaxHeight" Value="900"/>
+                </Style>
+            </Flyout.FlyoutPresenterStyle>
+            <StackPanel>
+                <Grid x:Name="ImportGrid" MaxWidth="2000" MaxHeight="800">
+                    <GridView x:Name="ComboBox1" ItemsSource="{Binding}" ItemTemplate="{StaticResource GridTemplate}"
+                Foreground="Black" FontSize="65" MaxHeight="800" MaxWidth="2000"
+                SelectionMode="Multiple"/>
+                </Grid>
+                <Button Content="Import" HorizontalAlignment="Right" Tapped="ImportSelected"/>
+            </StackPanel>
+        </Flyout>
 
         <DataTemplate x:Key="SalesbagTemplate">
             <StackPanel Orientation="Horizontal" Width="100" Height="50">
@@ -90,13 +90,15 @@
             <Flyout.FlyoutPresenterStyle>
                 <Style TargetType="FlyoutPresenter">
                     <Setter Property="Background" Value="LightBlue"/>
+                    <Setter Property="MaxWidth" Value="5000"/>
+                    <Setter Property="MaxHeight" Value="900"/>
                 </Style>
             </Flyout.FlyoutPresenterStyle>
             <StackPanel>
                 <Grid x:Name="conMeet">
                     <GridView x:Name="DatabaseSalesBag" ItemsSource="{Binding}"
                 Foreground="Black" FontSize="65" ItemTemplate="{StaticResource SalesbagTemplate}"
-                SelectionMode="Single"/>
+                SelectionMode="Single" MaxHeight="800" MaxWidth="2000"/>
                 </Grid>
                 <Button Content="Add" HorizontalAlignment="Right" Tapped="onConnect"/>
             </StackPanel>

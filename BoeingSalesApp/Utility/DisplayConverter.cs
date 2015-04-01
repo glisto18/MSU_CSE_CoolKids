@@ -26,5 +26,6 @@ namespace BoeingSalesApp.Utility
         {
             return meetings.Select(c => new DisplayMeeting(c)).ToList();
         }
+
     }
 }

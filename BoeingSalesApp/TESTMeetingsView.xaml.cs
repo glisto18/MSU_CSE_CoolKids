@@ -57,7 +57,7 @@ namespace BoeingSalesApp
             catch (NullReferenceException e) { /**/ }
         }
         //onAddButton: for salesbag connection
-        private async void onAddButton(object sender, RoutedEventArgs e) { await FetchSalesbag(); showFlyout(sender, e); }
+        private async void onAddButton(object sender, RoutedEventArgs e) { await FetchSalesbag(); ConMeetings.Placement = FlyoutPlacementMode.Full; showFlyout(sender, e); }
 
         //Whenever MeetingsView page is navigated to FetchMeetings is called
         protected async override void OnNavigatedTo(NavigationEventArgs e)
@@ -93,7 +93,7 @@ namespace BoeingSalesApp
          * Data container to hold variables for selection
          * Allows user to visualize+select data before it is entered in database
          ****************************************************************************/
-        public class Meetin
+        public class Meetin : Utility.IDisplayItem
         {
             public Meetin() { }
             public Meetin(string strt, string end, string loc, string bdy, string ldy, string sub)
@@ -110,6 +110,54 @@ namespace BoeingSalesApp
             {
                 return "Subject: " + Sub + "\nStart Time: " + Strt + "\nEnd Time: " + End + "\nLocation: " + Loc + "\nDescription: " + Bdy;
             }
+
+            public Guid Id 
+            {
+                get { return Guid.Empty; }
+                set { }
+            }
+
+            public string DisplayName
+            {
+                get { return ""; }
+                set { }
+            }
+
+            public string DisplayInfo
+            {
+                get { return Strt; }
+                set{}
+            }
+
+            public string DisplayIcon
+            {
+                get { return "Assets/Meetings.png"; }
+                set { }
+            }
+
+            public string DisplayTime
+            {
+                get { return Strt; }
+                set { }
+            }
+
+            public string DisplaySubject
+            {
+                get { return Sub; }
+                set { }
+            }
+
+            public string DisplayLocation
+            {
+                get { return Loc; }
+                set { }
+            }
+
+            public async Task<bool> DoubleTap()
+            {
+                return false;
+            }
+
         }
         /**************************************************************************************
          * AllMeets allows for multiple meetings in gridview
@@ -201,7 +249,7 @@ namespace BoeingSalesApp
                 }
                 dw.Dispose();
             }
-
+            SelectedMeetings.Placement = FlyoutPlacementMode.Full;
             showFlyout(sender, e);
         }
         /****************************************************************************************************
