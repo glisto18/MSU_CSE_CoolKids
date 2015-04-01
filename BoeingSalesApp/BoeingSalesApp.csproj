@@ -112,6 +112,9 @@
     <Compile Include="BagCreationView.xaml.cs">
       <DependentUpon>BagCreationView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="SurveyView.xaml.cs">
+      <DependentUpon>SurveyView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="DataAccess\Entities\SalesBag_Category.cs" />
     <Compile Include="DataAccess\Repository\ISalesBag_CategoryRepository.cs" />
     <Compile Include="DataAccess\Repository\SalesBag_CategoryRepository.cs" />
@@ -176,6 +179,7 @@
     <Compile Include="TESTMeetingsView.xaml.cs">
       <DependentUpon>TESTMeetingsView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Utility\PdfGenerator.cs" />
     <Compile Include="Utility\DisplayArtifact.cs" />
     <Compile Include="Utility\DisplayCategory.cs" />
     <Compile Include="Utility\DisplayConverter.cs" />
@@ -226,6 +230,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="SurveyView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="NewArtifactsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -269,6 +277,9 @@
     </SDKReference>
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="itextsharp">
+      <HintPath>lib\itextsharp.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Office.Interop.Outlook, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <EmbedInteropTypes>True</EmbedInteropTypes>

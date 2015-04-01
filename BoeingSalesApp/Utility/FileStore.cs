@@ -165,6 +165,23 @@ namespace BoeingSalesApp.Utility
             return null;
         }
 
+        public async Task<StorageFolder> GetArtifactFolder()
+        {
+            var folderToken = await _tokenRepo.Get();
+            _token = folderToken.Token;
+            if (_token != null)
+            {
+                _artifactFolder = await StorageApplicationPermissions.MostRecentlyUsedList.GetFolderAsync(_token);
+                return _artifactFolder;
+            }
+            else
+            {
+                // need to let user pick folder
+                await CheckForNewArtifacts();
+                return await GetArtifactFolder();
+            }
+        }
+
         /// <summary>
         /// Removes the current Artifact folder and allows the user to select a new folder to Artifacts to be saved at.
         /// </summary>

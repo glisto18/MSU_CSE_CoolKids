@@ -19,6 +19,7 @@ using SQLite;
 using System.Threading.Tasks;
 using Core = Windows.ApplicationModel.Core;
 
+
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234238
 // hello world
 
@@ -61,8 +62,21 @@ namespace BoeingSalesApp
         {
             this.Frame.Navigate(typeof(SalesBagsView));
         }
+        /*
+        private void theWindowMaker(object sender, RoutedEventArgs e)
+        {
+           Core.CoreApplicationView newView = Core.CoreApplication.CreateNewView();
+        }*/
+
         
-        private async void theWindowMaker(object sender, RoutedEventArgs e)
+        private void goToSurvey(object sender, TappedRoutedEventArgs e)
+        {
+            this.Frame.Navigate(typeof(SurveyView));
+        }
+        
+
+        /*
+        private void theWindowMaker(object sender, RoutedEventArgs e)
         {
            Core.CoreApplicationView newView = Core.CoreApplication.CreateNewView();
            int viewID = 0;

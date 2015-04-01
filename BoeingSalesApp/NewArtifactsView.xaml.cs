@@ -38,7 +38,7 @@ namespace BoeingSalesApp
 
         private NavigationHelper navigationHelper;
         private ObservableDictionary defaultViewModel = new ObservableDictionary();
-        private String categoryShown = "All";
+        
 
         //DR - List for keeping track of selected artifacts between changing grid views
         private List<IDisplayItem> _selectedItems = new List<IDisplayItem>();
