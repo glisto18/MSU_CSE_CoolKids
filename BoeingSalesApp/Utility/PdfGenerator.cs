@@ -12,44 +12,37 @@ namespace BoeingSalesApp.Utility
 {
     class PdfGenerator
     {
-        public async Task gen()
+        public async Task gen(String survey_rating, String survey_comment, String survey_contact)
         {
             string path = "ExportPDF.pdf";
 
             var fileStore = new Utility.FileStore();
             
             Windows.Storage.StorageFolder folder = await fileStore.GetArtifactFolder();
-
             Windows.Storage.StorageFile file = null;
+
+            bool fileExists = false;
+
             try
             {
-                file = await folder.CreateFileAsync(path, Windows.Storage.CreationCollisionOption.ReplaceExisting);
+                file = await folder.GetFileAsync(path);
+                fileExists = true;
             }
-            catch
+            catch (System.IO.FileNotFoundException)
             {
-                return;
             }
+            if (!fileExists)
+                file = await folder.CreateFileAsync(path);
 
-            /*if (file != null)
-            {
-                await Windows.Storage.FileIO.WriteTextAsync(file, string.Empty);
-            }*/
+            var stream = await file.OpenAsync(Windows.Storage.FileAccessMode.ReadWrite);
 
-            // Open to PDF file for read/write.
-            Windows.Storage.StorageFile samplefile = await folder.GetFileAsync(path);
-            var stream = await samplefile.OpenAsync(Windows.Storage.FileAccessMode.ReadWrite);
-
-            // Create an instance of the document class which represents the PDF document itself.
-            Document document = new Document(PageSize.A4, 25, 25, 30, 30);
+            Document document = new Document(PageSize.A4);
 
             // Create an instance to the PDF file by creating an instance of the PDF 
             // Writer class using the document and the filestrem in the constructor.
             PdfWriter writer = PdfWriter.GetInstance(document, stream.AsStream());
 
-            // Add meta information to the document
-            document.AddSubject("Subject - Exit Survey");
-            document.AddTitle("Title - Exit Survey");
-
+    
             // Open the document to enable you to write to the document
             document.Open();
 
@@ -58,7 +51,7 @@ namespace BoeingSalesApp.Utility
             String path_to_logo = (await _folder.GetFileAsync("BoeingLogo.scale-100.png")).Path;
 
             iTextSharp.text.Image logo = iTextSharp.text.Image.GetInstance(path_to_logo);
-            logo.Alignment = iTextSharp.text.Element.ALIGN_CENTER;
+            logo.Alignment = iTextSharp.text.Element.ALIGN_LEFT;//iTextSharp.text.Element.ALIGN_CENTER;
             logo.ScalePercent(5f);
 
             // Create document header
@@ -71,28 +64,34 @@ namespace BoeingSalesApp.Utility
             header.SpacingBefore = 15.0f;
 
             Font font = FontFactory.GetFont(FontFactory.TIMES_ROMAN, 12, Font.NORMAL, new BaseColor(0, 0, 0));
+            
+
             // Table vertical headers
             Phrase header_loc = new Phrase("Location", font);
-            Phrase loc = new Phrase("Detroit, MI", font);
             Phrase header_beginTime = new Phrase("Start Time", font);
-            Phrase beginTime = new Phrase("5/5/15 10:03 AM CT", font);
             Phrase header_endTime = new Phrase("End Time", font);
-            Phrase endTime = new Phrase("5/5/15 11:00 AM CT", font);
             Phrase header_duration = new Phrase("Duration", font);
-            Phrase duration = new Phrase("57 mins", font);
             Phrase header_contact = new Phrase("Primary Contact", font);
-            Phrase contact = new Phrase("John Doe", font);
-
             Phrase header_rating = new Phrase("Event Rating", font);
-            Phrase rating = new Phrase("--", font);
             Phrase header_assess = new Phrase("Overall Assessment", font);
-            Phrase assess = new Phrase("--", font);
-
             Phrase header_comment = new Phrase("Comments", font);
-            string text = "Customer would like further information regarding Advanced Acoustics Services for anti-submiarine warfare.";
-            Phrase comment = new Phrase(text, font);
+            Phrase header_takeaways = new Phrase("Key Takeaways", font);
+            Phrase header_actionItems = new Phrase("Action Items", font);
 
-            PdfPTable table = new PdfPTable(2);
+            // Content of cell
+            Phrase loc = new Phrase("St.Louis, MO", font);
+            Phrase beginTime = new Phrase("5/5/15 10:03 AM CT", font);
+            Phrase endTime = new Phrase("5/5/15 11:00 AM CT", font);
+            Phrase duration = new Phrase("57 mins", font);
+            Phrase contact = new Phrase(survey_contact, font);
+            Phrase meetingRating = new Phrase(survey_rating, font);
+            Phrase assess = new Phrase("--", font);
+            Phrase comment = new Phrase(survey_comment, font);
+            Phrase takeaways = new Phrase("--", font);
+            Phrase actionItems = new Phrase("--", font);
+
+            // Create table with two cols
+            PdfPTable table = new PdfPTable(2); 
             table.DefaultCell.Border = Rectangle.NO_BORDER;
             table.SpacingBefore = 20.0f;
             int[] columnWidths = new int[] { 20, 60 };
@@ -110,11 +109,15 @@ namespace BoeingSalesApp.Utility
             table.AddCell(header_contact);
             table.AddCell(contact);
             table.AddCell(header_rating);
-            table.AddCell(rating);
+            table.AddCell(meetingRating);
             table.AddCell(header_assess);
             table.AddCell(assess);
             table.AddCell(header_comment);
             table.AddCell(comment);
+            table.AddCell(header_takeaways);
+            table.AddCell(takeaways);
+            table.AddCell(header_actionItems);
+            table.AddCell(actionItems);
 
             // Add element to document
             document.Add(logo);
@@ -123,6 +126,7 @@ namespace BoeingSalesApp.Utility
 
             // Close the document
             document.Close();
+
             // Close the writer instance
             writer.Close();
         }

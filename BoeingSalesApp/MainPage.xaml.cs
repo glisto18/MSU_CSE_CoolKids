@@ -67,11 +67,12 @@ namespace BoeingSalesApp
            Core.CoreApplicationView newView = Core.CoreApplication.CreateNewView();
         }*/
 
-        private async void genpdf(object sender, TappedRoutedEventArgs e)
+        
+        private void goToSurvey(object sender, TappedRoutedEventArgs e)
         {
-            var generator = new Utility.PdfGenerator();
-            await generator.gen();
+            this.Frame.Navigate(typeof(SurveyView));
         }
+        
 
         /*
         private void theWindowMaker(object sender, RoutedEventArgs e)

@@ -26,13 +26,16 @@
     </Page.Resources>
 
     <Grid Background="White">
+
         <Grid.RowDefinitions>
             <RowDefinition Height="109*" />
             <RowDefinition Height="403*" />
-            <RowDefinition Height="256*" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        
-        <Image Grid.Row="0" Source="Assets/BoeingLogo.png" Height="97" Width="358" Margin="40,20,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Grid.RowSpan="2"/>
+        <Image Grid.Row="0" 
+               Source="Assets/BoeingLogo.png" 
+               Height="97" Width="358" Margin="40,20,0,0" 
+               VerticalAlignment="Top" HorizontalAlignment="Left" Grid.RowSpan="2"/>
 
         <StackPanel x:Name="stackPanel" Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0" VerticalAlignment="Center">
             <StackPanel.Resources>
@@ -68,7 +71,9 @@
                 </StackPanel>
             </Button>
         </StackPanel>
-        
-        <HyperlinkButton Grid.Row="2" Tapped="genpdf">Gen PDF</HyperlinkButton>
+
+        <StackPanel Orientation="Horizontal" Grid.Row="2">
+            <HyperlinkButton Grid.Row="3" Tapped="goToSurvey">Exit Survey</HyperlinkButton>
+        </StackPanel>
     </Grid>
 </Page>

@@ -11,7 +11,6 @@
     mc:Ignorable="d">
 
     <Page.Resources>
-
         <Flyout x:Name="titBox" x:Key="enterTit">
             <Flyout.FlyoutPresenterStyle>
                 <Style TargetType="FlyoutPresenter">
@@ -105,8 +104,8 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
-                
             </Grid.ColumnDefinitions>
+            
             <Button Grid.Column="0" x:Name="backButton" Margin="39,59,39,0" 
                     Tapped="onBack"
                     
