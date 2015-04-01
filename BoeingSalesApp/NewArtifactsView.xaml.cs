@@ -31,7 +31,8 @@ namespace BoeingSalesApp
         {
             All = 0,
             Category = 1,
-            AllSalesBags = 2
+            AllSalesBags = 2,
+            InSalesBag = 3
         }
 
         private NavigationHelper navigationHelper;
@@ -47,6 +48,8 @@ namespace BoeingSalesApp
         private bool _isInCategory = false;
 
         private PageState _currentState = PageState.All;
+
+        private Guid _enteredSalesBag;
 
 
         /// <summary>
@@ -218,9 +221,29 @@ namespace BoeingSalesApp
 
         private async Task FetchSalesBagContents(Guid salesBagId)
         {
+            SalesBagRepository bagRepo = new SalesBagRepository();
+            SalesBag bag = await bagRepo.Get(salesBagId);
+ 
             //DR - Fetch the category display items first and add them to the refreshed grid
+            SalesBag_CategoryRepository bagCatRepo = new SalesBag_CategoryRepository();
+            List<DataAccess.Entities.Category> catList = await bagCatRepo.GetAllSalesBagCategories(bag);
+            List<DisplayCategory> dispCatList = DisplayConverter.ToDisplayCategories(catList);
+            foreach (var cat in dispCatList)
+            {
+                await cat.SetNumOfChildren();
+            }
 
             //DR - Fetch the artifact display items and add them to the grid after the categories
+            SalesBag_ArtifactRepository bagArtRepo = new SalesBag_ArtifactRepository();
+            List<Artifact> artList = await bagArtRepo.GetAllSalesBagArtifacts(bag);
+            List<DisplayArtifact> dispArtList = DisplayConverter.ToDisplayArtifacts(artList);
+
+            //DR - Jank way of concatenating two lists of disparate types.  Found at
+            //  http://stackoverflow.com/questions/5275366/combine-two-generic-lists-of-different-types
+            System.Collections.IEnumerable both = dispArtList.OfType<object>().Concat(dispCatList.OfType<object>());
+
+            ArtifactsGridView.ItemsSource = both;
+
         }
 
         private async void Item_DoubleTapped(object sender, DoubleTappedRoutedEventArgs e)
@@ -244,6 +267,8 @@ namespace BoeingSalesApp
                 }
                 else if(foo == "DisplaySalesbag")
                 {
+                    _currentState = PageState.InSalesBag;
+                    _enteredSalesBag = displayItem.Id;
                     await FetchSalesBagContents(displayItem.Id);
                 }
             }
@@ -491,6 +516,39 @@ namespace BoeingSalesApp
             var salesbagRepo = new SalesBagRepository();
             var displaySalesbags = DisplayConverter.ToDisplaySalebsag(await salesbagRepo.GetAllAsync());
             ArtifactsGridView.ItemsSource = displaySalesbags;
+        }
+
+        private async void RemoveButton_Click(object sender, RoutedEventArgs e)
+        {
+            //DR - Presumably this button should only be visible when we're inside a salesbag
+            if(ArtifactsGridView.SelectedItems != null && _currentState == PageState.InSalesBag)
+            {
+                SalesBag_CategoryRepository bagCatRepo = new SalesBag_CategoryRepository();
+                SalesBag_ArtifactRepository bagArtRepo = new SalesBag_ArtifactRepository();
+                SalesBagRepository bagRepo = new SalesBagRepository();
+                SalesBag bag = await bagRepo.Get(_enteredSalesBag);
+
+                //DR - Iterate through the selected items and depending on type, remove that relationship
+                //  from the db
+                foreach(var i in ArtifactsGridView.SelectedItems)
+                {
+                    if(i.GetType().Name == "DisplayCategory")
+                    {
+                        DataAccess.Entities.Category cat = ((DisplayCategory)i).GetCategory();
+                        await bagCatRepo.RemoveCategoryFromSalesBag(cat, bag);
+                    }
+                    else if(i.GetType().Name == "DisplayArtifact")
+                    {
+                        Artifact art = ((DisplayArtifact)i).GetArtifact();
+                        await bagArtRepo.RemoveArtifactFromSalesBag(art, bag);
+                    }
+                }
+                await FetchSalesBagContents(bag.ID);
+            }
+            else
+            {
+                return;
+            }
         }
     }
 }
