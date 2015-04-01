@@ -83,6 +83,15 @@ namespace BoeingSalesApp
                 lblCurrentCategory.Text = "All";
                 await UpdateUi();
             }
+            else if(_currentState == Enums.PageState.InSalesBag)
+            {
+                _currentState = Enums.PageState.AllSalesBags;
+                _currentCategory = null;
+                lblCurrentCategory.Text = "Salesbags"; 
+                var salesbagRepo = new SalesBagRepository();
+                var displaySalesbags = DisplayConverter.ToDisplaySalebsag(await salesbagRepo.GetAllAsync());
+                ArtifactsGridView.ItemsSource = displaySalesbags;
+            }
             else
             {
                 Frame.GoBack();
@@ -273,7 +282,7 @@ namespace BoeingSalesApp
             }
                 else if(foo == "DisplaySalesbag")
                 {
-                    _currentState = PageState.InSalesBag;
+                    _currentState = Enums.PageState.InSalesBag;
                     _enteredSalesBag = displayItem.Id;
                     await FetchSalesBagContents(displayItem.Id);
                 }
@@ -587,7 +596,10 @@ namespace BoeingSalesApp
         private async void EditButton_Click(object sender, RoutedEventArgs e)
         {
             //DR - Bind the grid to just the salesbags
+            _currentState = Enums.PageState.AllSalesBags;
             ArtifactsGridView.SelectedItems.Clear();
+            _currentCategory = null;
+            lblCurrentCategory.Text = "Salesbags"; 
             var salesbagRepo = new SalesBagRepository();
             var displaySalesbags = DisplayConverter.ToDisplaySalebsag(await salesbagRepo.GetAllAsync());
             ArtifactsGridView.ItemsSource = displaySalesbags;
@@ -596,7 +608,7 @@ namespace BoeingSalesApp
         private async void RemoveButton_Click(object sender, RoutedEventArgs e)
         {
             //DR - Presumably this button should only be visible when we're inside a salesbag
-            if(ArtifactsGridView.SelectedItems != null && _currentState == PageState.InSalesBag)
+            if(ArtifactsGridView.SelectedItems != null && _currentState == Enums.PageState.InSalesBag)
             {
                 SalesBag_CategoryRepository bagCatRepo = new SalesBag_CategoryRepository();
                 SalesBag_ArtifactRepository bagArtRepo = new SalesBag_ArtifactRepository();

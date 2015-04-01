@@ -13,7 +13,8 @@ namespace BoeingSalesApp.Utility
         {
             All = 0,
             Category = 1,
-            AllSalesBags = 2
+            AllSalesBags = 2,
+            InSalesBag = 3
         }
     }
 }

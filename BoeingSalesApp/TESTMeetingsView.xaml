@@ -25,7 +25,7 @@
 
                 <TextBlock Text="End Time:" Foreground="White" Margin="5" FontSize="20"/>
                 <TimePicker x:Name="endTime"></TimePicker>
-                
+
                 <TextBlock Text="Location:" Foreground="White" Margin="5" FontSize="20"/>
                 <TextBox PlaceholderText="Location" x:Name="Cloc"/>
                 <TextBlock Text="Description:" Foreground="White" Margin="5" FontSize="20"/>
@@ -40,16 +40,16 @@
 
         <DataTemplate x:Key="GridTemplate">
             <StackPanel x:Name="GridItemContainer" Orientation="Horizontal" Width="250" Height="80" >
-                      
+
                 <Border Width="90" 
                         Height="{Binding Height, ElementName=GridItemContainer}"
                         Margin="10,0,0,0" 
-                        Background="LightGray">
+                        Background="#e4f1fe">
                     <Image Source="{Binding DisplayIcon}" Width="90" Height="80" />
                 </Border>
                 <StackPanel Orientation="Vertical" 
                             VerticalAlignment="Center" 
-                            Background="LightGray"
+                            Background="#e4f1fe"
                             Height="80"
                             >
                     <TextBlock Text="{Binding DisplayTime}"  Margin="5,0,0,0" Width="170" Height="20" TextTrimming="WordEllipsis" Foreground="Black" />
@@ -120,7 +120,7 @@
 
     </Page.Resources>
 
-    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    <Grid Background="#003889">
 
         <!-- Back button and "Sales Bags" header -->
         <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,10,0,-10">
@@ -145,7 +145,7 @@
         </StackPanel>
 
         <!-- Left-side pane with Import/Delete/Launch Meeting Buttons -->
-        <StackPanel Grid.Column="0" Orientation="Vertical" Margin="0,115,0,0">
+        <StackPanel Grid.Column="0" Orientation="Vertical" Margin="0,115,0,0" Background="#003889">
             <Button Tapped="onImport" FlyoutBase.AttachedFlyout="{StaticResource CreateFlyout2}" 
                     Content="Import Meetings" Height="108" Width="238"/>
             <Button Tapped="onRemove" Name="remBut" Content="Remove Meeting" 
@@ -160,10 +160,10 @@
                     Visibility="Collapsed" Height="108" Width="238"/>
         </StackPanel>
 
-        <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
+        <Grid x:Name="ContentPanel" Margin="240,118,0,0" Background="White">
             <GridView x:Name="DatabaseMeetings" ItemsSource="{Binding}"
                 Foreground="White" FontSize="65" ItemTemplate="{StaticResource GridTemplate}"
-                SelectionMode="Multiple"  Margin="229,108,0,10" Tapped="hideornot"/>
+                SelectionMode="Multiple" Tapped="hideornot"/>
         </Grid>
 
     </Grid>
