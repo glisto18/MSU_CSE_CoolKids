@@ -89,5 +89,6 @@ namespace BoeingSalesApp
            });
            bool viewShown = await Windows.UI.ViewManagement.ApplicationViewSwitcher.TryShowAsStandaloneAsync(viewID);
         }
+         * */
     }
 }
