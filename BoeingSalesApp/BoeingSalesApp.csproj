@@ -176,6 +176,7 @@
     <Compile Include="TESTMeetingsView.xaml.cs">
       <DependentUpon>TESTMeetingsView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Utility\PdfGenerator.cs" />
     <Compile Include="Utility\DisplayArtifact.cs" />
     <Compile Include="Utility\DisplayCategory.cs" />
     <Compile Include="Utility\DisplayConverter.cs" />
