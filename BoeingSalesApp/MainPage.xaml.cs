@@ -71,10 +71,8 @@ namespace BoeingSalesApp
 
         private async void genpdf(object sender, TappedRoutedEventArgs e)
         {
-
             string path = "ExportPDF.pdf";
            
-
             var fileStore = new Utility.FileStore();
             //C:\Users\Team Boeing\Downloads\BoeingArtifactFolder
             Windows.Storage.StorageFolder folder = await fileStore.GetArtifactFolder();
@@ -115,7 +113,6 @@ namespace BoeingSalesApp
             // Create Boeing Logo
             var _folder = await Windows.ApplicationModel.Package.Current.InstalledLocation.GetFolderAsync("Assets");
             String path_to_logo = (await _folder.GetFileAsync("BoeingLogo.scale-100.png")).Path;
-            
             iTextSharp.text.Image logo = iTextSharp.text.Image.GetInstance(path_to_logo);
             logo.Alignment = iTextSharp.text.Element.ALIGN_CENTER;
             logo.ScalePercent(5f);
@@ -168,6 +165,8 @@ for anti-submiarine warfare.";
             meetingData.Add(commentChunk);
             meetingData.Add(commentPara);
 
+            //PdfPTable table = new PdfPTable(2);
+
             // Add element to document
             document.Add(logo);
             document.Add(header);
@@ -175,8 +174,10 @@ for anti-submiarine warfare.";
 
             // Close the document
             document.Close();
+            
             // Close the writer instance
             writer.Close();
+
         }
 
         /*
