@@ -12,6 +12,7 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
+using System.Threading.Tasks;
 
 namespace BoeingSalesApp
 {
@@ -34,6 +35,25 @@ namespace BoeingSalesApp
             _artRepo = new DataAccess.Repository.ArtifactRepository();
             _catRepo = new DataAccess.Repository.CategoryRepository();
         }
+
+        private async Task ResetUi()
+        {
+            try
+            {
+                DataAccess.Entities.SalesBag salesbagChosen = await _salesbagRepo.Get(launchmeet.SalesBag);
+                var all = new List<Utility.IDisplayItem>();
+                var displayArtifacts = Utility.DisplayConverter.ToDisplayArtifacts(await _asalesbagRepo.GetAllSalesBagArtifacts(salesbagChosen));
+                var displayCategories = Utility.DisplayConverter.ToDisplayCategories(await _categorySalesbagRepo.GetAllSalesBagCategories(salesbagChosen));
+                foreach (var category in displayCategories)
+                {
+                    await category.SetNumOfChildren();
+                }
+                all.AddRange(displayArtifacts);
+                all.AddRange(displayCategories);
+                ArtView.ItemsSource = all;
+            }
+            catch (NullReferenceException) { }
+        }
         /********************************************************************
          * Note field is the meeting unique ID + ".txt"
          * Should display all artifacts from salesbag
@@ -42,21 +62,7 @@ namespace BoeingSalesApp
         {
             launchmeet = (DataAccess.Entities.Meeting)e.Parameter;
             launchmeet.Note = launchmeet.ID.ToString() + ".txt";
-            try 
-            {
-                DataAccess.Entities.SalesBag salesbagChosen = await _salesbagRepo.Get(launchmeet.SalesBag);
-                var all = new List<Utility.IDisplayItem>();
-                var displayArtifacts = Utility.DisplayConverter.ToDisplayArtifacts(await _asalesbagRepo.GetAllSalesBagArtifacts(salesbagChosen)); 
-                var displayCategories = Utility.DisplayConverter.ToDisplayCategories(await _categorySalesbagRepo.GetAllSalesBagCategories(salesbagChosen));
-                foreach (var category in displayCategories)
-                {
-                    await category.SetNumOfChildren();
-            }
-                all.AddRange(displayArtifacts);
-                all.AddRange(displayCategories);
-                ArtView.ItemsSource = all;
-            }
-            catch (NullReferenceException) { }
+            await ResetUi();
         }
         /*****************************************************************************
          * Creates file from "Note" field if not existed
@@ -112,25 +118,27 @@ namespace BoeingSalesApp
             ArtView.ItemsSource = dispitems;
         }
 
+        private async Task FetchCategoryContents(Guid categoryId)
+        {
+            var artifactCategoryRepo = new DataAccess.Repository.Artifact_CategoryRepository();
+            var category = await _catRepo.Get(categoryId);
+            var allArtifacts = await artifactCategoryRepo.GetAllDisplayArtifactsForCategory(category);
+
+            ArtView.ItemsSource = allArtifacts;
+        }
+
         private async void Item_DoubleTapped(object sender, DoubleTappedRoutedEventArgs e)
         {
             var artifactPanel = (StackPanel)sender;
             var displayItem = (Utility.IDisplayItem)artifactPanel.DataContext;
             var doSomething = await displayItem.DoubleTap();
 
-            //if (doSomething)
-            //{
-            //    // if doSomething in this context is true, show the Category on the page
-            //    await FetchCategoryContents(displayItem.Id);
-            //    //_isInCategory = true;
-            //    _currentState = PageState.Category;
-            //}
-
-
-            //var fileStore = new Utility.FileStore();
-            //var artifact = await fileStore.GetArtifact(artifactContext.FileName);
-
-            //await Windows.System.Launcher.LaunchFileAsync(artifact);
+            if (doSomething)
+            {
+                // if doSomething in this context is true, show the Category on the page
+                await FetchCategoryContents(displayItem.Id);
+                backbut.Visibility = Visibility.Visible;
+            }
         }
         /**********************************************
          * initialize base case view and launch flyout
@@ -140,5 +148,12 @@ namespace BoeingSalesApp
             onFind(sender, e);
             showFlyout(sender, e);
         }
+
+        private async void onBack(object sender, RoutedEventArgs e)
+        {
+            backbut.Visibility = Visibility.Collapsed;
+            await ResetUi();
+        }
+
     }
 }

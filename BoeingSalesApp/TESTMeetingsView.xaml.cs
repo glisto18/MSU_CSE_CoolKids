@@ -40,7 +40,8 @@ namespace BoeingSalesApp
             try
             {
                 var meetings = await _meetingRepo.GetAllAsync();
-                DatabaseMeetings.ItemsSource = meetings;
+                var displayMeetings = Utility.DisplayConverter.ToDisplayMeetings(meetings);
+                DatabaseMeetings.ItemsSource = displayMeetings;
             }
             catch (NullReferenceException e) { }
         }
@@ -56,7 +57,7 @@ namespace BoeingSalesApp
             catch (NullReferenceException e) { /**/ }
         }
         //onAddButton: for salesbag connection
-        private async void onAddButton(object sender, RoutedEventArgs e) { await FetchSalesbag(); showFlyout(sender, e); }
+        private async void onAddButton(object sender, RoutedEventArgs e) { await FetchSalesbag(); ConMeetings.Placement = FlyoutPlacementMode.Full; showFlyout(sender, e); }
 
         //Whenever MeetingsView page is navigated to FetchMeetings is called
         protected async override void OnNavigatedTo(NavigationEventArgs e)
@@ -77,7 +78,8 @@ namespace BoeingSalesApp
         {
             if (DatabaseMeetings.SelectedItems.Count == 1)
             {
-                DataAccess.Entities.Meeting ms = (DataAccess.Entities.Meeting)DatabaseMeetings.SelectedItem;
+                var displayMeeting = (Utility.DisplayMeeting)DatabaseMeetings.SelectedItem;
+                var ms = displayMeeting.GetMeeting();
                 if (ms.SalesBag!=Guid.Empty)
                 {
                     this.Frame.Navigate(typeof(PresPg), ms);
@@ -91,7 +93,7 @@ namespace BoeingSalesApp
          * Data container to hold variables for selection
          * Allows user to visualize+select data before it is entered in database
          ****************************************************************************/
-        public class Meetin
+        public class Meetin : Utility.IDisplayItem
         {
             public Meetin() { }
             public Meetin(string strt, string end, string loc, string bdy, string ldy, string sub)
@@ -108,6 +110,54 @@ namespace BoeingSalesApp
             {
                 return "Subject: " + Sub + "\nStart Time: " + Strt + "\nEnd Time: " + End + "\nLocation: " + Loc + "\nDescription: " + Bdy;
             }
+
+            public Guid Id 
+            {
+                get { return Guid.Empty; }
+                set { }
+            }
+
+            public string DisplayName
+            {
+                get { return ""; }
+                set { }
+            }
+
+            public string DisplayInfo
+            {
+                get { return Strt; }
+                set{}
+            }
+
+            public string DisplayIcon
+            {
+                get { return "Assets/Meetings.png"; }
+                set { }
+            }
+
+            public string DisplayTime
+            {
+                get { return Strt; }
+                set { }
+            }
+
+            public string DisplaySubject
+            {
+                get { return Sub; }
+                set { }
+            }
+
+            public string DisplayLocation
+            {
+                get { return Loc; }
+                set { }
+            }
+
+            public async Task<bool> DoubleTap()
+            {
+                return false;
+            }
+
         }
         /**************************************************************************************
          * AllMeets allows for multiple meetings in gridview
@@ -199,7 +249,7 @@ namespace BoeingSalesApp
                 }
                 dw.Dispose();
             }
-
+            SelectedMeetings.Placement = FlyoutPlacementMode.Full;
             showFlyout(sender, e);
         }
         /****************************************************************************************************
@@ -283,8 +333,9 @@ namespace BoeingSalesApp
             catch { }
             var deletings = await KnownFolders.PicturesLibrary.GetFileAsync("appdatadeletion.txt");
             var delMet = new List<string> { };
-            foreach (DataAccess.Entities.Meeting selectdelete in DatabaseMeetings.SelectedItems)
+            foreach (Utility.DisplayMeeting displayMeeting in DatabaseMeetings.SelectedItems)
             {
+                var selectdelete = displayMeeting.GetMeeting();
                 delMet.Add(selectdelete.StartTime.ToString());
                 if(selectdelete.Note!=null)
                 {
@@ -307,8 +358,9 @@ namespace BoeingSalesApp
         private async void onConnect(object sender, RoutedEventArgs e)
         {
             DataAccess.Entities.SalesBag salesbagto = (DataAccess.Entities.SalesBag)DatabaseSalesBag.SelectedItem;
-            foreach (DataAccess.Entities.Meeting selectCon in DatabaseMeetings.SelectedItems)
+            foreach (Utility.DisplayMeeting displayMeeting in DatabaseMeetings.SelectedItems)
             {
+                var selectCon = displayMeeting.GetMeeting();
                 var newMeeting = selectCon;
                 newMeeting.SalesBag = salesbagto.ID;
                 newMeeting.Name = salesbagto.Name;
@@ -327,7 +379,8 @@ namespace BoeingSalesApp
         {
             if(DatabaseMeetings.SelectedItems.Count==1)
             {
-                DataAccess.Entities.Meeting meat = (DataAccess.Entities.Meeting)DatabaseMeetings.SelectedItem;
+                var meaty = (Utility.DisplayMeeting)DatabaseMeetings.SelectedItem;
+                var meat = meaty.GetMeeting();
                 if (meat.Note != null)
                 {
                     var note = await Windows.Storage.ApplicationData.Current.LocalFolder.GetFileAsync(meat.Note);
@@ -344,15 +397,17 @@ namespace BoeingSalesApp
         {
             if (DatabaseMeetings.SelectedItems.Count == 1)
             {
-                DataAccess.Entities.Meeting ms = (DataAccess.Entities.Meeting)DatabaseMeetings.SelectedItem;
-                if(ms.Note!=null)
+                var selectedItem = (Utility.DisplayMeeting)DatabaseMeetings.SelectedItem;
+                var ms = selectedItem.GetMeeting();
+                if (ms.Note != null)
                     noteView.Visibility = Windows.UI.Xaml.Visibility.Visible;
                 SalesbagConnect.Visibility = Windows.UI.Xaml.Visibility.Visible;
-                if(ms.SalesBag!=Guid.Empty)
+                if (ms.SalesBag != Guid.Empty)
                     launchBut.Visibility = Windows.UI.Xaml.Visibility.Visible;
                 delBut.Visibility = Windows.UI.Xaml.Visibility.Visible;
+                remBut.Visibility = Windows.UI.Xaml.Visibility.Visible;
             }
-            else if(DatabaseMeetings.SelectedItems.Count > 0)
+            else if (DatabaseMeetings.SelectedItems.Count > 0)
             {
                 noteView.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
                 launchBut.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
@@ -363,8 +418,30 @@ namespace BoeingSalesApp
                 delBut.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
                 SalesbagConnect.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
                 launchBut.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
+                remBut.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
             }
         }
-
+        /****************************************************************
+         * Instead of deleting meeting from outlook only removes
+         *      meeting from salesbagapp
+         ***************************************************************/
+        private async void onRemove(object sender, RoutedEventArgs e)
+        {
+            foreach (Utility.DisplayMeeting displayMeeting in DatabaseMeetings.SelectedItems)
+            {
+                var selectdelete = displayMeeting.GetMeeting();
+                if (selectdelete.Note != null)
+                {
+                    try
+                    {
+                        var notefile = await Windows.Storage.ApplicationData.Current.LocalFolder.GetFileAsync(selectdelete.Note);
+                        await notefile.DeleteAsync();
+                    }
+                    catch { }
+                }
+                await _meetingRepo.DeleteAsync(selectdelete);
+            }
+            await FetchMeetings();
+        }
     }
 }
