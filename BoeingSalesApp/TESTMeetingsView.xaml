@@ -100,7 +100,14 @@
                               Margin="20,30,0,0" Foreground="White" Grid.Column="0"/>
                     <Button Name="impPlus" HorizontalAlignment="Right" Tapped="ImportSelected"
                         Width="80" Margin="20" Background="Transparent" Grid.Column="1">
-                        <Image Source="Assets/Plus.png"/>
+                        <Button.Template>
+                            <ControlTemplate TargetType="Button">
+                                <Grid>
+                                    <Ellipse Fill="Transparent"/>
+                                    <Image Source="Assets/Plus.png"/>
+                                </Grid>
+                            </ControlTemplate>
+                        </Button.Template>
                     </Button>
                 </Grid>
                 <Grid x:Name="ImportGrid" MaxWidth="1200" MaxHeight="800">
@@ -129,8 +136,15 @@
                     <TextBlock Text="Select a Salesbag" Style="{StaticResource HeaderTextBlockStyle}"
                               Margin="20,30,0,0" Foreground="White" Grid.Column="0"/>
                     <Button HorizontalAlignment="Right" Tapped="onConnect" Background="#003889" Width="80"
-                            Margin="20" Grid.Column="1">
-                        <Image Source="Assets/Plus.png"/>
+                            Margin="20" Grid.Column="1" x:Name="datButton" >
+                        <Button.Template>
+                            <ControlTemplate TargetType="Button">
+                                <Grid>
+                                    <Ellipse Fill="Transparent"/>
+                                    <Image Source="Assets/Plus.png"/>
+                                </Grid>
+                            </ControlTemplate>
+                        </Button.Template>
                     </Button>
                 </Grid>
                 <Grid x:Name="conMeet">

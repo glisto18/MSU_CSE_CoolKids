@@ -461,5 +461,10 @@ namespace BoeingSalesApp
             }
             await FetchMeetings();
         }
+
+        private void Button_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+
+        }
     }
 }
