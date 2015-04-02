@@ -106,7 +106,7 @@
         </Grid.RowDefinitions>
 
         <!-- Back button and page title -->
-        <Grid Grid.Row="0" Background="#003889">
+        <Grid Grid.Row="0" Background="#0038A9">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="120"/>
                 <ColumnDefinition Width="Auto"/>

@@ -211,6 +211,8 @@
     <Content Include="Assets\newsales.png" />
     <Content Include="Assets\MeetingsWhite.png" />
     <Content Include="Assets\pdf100x100.png" />
+    <Content Include="Assets\placeholdertitle.png" />
+    <Content Include="Assets\placeholdertitle2.png" />
     <Content Include="Assets\Plus.scale-100.png" />
     <Content Include="Assets\Plus_Black.scale-100.png" />
     <Content Include="Assets\pp100x100.png" />
