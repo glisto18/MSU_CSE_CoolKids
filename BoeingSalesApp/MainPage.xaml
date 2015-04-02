@@ -93,8 +93,8 @@
 
         </StackPanel>
 
-        <StackPanel Grid.Row="2">
+        <!--<StackPanel Grid.Row="2">
             <HyperlinkButton Tapped="goToSurvey">Exit Survey</HyperlinkButton>
-        </StackPanel>
+        </StackPanel>-->
     </Grid>
 </Page>
