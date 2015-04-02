@@ -66,5 +66,18 @@ namespace BoeingSalesApp.DataAccess.Repository
             var salesbagIdCount = await _database.Table<SalesBag>().Where(x => x.ID == bagId).CountAsync();
             return salesbagIdCount > 0;
         }
+
+        public async Task<bool> UpdateTitle(Guid salesbagId, string newTitle)
+        {
+            var salesbag = await Get(salesbagId);
+            if (salesbag != null)
+            {
+                salesbag.Name = newTitle;
+                await _database.UpdateAsync(salesbag);
+                return true;
+            }
+            return false;
+
+        }
     }
 }

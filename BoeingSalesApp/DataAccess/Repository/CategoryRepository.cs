@@ -90,6 +90,19 @@ namespace BoeingSalesApp.DataAccess.Repository
            return count > 0;
        }
 
+       public async Task<bool> UpdateTitle(Guid categoryId, string newTitle)
+       {
+           var category = await Get(categoryId);
+           if (category != null)
+           {
+               category.Name = newTitle;
+               await _database.UpdateAsync(category);
+               return true;
+           }
+           return false;
+
+       }
+
        public async Task<List<Category>> Search(string searchTerm)
        {
            var query = string.Format(@"SELECT * 

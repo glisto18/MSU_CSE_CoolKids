@@ -27,12 +27,12 @@
                 <Border Width="90" 
                         Height="{Binding Height, ElementName=GridItemContainer}"
                         Margin="10,0,0,0" 
-                        Background="LightGray">
+                        Background="#e4f1fe">
                     <Image Source="{Binding DisplayIcon}" Width="90" Height="60" />
                 </Border>
                 <StackPanel Orientation="Vertical" 
                             VerticalAlignment="Center" 
-                            Background="LightGray"
+                            Background="#e4f1fe"
                             Height="60"
                             >
                     <TextBlock Text="{Binding DisplayName}"  Margin="5,0,0,0" Width="170" Height="20" TextTrimming="WordEllipsis" Foreground="Black" />
@@ -44,13 +44,14 @@
         <Flyout x:Name="noteE" x:Key="enterNote">
             <Flyout.FlyoutPresenterStyle>
                 <Style TargetType="FlyoutPresenter">
-                    <Setter Property="Background" Value="Black"/>
+                    <Setter Property="Background" Value="{StaticResource BoeingBlue}"/>
                     <Setter Property="MaxWidth" Value="550"/>
+                    <Setter Property="BorderBrush" Value="{StaticResource BoeingBlue}"/>
                 </Style>
             </Flyout.FlyoutPresenterStyle>
             <StackPanel>
                 <TextBox PlaceholderText="Notes" x:Name="lines" AcceptsReturn="True" 
-                         TextWrapping="Wrap" Width="500"/>
+                         TextWrapping="Wrap" Width="500" BorderBrush="{StaticResource BoeingBlue}"/>
                 <Button Content="Add" HorizontalAlignment="Right" Tapped="addLines"/>
             </StackPanel>
         </Flyout>
@@ -58,12 +59,13 @@
         <Flyout x:Name="finder" x:Key="artlookup">
             <Flyout.FlyoutPresenterStyle>
                 <Style TargetType="FlyoutPresenter">
-                    <Setter Property="Background" Value="Black"/>
+                    <Setter Property="Background" Value="{StaticResource BoeingBlue}"/>
                     <Setter Property="MaxWidth" Value="550"/>
+                    <Setter Property="BorderBrush" Value="{StaticResource BoeingBlue}"/>
                 </Style>
             </Flyout.FlyoutPresenterStyle>
             <StackPanel>
-                <TextBox PlaceholderText="SearchByTitle" x:Name="magicmaker" 
+                <TextBox PlaceholderText="SearchByTitle" x:Name="magicmaker" BorderBrush="{StaticResource BoeingBlue}"
                          TextWrapping="Wrap" Width="500" TextChanged="onFind"/>
             </StackPanel>
         </Flyout>
@@ -71,7 +73,8 @@
     </Page.Resources>
 
     <Page.BottomAppBar>
-        <AppBar Background="{StaticResource BoeingBlue}" HorizontalContentAlignment="Left" Name="botBar">
+        <AppBar Background="{StaticResource BoeingBlue}" BorderBrush="{StaticResource BoeingBlue}" 
+                HorizontalContentAlignment="Left" Name="botBar">
             <StackPanel Orientation="Horizontal">
                 <AppBarButton Name="backbut" Icon="Back" Visibility="Collapsed"
                               Tapped="onBack" Label="Back">
@@ -91,7 +94,7 @@
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-        <Grid x:Name="ArtPanel" Grid.Row="1" Margin="12,0,12,0">
+        <Grid x:Name="ArtPanel" Grid.Row="1" Background="White">
             <GridView x:Name="ArtView" ItemsSource="{Binding}"
                 Foreground="White" FontSize="65" ItemTemplate="{StaticResource GridTemplate}"
                 SelectionMode="Single" Margin="0,10,0,0"/>

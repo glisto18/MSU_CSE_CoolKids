@@ -17,6 +17,7 @@ using BoeingSalesApp.DataAccess.Entities;
 using BoeingSalesApp.DataAccess.Repository;
 using SQLite;
 using System.Threading.Tasks;
+using Windows.UI.Xaml.Media.Imaging;
 using Core = Windows.ApplicationModel.Core;
 
 
@@ -34,11 +35,43 @@ namespace BoeingSalesApp
         {
             this.InitializeComponent();
         }
+
+        private void artifactsPointed(object sender, RoutedEventArgs e)
+        {
+            //theWindowMaker(sender, e);
+            uxArtifactsImageAfter.Visibility = Visibility.Visible;
+            uxArtifactsImageBefore.Visibility = Visibility.Collapsed;
+
+        }
+
+        private void artifactsNotPointed(object sender, RoutedEventArgs e)
+        {
+            //theWindowMaker(sender, e);
+            uxArtifactsImageAfter.Visibility = Visibility.Collapsed;
+            uxArtifactsImageBefore.Visibility = Visibility.Visible;
+
+        }
         
+        private void meetingPointed(object sender, RoutedEventArgs e)
+        {
+            //theWindowMaker(sender, e);
+            uxMeetingImageAfter.Visibility = Visibility.Visible;
+            uxMeetingImageBefore.Visibility = Visibility.Collapsed;
+
+        }
+
+        private void meetingNotPointed(object sender, RoutedEventArgs e)
+        {
+            //theWindowMaker(sender, e);
+            uxMeetingImageAfter.Visibility = Visibility.Collapsed;
+            uxMeetingImageBefore.Visibility = Visibility.Visible;
+
+        }
 
         private void onMeetings(object sender, RoutedEventArgs e)
         {
             //theWindowMaker(sender, e);
+            
             this.Frame.Navigate(typeof(TESTMeetingsView));
         }
 
@@ -46,6 +79,8 @@ namespace BoeingSalesApp
         {
             //this.Frame.Navigate(typeof(ArtifactsView));
             this.Frame.Navigate(typeof(NewArtifactsView));
+             ;
+            
         }
 
         private void onSalesBags(object sender, RoutedEventArgs e)
