@@ -130,6 +130,14 @@ namespace BoeingSalesApp
             {
                 rating = "C";
             }
+            else if ((ratingC as RadioButton).IsChecked.Value)
+            {
+                rating = "D";
+            }
+            else if ((ratingC as RadioButton).IsChecked.Value)
+            {
+                rating = "F";
+            }
             else
             {
                 rating = "--";
@@ -138,6 +146,11 @@ namespace BoeingSalesApp
             String comment = (CommentBox as TextBox).Text;
             String contact = (ContactField as TextBox).Text;
             genpdf(rating, comment, contact);
+        }
+
+        private void backButton_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            this.Frame.Navigate(typeof(TESTMeetingsView));
         }
 
     }

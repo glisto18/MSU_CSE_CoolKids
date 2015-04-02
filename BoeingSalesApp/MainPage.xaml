@@ -26,12 +26,12 @@
     </Page.Resources>
 
     <Grid Background="White">
-
         <Grid.RowDefinitions>
             <RowDefinition Height="109*" />
             <RowDefinition Height="403*" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
+        
         <Image Grid.Row="0" 
                Source="Assets/BoeingLogo.png" 
                Height="97" Width="358" Margin="40,20,0,0" 
@@ -71,9 +71,9 @@
                 </StackPanel>
             </Button>
         </StackPanel>
-
-        <StackPanel Orientation="Horizontal" Grid.Row="2">
-            <HyperlinkButton Grid.Row="3" Tapped="goToSurvey">Exit Survey</HyperlinkButton>
+        
+        <StackPanel Grid.Row="2">
+            <HyperlinkButton Tapped="goToSurvey">Exit Survey</HyperlinkButton>
         </StackPanel>
     </Grid>
 </Page>
