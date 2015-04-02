@@ -369,18 +369,24 @@ namespace BoeingSalesApp
          *******************************************************************************************/
         private async void onConnect(object sender, RoutedEventArgs e)
         {
-            DataAccess.Entities.SalesBag salesbagto = (DataAccess.Entities.SalesBag)DatabaseSalesBag.SelectedItem;
-            foreach (Utility.DisplayMeeting displayMeeting in DatabaseMeetings.SelectedItems)
+            if (DatabaseSalesBag.SelectedItems.Count == 1)
             {
-                var selectCon = displayMeeting.GetMeeting();
-                var newMeeting = selectCon;
-                newMeeting.SalesBag = salesbagto.ID;
-                newMeeting.Name = salesbagto.Name;
-                await _meetingRepo.DeleteAsync(selectCon);
-                await _meetingRepo.SaveAsync(newMeeting);
+                var salesbagdisp = (Utility.DisplaySalesbag)DatabaseSalesBag.SelectedItem;
+                var salesbagto = salesbagdisp.GetSalesbag();
+                foreach (Utility.DisplayMeeting displayMeeting in DatabaseMeetings.SelectedItems)
+                {
+                    var selectCon = displayMeeting.GetMeeting();
+                    var newMeeting = selectCon;
+                    newMeeting.SalesBag = salesbagto.ID;
+                    newMeeting.Name = salesbagto.Name;
+                    await _meetingRepo.DeleteAsync(selectCon);
+                    await _meetingRepo.SaveAsync(newMeeting);
+                }
+                await FetchMeetings();
+                ConMeetings.Hide();
             }
-            await FetchMeetings();
-            ConMeetings.Hide();
+            else
+                ConMeetings.Hide();
         }
         /*************************************************************
          * If only one meeting is selected
