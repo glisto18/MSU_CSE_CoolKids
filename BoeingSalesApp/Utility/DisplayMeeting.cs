@@ -64,5 +64,11 @@ namespace BoeingSalesApp.Utility
         {
             return false;
         }
+
+        public async Task UpdateTitle(string name)
+        {
+            
+        }
+    
     }
 }

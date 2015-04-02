@@ -50,14 +50,19 @@ namespace BoeingSalesApp
         {
             try
             {
-                var salesbags = await _salesbagRepo.GetAllAsync();
+                var salesbags = Utility.DisplayConverter.ToDisplaySalebsag(await _salesbagRepo.GetAllAsync());
                 GridView gridView = (GridView)this.FindName("DatabaseSalesBag");
                 gridView.ItemsSource = salesbags;
             }
             catch (NullReferenceException e) { /**/ }
         }
         //onAddButton: for salesbag connection
-        private async void onAddButton(object sender, RoutedEventArgs e) { await FetchSalesbag(); ConMeetings.Placement = FlyoutPlacementMode.Full; showFlyout(sender, e); }
+        private async void onAddButton(object sender, RoutedEventArgs e)
+        { 
+            await FetchSalesbag(); 
+            ConMeetings.Placement = FlyoutPlacementMode.Full; 
+            showFlyout(sender, e); 
+        }
 
         //Whenever MeetingsView page is navigated to FetchMeetings is called
         protected async override void OnNavigatedTo(NavigationEventArgs e)
@@ -100,6 +105,12 @@ namespace BoeingSalesApp
             {
                 Strt = strt; End = end; Loc = loc; Bdy = bdy; Ldy = ldy; Sub = sub;
             }
+
+            public async Task UpdateTitle(string name)
+            {
+
+            }
+    
             public string Strt { get; set; }
             public string End { get; set; }
             public string Loc { get; set; }
@@ -250,6 +261,7 @@ namespace BoeingSalesApp
                 dw.Dispose();
             }
             SelectedMeetings.Placement = FlyoutPlacementMode.Full;
+            SelectedMeetings.ShowAt(newMeetingButton);
             showFlyout(sender, e);
         }
         /****************************************************************************************************

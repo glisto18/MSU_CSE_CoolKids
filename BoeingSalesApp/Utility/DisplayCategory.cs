@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using BoeingSalesApp.DataAccess.Entities;
+using BoeingSalesApp.DataAccess.Repository;
 
 namespace BoeingSalesApp.Utility
 {
@@ -54,6 +55,12 @@ namespace BoeingSalesApp.Utility
         public async Task<bool> DoubleTap()
         {
             return true;
+        }
+
+        public async Task UpdateTitle(string newName)
+        {
+            CategoryRepository catRepo = new CategoryRepository();
+            await catRepo.UpdateTitle(_category.ID, newName);
         }
     }
 }

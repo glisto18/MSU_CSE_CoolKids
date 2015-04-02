@@ -14,13 +14,14 @@
         <Flyout x:Name="titBox" x:Key="enterTit">
             <Flyout.FlyoutPresenterStyle>
                 <Style TargetType="FlyoutPresenter">
-                    <Setter Property="Background" Value="Black"/>
+                    <Setter Property="Background" Value="{StaticResource BoeingBlue}"/>
                     <Setter Property="MaxWidth" Value="550"/>
+                    <Setter Property="BorderBrush" Value="{StaticResource BoeingBlue}"/>
                 </Style>
             </Flyout.FlyoutPresenterStyle>
             <StackPanel>
-                <TextBox PlaceholderText="Artifact Title:" x:Name="newtitle" Width="500"/>
-                <Button Content="Add" HorizontalAlignment="Right" Tapped="titleChange"/>
+                <TextBox x:Name="newtitle" Width="500" BorderBrush="{StaticResource BoeingBlue}"/>
+                <Button Content="Change" HorizontalAlignment="Right" Tapped="titleChange"/>
             </StackPanel>
         </Flyout>
 
@@ -51,12 +52,13 @@
         <Flyout x:Name="finder" x:Key="artlookup">
             <Flyout.FlyoutPresenterStyle>
                 <Style TargetType="FlyoutPresenter">
-                    <Setter Property="Background" Value="Black"/>
+                    <Setter Property="Background" Value="{StaticResource BoeingBlue}"/>
                     <Setter Property="MaxWidth" Value="550"/>
+                    <Setter Property="BorderBrush" Value="{StaticResource BoeingBlue}"/>
                 </Style>
             </Flyout.FlyoutPresenterStyle>
             <StackPanel>
-                <TextBox PlaceholderText="SearchByTitle" x:Name="magicmaker" 
+                <TextBox PlaceholderText="SearchByTitle" x:Name="magicmaker" BorderBrush="{StaticResource BoeingBlue}"
                          TextWrapping="Wrap" Width="500" TextChanged="onFind"/>
             </StackPanel>
         </Flyout>
@@ -64,7 +66,7 @@
 
         <Page.BottomAppBar>
         <AppBar Background="{StaticResource BoeingBlue}" HorizontalContentAlignment="Left" 
-                Name="uxAppBar">
+                BorderBrush="{StaticResource BoeingBlue}" Name="uxAppBar">
             <StackPanel Orientation="Horizontal">
                 <AppBarButton Name="newCat" Label="New Category" 
                               Icon="Add"
@@ -77,8 +79,9 @@
 
                 <AppBarButton Label="Find" Icon="Find" Tapped="launchme" 
                               FlyoutBase.AttachedFlyout="{StaticResource artlookup}"/>
-                <AppBarButton Label="Delete" Icon="Delete" VerticalAlignment="Top" Tapped="delete_OnTapped" />
-                <AppBarButton Label="Change Title" Icon="Edit" Tapped="launchme" 
+                <AppBarButton Label="Delete" Icon="Delete" VerticalAlignment="Top" Tapped="delete_OnTapped"
+                              Visibility="Collapsed" Name="deleter"/>
+                <AppBarButton Label="Change Title" Icon="Edit" Tapped="launchme" Visibility="Collapsed"
                              Name="titler" FlyoutBase.AttachedFlyout="{StaticResource enterTit}"/>
                 <AppBarButton Label="Remove From Category" Tapped="UxRemoveFromCategory_OnTapped"
                               Icon="Remove" Visibility="Collapsed" Name="uxRemoveFromCategory" />
@@ -135,14 +138,14 @@
             <Button Grid.Column="3" x:Name="addtoexist" HorizontalAlignment="Center" Height="82" 
                      VerticalAlignment="Center" Width="97" BorderBrush="Transparent" Click="AddToExistingSalesbag_Click">
                 <StackPanel>
-                    <Image Source="Assets/SalesBag.Scale-100.png"/>
+                    <Image Source="Assets/addtoexist.png"/>
                 </StackPanel>
             </Button>
                 
                 <Button x:Name="NewBagButton" Grid.Column="4" HorizontalAlignment="center" Height="82" 
                      VerticalAlignment="Center" Width="97" BorderBrush="Transparent">
                 <StackPanel>
-                    <Image Source="Assets/SalesBag.Scale-100.png"/>
+                    <Image Source="Assets/newsales.png"/>
                     </StackPanel>
                     <Button.Flyout>
                         <Flyout>
@@ -157,7 +160,7 @@
                 <Button x:Name="EditButton" Grid.Column="5" HorizontalAlignment="Center" Height="82" 
                      VerticalAlignment="Center" Width="97" BorderBrush="Transparent" Click="EditButton_Click">
                     <StackPanel>
-                        <Image Source="Assets/SalesBag.Scale-100.png"/>
+                        <Image Source="Assets/editexisting.png"/>
                     </StackPanel>
                 </Button>
 
@@ -197,7 +200,7 @@
         <GridView Grid.Row="1" x:Name="ArtifactsGridView"
             ItemTemplate="{StaticResource GridTemplate}"
             SelectionChanged="ArtifactsGridView_OnSelectionChanged"
-            VerticalAlignment="Top"
+            VerticalAlignment="Top" Margin="0,10,0,0"
             SelectionMode="Multiple" 
             CanDragItems="True" >
         </GridView>

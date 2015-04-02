@@ -2,6 +2,7 @@
 using System;
 using System.Threading.Tasks;
 using BoeingSalesApp.DataAccess.Entities;
+using BoeingSalesApp.DataAccess.Repository;
 using Microsoft.Office.Core;
 
 namespace BoeingSalesApp.Utility
@@ -94,6 +95,12 @@ namespace BoeingSalesApp.Utility
 
             await Windows.System.Launcher.LaunchFileAsync(artifactFile, options);
             return false;
+        }
+
+        public async Task UpdateTitle(string newName)
+        {
+            ArtifactRepository artRepo = new ArtifactRepository();
+            await artRepo.UpdateTitle(_artifact.ID, newName);
         }
     }
 }
