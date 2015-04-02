@@ -1,5 +1,5 @@
 ﻿<Page
-    x:Name="survey"
+    x:Name="Survey"
     x:Class="BoeingSalesApp.SurveyView"
     DataContext="{Binding DefaultViewModel, RelativeSource={RelativeSource Self}}"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
@@ -13,6 +13,71 @@
     <Page.Resources>
         <!-- TODO: Delete this line if the key AppName is declared in App.xaml -->
         <x:String x:Key="AppName">Exit Survey</x:String>
+        <Style x:Key="RadioButtonStyle1" TargetType="RadioButton">
+        	<Setter Property="Background" Value="Transparent"/>
+        	<Setter Property="Foreground" Value="{ThemeResource RadioButtonContentForegroundThemeBrush}"/>
+        	<Setter Property="Padding" Value="1,4,0,0"/>
+        	<Setter Property="HorizontalAlignment" Value="Stretch"/>
+        	<Setter Property="VerticalAlignment" Value="Center"/>
+        	<Setter Property="HorizontalContentAlignment" Value="Left"/>
+        	<Setter Property="VerticalContentAlignment" Value="Top"/>
+        	<Setter Property="FontFamily" Value="{ThemeResource ContentControlThemeFontFamily}"/>
+        	<Setter Property="FontSize" Value="{ThemeResource ControlContentThemeFontSize}"/>
+        	<Setter Property="Template">
+        		<Setter.Value>
+        			<ControlTemplate TargetType="RadioButton">
+        				<Border BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}">
+        					<VisualStateManager.VisualStateGroups>
+        						<VisualStateGroup x:Name="CommonStates">
+        							<VisualState x:Name="Normal"/>
+        							<VisualState x:Name="PointerOver"/>
+        							<VisualState x:Name="Pressed"/>
+        							<VisualState x:Name="Disabled">
+        								<Storyboard>
+        									<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Foreground" Storyboard.TargetName="ContentPresenter">
+        										<DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource RadioButtonContentDisabledForegroundThemeBrush}"/>
+        									</ObjectAnimationUsingKeyFrames>
+        								</Storyboard>
+        							</VisualState>
+        						</VisualStateGroup>
+        						<VisualStateGroup x:Name="CheckStates">
+        							<VisualState x:Name="Checked">
+        								<Storyboard>
+        									<DoubleAnimation Duration="0" To="1" Storyboard.TargetProperty="Opacity" Storyboard.TargetName="CheckGlyph"/>
+        								</Storyboard>
+        							</VisualState>
+        							<VisualState x:Name="Unchecked"/>
+        							<VisualState x:Name="Indeterminate"/>
+        						</VisualStateGroup>
+        						<VisualStateGroup x:Name="FocusStates">
+        							<VisualState x:Name="Focused">
+        								<Storyboard>
+        									<DoubleAnimation Duration="0" To="1" Storyboard.TargetProperty="Opacity" Storyboard.TargetName="FocusVisualWhite"/>
+        									<DoubleAnimation Duration="0" To="1" Storyboard.TargetProperty="Opacity" Storyboard.TargetName="FocusVisualBlack"/>
+        								</Storyboard>
+        							</VisualState>
+        							<VisualState x:Name="Unfocused"/>
+        							<VisualState x:Name="PointerFocused"/>
+        						</VisualStateGroup>
+        					</VisualStateManager.VisualStateGroups>
+        					<Grid Margin="0,0,10,0">
+        						<Grid.ColumnDefinitions>
+        							<ColumnDefinition Width="29"/>
+        							<ColumnDefinition Width="*"/>
+        						</Grid.ColumnDefinitions>
+        						<Grid VerticalAlignment="Top" Margin="0">
+        							<Ellipse x:Name="BackgroundEllipse" Fill="#CCA3A0A4" Height="23" Stroke="#CC5F5E5E" UseLayoutRounding="False" Width="23" StrokeThickness="5" Margin="0"/>
+        							<Ellipse x:Name="CheckGlyph" Fill="{StaticResource BoeingBlue}" Height="10" Opacity="0" UseLayoutRounding="False" Width="10"/>
+        							<Rectangle x:Name="FocusVisualWhite" Height="29" Opacity="0" StrokeDashOffset="1.5" StrokeEndLineCap="Square" Stroke="{ThemeResource FocusVisualWhiteStrokeThemeBrush}" StrokeDashArray="1,1" Width="29"/>
+        							<Rectangle x:Name="FocusVisualBlack" Height="29" Opacity="0" StrokeDashOffset="0.5" StrokeEndLineCap="Square" Stroke="{ThemeResource FocusVisualBlackStrokeThemeBrush}" StrokeDashArray="1,1" Width="29"/>
+        						</Grid>
+        						<ContentPresenter x:Name="ContentPresenter" AutomationProperties.AccessibilityView="Raw" ContentTemplate="{TemplateBinding ContentTemplate}" ContentTransitions="{TemplateBinding ContentTransitions}" Content="{TemplateBinding Content}" Grid.Column="1" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+        					</Grid>
+        				</Border>
+        			</ControlTemplate>
+        		</Setter.Value>
+        	</Setter>
+        </Style>
     </Page.Resources>
 
     <!--
@@ -20,7 +85,7 @@
         * Row 0 contains the back button and page title
         * Row 1 contains the rest of the page layout
     -->
-    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    <Grid Background="White">
         <Grid.ChildrenTransitions>
             <TransitionCollection>
                 <EntranceThemeTransition/>
@@ -32,22 +97,20 @@
         </Grid.RowDefinitions>
 
         <!-- Back button and page title -->
-        <Grid Grid.Row="0">
+        <Grid Grid.Row="0" Background="{StaticResource BoeingBlue}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="120"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <Button x:Name="backButton" Margin="39,59,39,0" Command="{Binding NavigationHelper.GoBackCommand, ElementName=survey}"
+            <Button x:Name="backButton" Margin="39,59,39,0"
                         Style="{StaticResource NavigationBackButtonNormalStyle}"
                         VerticalAlignment="Top"
-                        AutomationProperties.Name="Back"
-                        AutomationProperties.AutomationId="BackButton"
-                        AutomationProperties.ItemType="Navigation Button" FontFamily="Global User Interface"/>
+                        Tapped="backButton_Tapped"/>
             <TextBlock x:Name="pageTitle" Text="{StaticResource AppName}" Style="{StaticResource HeaderTextBlockStyle}" Grid.Column="1" 
-                        IsHitTestVisible="false" TextWrapping="NoWrap" VerticalAlignment="Bottom" Margin="0,0,30,40"/>
+                        IsHitTestVisible="false" TextWrapping="NoWrap" VerticalAlignment="Bottom" Margin="0,0,30,40" FontFamily="Global User Interface"/>
         </Grid>
 
-        <Grid Grid.Row="1" Margin="39,0,0,0">
+        <Grid Grid.Row="1" Margin="39,15,0,0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
@@ -55,24 +118,30 @@
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
             <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,30">
-                <TextBlock FontSize="24" Text="Primary Contact"/>
-                <TextBox x:Name="ContactField" Width="150" FontFamily="Global User Interface" Margin="30,0,0,0"/>
+                <TextBlock FontSize="24" Text="Primary Contact" 
+                          Foreground="{StaticResource BoeingBlue}" FontWeight="Bold"/>
+                <TextBox x:Name="ContactField" Width="250" Margin="30,0,0,0" 
+                         BorderBrush="{StaticResource BoeingBlue}"/>
             </StackPanel>
 
             <StackPanel Grid.Row="1" Orientation="Vertical" Margin="0,0,0,30">
-                <TextBlock FontSize="24" Text="How would you rate this meeting?"/>
-                <RadioButton x:Name="ratingA" FontSize="24" Content="A" VerticalAlignment="Stretch" />
-                <RadioButton x:Name="ratingB" FontSize="24" Content="B" VerticalAlignment="Stretch" />
-                <RadioButton x:Name="ratingC" FontSize="24" Content="C" VerticalAlignment="Stretch" />
+                <TextBlock FontSize="24" Text="How would you rate this meeting ?" Foreground="{StaticResource BoeingBlue}" FontWeight="Bold"/>
+
+                <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,0,0,30">
+                    <RadioButton x:Name="ratingA" FontSize="24" Foreground="Black" Content="A" Style="{StaticResource RadioButtonStyle1}"/>
+                    <RadioButton x:Name="ratingB" FontSize="24" Foreground="Black" Content="B" Style="{StaticResource RadioButtonStyle1}"/>
+                    <RadioButton x:Name="ratingC" FontSize="24" Foreground="Black" Content="C" Style="{StaticResource RadioButtonStyle1}"/>
+                    <RadioButton x:Name="ratingD" FontSize="24" Foreground="Black" Content="D" Style="{StaticResource RadioButtonStyle1}"/>
+                    <RadioButton x:Name="ratingF" FontSize="24" Foreground="Black" Content="F" Style="{StaticResource RadioButtonStyle1}"/>
+                </StackPanel>
             </StackPanel>
 
-            
             <StackPanel Grid.Row="2" Orientation="Vertical" Margin="0,0,0,30">
-                <TextBlock FontSize="24" Text="Comment"/>
-                <TextBox x:Name="CommentBox" Width="350" Height="200" HorizontalAlignment="Left" Margin="30,0,0,0"/>
+                <TextBlock FontSize="24" Text="Comment" Foreground="{StaticResource BoeingBlue}" FontWeight="Bold"/>
+                <TextBox x:Name="CommentBox" Width="1000" Height="200" HorizontalAlignment="Left" Margin="30,0,0,0" BorderBrush="{StaticResource BoeingBlue}"/>
             </StackPanel>
 
-
+        
             <Button x:Name="Submit" Background="{StaticResource BoeingBlue}" Foreground="White" 
                     Content="Submit" Grid.Row="3" Tapped="Submit_Tapped" />
 

@@ -98,7 +98,7 @@ namespace BoeingSalesApp
          *****************************************************************/
         private void doneMeet(object sender, RoutedEventArgs e)
         {
-            this.Frame.Navigate(typeof(TESTMeetingsView));
+            this.Frame.Navigate(typeof(SurveyView));
         }
         private void showFlyout(object sender, RoutedEventArgs e)
         {
