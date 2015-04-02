@@ -50,14 +50,19 @@ namespace BoeingSalesApp
         {
             try
             {
-                var salesbags = await _salesbagRepo.GetAllAsync();
+                var salesbags = Utility.DisplayConverter.ToDisplaySalebsag(await _salesbagRepo.GetAllAsync());
                 GridView gridView = (GridView)this.FindName("DatabaseSalesBag");
                 gridView.ItemsSource = salesbags;
             }
             catch (NullReferenceException e) { /**/ }
         }
         //onAddButton: for salesbag connection
-        private async void onAddButton(object sender, RoutedEventArgs e) { await FetchSalesbag(); ConMeetings.Placement = FlyoutPlacementMode.Full; showFlyout(sender, e); }
+        private async void onAddButton(object sender, RoutedEventArgs e)
+        { 
+            await FetchSalesbag(); 
+            ConMeetings.Placement = FlyoutPlacementMode.Full; 
+            showFlyout(sender, e); 
+        }
 
         //Whenever MeetingsView page is navigated to FetchMeetings is called
         protected async override void OnNavigatedTo(NavigationEventArgs e)
@@ -100,6 +105,12 @@ namespace BoeingSalesApp
             {
                 Strt = strt; End = end; Loc = loc; Bdy = bdy; Ldy = ldy; Sub = sub;
             }
+
+            public async Task UpdateTitle(string name)
+            {
+
+            }
+    
             public string Strt { get; set; }
             public string End { get; set; }
             public string Loc { get; set; }
@@ -250,6 +261,7 @@ namespace BoeingSalesApp
                 dw.Dispose();
             }
             SelectedMeetings.Placement = FlyoutPlacementMode.Full;
+            SelectedMeetings.ShowAt(newMeetingButton);
             showFlyout(sender, e);
         }
         /****************************************************************************************************
@@ -357,18 +369,24 @@ namespace BoeingSalesApp
          *******************************************************************************************/
         private async void onConnect(object sender, RoutedEventArgs e)
         {
-            DataAccess.Entities.SalesBag salesbagto = (DataAccess.Entities.SalesBag)DatabaseSalesBag.SelectedItem;
-            foreach (Utility.DisplayMeeting displayMeeting in DatabaseMeetings.SelectedItems)
+            if (DatabaseSalesBag.SelectedItems.Count == 1)
             {
-                var selectCon = displayMeeting.GetMeeting();
-                var newMeeting = selectCon;
-                newMeeting.SalesBag = salesbagto.ID;
-                newMeeting.Name = salesbagto.Name;
-                await _meetingRepo.DeleteAsync(selectCon);
-                await _meetingRepo.SaveAsync(newMeeting);
+                var salesbagdisp = (Utility.DisplaySalesbag)DatabaseSalesBag.SelectedItem;
+                var salesbagto = salesbagdisp.GetSalesbag();
+                foreach (Utility.DisplayMeeting displayMeeting in DatabaseMeetings.SelectedItems)
+                {
+                    var selectCon = displayMeeting.GetMeeting();
+                    var newMeeting = selectCon;
+                    newMeeting.SalesBag = salesbagto.ID;
+                    newMeeting.Name = salesbagto.Name;
+                    await _meetingRepo.DeleteAsync(selectCon);
+                    await _meetingRepo.SaveAsync(newMeeting);
+                }
+                await FetchMeetings();
+                ConMeetings.Hide();
             }
-            await FetchMeetings();
-            ConMeetings.Hide();
+            else
+                ConMeetings.Hide();
         }
         /*************************************************************
          * If only one meeting is selected
@@ -442,6 +460,11 @@ namespace BoeingSalesApp
                 await _meetingRepo.DeleteAsync(selectdelete);
             }
             await FetchMeetings();
+        }
+
+        private void Button_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+
         }
     }
 }

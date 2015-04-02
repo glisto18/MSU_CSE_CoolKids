@@ -9,12 +9,14 @@
     mc:Ignorable="d">
 
     <Page.Resources>
+        
         <Flyout x:Name="MeetingsAdd" x:Key="CreateFlyout1">
             <Flyout.FlyoutPresenterStyle>
                 <Style TargetType="FlyoutPresenter">
-                    <Setter Property="Background" Value="Black"/>
+                    <Setter Property="Background" Value="#0038A9"/>
                     <Setter Property="MinHeight" Value="300"/>
                     <Setter Property="MinWidth" Value="300"/>
+                    <Setter Property="BorderBrush" Value="#0038A9"/>
                 </Style>
             </Flyout.FlyoutPresenterStyle>
 
@@ -61,47 +63,96 @@
             </StackPanel>
         </DataTemplate>
 
-        <Flyout x:Name="SelectedMeetings" x:Key="CreateFlyout2">
-            <Flyout.FlyoutPresenterStyle>
-                <Style TargetType="FlyoutPresenter">
-                    <Setter Property="Background" Value="Black"/>
-                    <Setter Property="MaxWidth" Value="5000"/>
-                    <Setter Property="MaxHeight" Value="900"/>
-                </Style>
-            </Flyout.FlyoutPresenterStyle>
-            <StackPanel>
-                <Grid x:Name="ImportGrid" MaxWidth="2000" MaxHeight="800">
-                    <GridView x:Name="ComboBox1" ItemsSource="{Binding}" ItemTemplate="{StaticResource GridTemplate}"
-                Foreground="Black" FontSize="65" MaxHeight="800" MaxWidth="2000"
-                SelectionMode="Multiple"/>
-                </Grid>
-                <Button Content="Import" HorizontalAlignment="Right" Tapped="ImportSelected"/>
-            </StackPanel>
-        </Flyout>
-
         <DataTemplate x:Key="SalesbagTemplate">
-            <StackPanel Orientation="Horizontal" Width="100" Height="50">
-                <StackPanel Orientation="Vertical" VerticalAlignment="Center">
-                    <TextBlock Text="{Binding Name}"/>
+            <StackPanel x:Name="GridItemContainer" Orientation="Horizontal" Width="250" Height="60" >
+                <Border Width="90" 
+                        Height="{Binding Height, ElementName=GridItemContainer}"
+                        Margin="10,0,0,0" 
+                        Background="#e4f1fe">
+                    <Image Source="{Binding DisplayIcon}" Width="90" Height="60" />
+                </Border>
+                <StackPanel Orientation="Vertical" 
+                            VerticalAlignment="Center" 
+                            Background="#e4f1fe"
+                            Height="60"
+                            >
+                    <TextBlock Text="{Binding DisplayName}"  Margin="5,0,0,0" Width="170" Height="20" TextTrimming="WordEllipsis" Foreground="Black" />
+                    <TextBlock Text="{Binding DisplayInfo}" Margin="5,0,0,0" Width="170" Height="20" TextTrimming="WordEllipsis" Foreground="Black"/>
                 </StackPanel>
             </StackPanel>
         </DataTemplate>
 
-        <Flyout x:Name="ConMeetings" x:Key="CreateFlyout3">
+        <Flyout x:Name="SelectedMeetings" x:Key="CreateFlyout2">
             <Flyout.FlyoutPresenterStyle>
                 <Style TargetType="FlyoutPresenter">
-                    <Setter Property="Background" Value="LightBlue"/>
-                    <Setter Property="MaxWidth" Value="5000"/>
-                    <Setter Property="MaxHeight" Value="900"/>
+                    <Setter Property="Background" Value="White"/>
+                    <Setter Property="MaxWidth" Value="1200"/>
+                    <Setter Property="MaxHeight" Value="800"/>
+                    <Setter Property="BorderBrush" Value="#0038A9"/>
                 </Style>
             </Flyout.FlyoutPresenterStyle>
             <StackPanel>
+                <Grid Grid.Row="0" Background="#0038A9" Height="100" Margin="0,0,0,10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Text="Select Meetings" Style="{StaticResource HeaderTextBlockStyle}"
+                              Margin="20,30,0,0" Foreground="White" Grid.Column="0"/>
+                    <Button Name="impPlus" HorizontalAlignment="Right" Tapped="ImportSelected"
+                        Width="80" Margin="20" Background="Transparent" Grid.Column="1">
+                        <Button.Template>
+                            <ControlTemplate TargetType="Button">
+                                <Grid>
+                                    <Ellipse Fill="Transparent"/>
+                                    <Image Source="Assets/Plus.png"/>
+                                </Grid>
+                            </ControlTemplate>
+                        </Button.Template>
+                    </Button>
+                </Grid>
+                <Grid x:Name="ImportGrid" MaxWidth="1200" MaxHeight="800">
+                    <GridView x:Name="ComboBox1" ItemsSource="{Binding}" ItemTemplate="{StaticResource GridTemplate}"
+                Foreground="Black" FontSize="65" MaxHeight="700" MaxWidth="1100"
+                SelectionMode="Multiple"/>
+                </Grid>
+            </StackPanel>
+        </Flyout>
+
+        <Flyout x:Name="ConMeetings" x:Key="CreateFlyout3">
+            <Flyout.FlyoutPresenterStyle>
+                <Style TargetType="FlyoutPresenter">
+                    <Setter Property="Background" Value="White"/>
+                    <Setter Property="MaxWidth" Value="1200"/>
+                    <Setter Property="MaxHeight" Value="800"/>
+                    <Setter Property="BorderBrush" Value="#0038A9"/>
+                </Style>
+            </Flyout.FlyoutPresenterStyle>
+            <StackPanel>
+                <Grid Grid.Row="0" Background="#0038A9" Height="100" Margin="0,0,0,10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Text="Select a Salesbag" Style="{StaticResource HeaderTextBlockStyle}"
+                              Margin="20,30,0,0" Foreground="White" Grid.Column="0"/>
+                    <Button HorizontalAlignment="Right" Tapped="onConnect" Background="#0038A9" Width="80"
+                            Margin="20" Grid.Column="1" x:Name="datButton" >
+                        <Button.Template>
+                            <ControlTemplate TargetType="Button">
+                                <Grid>
+                                    <Ellipse Fill="Transparent"/>
+                                    <Image Source="Assets/Plus.png"/>
+                                </Grid>
+                            </ControlTemplate>
+                        </Button.Template>
+                    </Button>
+                </Grid>
                 <Grid x:Name="conMeet">
                     <GridView x:Name="DatabaseSalesBag" ItemsSource="{Binding}"
                 Foreground="Black" FontSize="65" ItemTemplate="{StaticResource SalesbagTemplate}"
-                SelectionMode="Single" MaxHeight="800" MaxWidth="2000"/>
+                SelectionMode="Single" MaxHeight="700" MaxWidth="1100"/>
                 </Grid>
-                <Button Content="Add" HorizontalAlignment="Right" Tapped="onConnect"/>
             </StackPanel>
         </Flyout>
 
@@ -121,7 +172,7 @@
 
     </Page.Resources>
 
-    <Grid Background="#003889">
+    <Grid Background="#0038A9">
 
         <!-- Back button and "Sales Bags" header -->
         <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,10,0,-10">
@@ -146,7 +197,7 @@
         </StackPanel>
 
         <!-- Left-side pane with Import/Delete/Launch Meeting Buttons -->
-        <StackPanel Grid.Column="0" Orientation="Vertical" Margin="0,115,0,0" Background="#003889">
+        <StackPanel Grid.Column="0" Orientation="Vertical" Margin="0,115,0,0" Background="#0038A9">
             <Button Tapped="onImport" FlyoutBase.AttachedFlyout="{StaticResource CreateFlyout2}" 
                     Content="Import Meetings" Height="108" Width="238"/>
             <Button Tapped="onRemove" Name="remBut" Content="Remove Meeting" 
@@ -164,7 +215,7 @@
         <Grid x:Name="ContentPanel" Margin="240,118,0,0" Background="White">
             <GridView x:Name="DatabaseMeetings" ItemsSource="{Binding}"
                 Foreground="White" FontSize="65" ItemTemplate="{StaticResource GridTemplate}"
-                SelectionMode="Multiple" Tapped="hideornot"/>
+                SelectionMode="Multiple" Margin="0,10,0,0" Tapped="hideornot"/>
         </Grid>
 
     </Grid>

@@ -80,14 +80,14 @@ namespace BoeingSalesApp
             {
                 _currentState = Enums.PageState.All;
                 _currentCategory = null;
-                lblCurrentCategory.Text = "All";
+                uxPageTitle.Text = "Artifacts";
                 await UpdateUi();
             }
             else if(_currentState == Enums.PageState.InSalesBag)
             {
                 _currentState = Enums.PageState.AllSalesBags;
                 _currentCategory = null;
-                lblCurrentCategory.Text = "Salesbags"; 
+                uxPageTitle.Text = "Salesbags"; 
                 var salesbagRepo = new SalesBagRepository();
                 var displaySalesbags = DisplayConverter.ToDisplaySalebsag(await salesbagRepo.GetAllAsync());
                 ArtifactsGridView.ItemsSource = displaySalesbags;
@@ -230,13 +230,15 @@ namespace BoeingSalesApp
             var allArtifacts = await artifactCategoryRepo.GetAllDisplayArtifactsForCategory(category);
 
             ArtifactsGridView.ItemsSource = allArtifacts;
-            lblCurrentCategory.Text = category.Name;
+            uxPageTitle.Text = category.Name;
         }
 
         private async Task FetchSalesBagContents(Guid salesBagId)
         {
             SalesBagRepository bagRepo = new SalesBagRepository();
             SalesBag bag = await bagRepo.Get(salesBagId);
+
+            uxPageTitle.Text = string.Format("Artifacts for {0}", bag.Name);
  
             //DR - Fetch the category display items first and add them to the refreshed grid
             SalesBag_CategoryRepository bagCatRepo = new SalesBag_CategoryRepository();
@@ -323,15 +325,25 @@ namespace BoeingSalesApp
 
         private async void titleChange(object sender, RoutedEventArgs e)
         {
-            if (ArtifactsGridView.SelectedItems.Count == 1)
-            {
-                string arttit = newtitle.Text;
-                var selectItem = ((IDisplayItem)ArtifactsGridView.SelectedItem).Id;
-                await _artifactRepo.UpdateTitle(selectItem, arttit);
-            }
+            string arttit = newtitle.Text;
+            var selectItem = (IDisplayItem)ArtifactsGridView.SelectedItem;
+            await selectItem.UpdateTitle(arttit);
+
             newtitle.Text = "";
             titBox.Hide();
-            await UpdateUi();
+
+            if (_currentState == Enums.PageState.All)
+                await UpdateUi();
+            else if (_currentState == Enums.PageState.Category)
+                await FetchCategoryContents(_currentCategory.ID);
+            else if (_currentState == Enums.PageState.InSalesBag)
+                await FetchSalesBagContents(_enteredSalesBag);
+            else if (_currentState == Enums.PageState.AllSalesBags)
+            {
+                var salesbagRepo = new SalesBagRepository();
+                var displaySalesbags = DisplayConverter.ToDisplaySalebsag(await salesbagRepo.GetAllAsync());
+                ArtifactsGridView.ItemsSource = displaySalesbags;
+            }
         }
 
         private void UxCategoryBox_OnDragOver(object sender, DragEventArgs e)
@@ -364,6 +376,21 @@ namespace BoeingSalesApp
 
         private void ArtifactsGridView_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            if (ArtifactsGridView.SelectedItems.Count == 1)
+            {
+                titler.Visibility = Visibility.Visible;
+                deleter.Visibility = Visibility.Visible;
+            }
+            else if(ArtifactsGridView.SelectedItems.Count > 1)
+            {
+                titler.Visibility = Visibility.Collapsed;
+                deleter.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                titler.Visibility = Visibility.Collapsed;
+                deleter.Visibility = Visibility.Collapsed;
+            }
 
             //DR - Clear the contents of the selectd artifcats property and add each selected item to the property
             //  soa as to access selected items after the grid is rebound
@@ -398,7 +425,7 @@ namespace BoeingSalesApp
             dispitems.AddRange(fewarts);
             dispitems.AddRange(fewcat);
             ArtifactsGridView.ItemsSource = dispitems;
-            lblCurrentCategory.Text = "Search";
+            uxPageTitle.Text = "Search";
             //_isInCategory = true;
             _currentState = Enums.PageState.Category;
         }
@@ -406,9 +433,15 @@ namespace BoeingSalesApp
         private async void AddToExistingSalesbag_Click(object sender, RoutedEventArgs e)
         {
             // if current state is not the salesbag, then we just want to view the existing salesbags
-            if (_currentState != Enums.PageState.AllSalesBags)
+            if (_currentState != Enums.PageState.AddToSalesBag)
             {
-                _currentState = Enums.PageState.AllSalesBags;
+                if (_currentState == Enums.PageState.AllSalesBags)
+                {
+                    // coming from the edit page, do nothing
+                    return;
+                }
+                uxPageTitle.Text = "Add To Salesbag";
+                _currentState = Enums.PageState.AddToSalesBag;
                 ArtifactsGridView.SelectedItems.Clear();
                 
                 var salesbagRepo = new SalesBagRepository();
@@ -599,7 +632,7 @@ namespace BoeingSalesApp
             _currentState = Enums.PageState.AllSalesBags;
             ArtifactsGridView.SelectedItems.Clear();
             _currentCategory = null;
-            lblCurrentCategory.Text = "Salesbags"; 
+            uxPageTitle.Text = "Edit Salesbags"; 
             var salesbagRepo = new SalesBagRepository();
             var displaySalesbags = DisplayConverter.ToDisplaySalebsag(await salesbagRepo.GetAllAsync());
             ArtifactsGridView.ItemsSource = displaySalesbags;

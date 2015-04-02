@@ -16,9 +16,13 @@ namespace BoeingSalesApp.Utility
 
         string DisplayIcon { get; set; }
 
+        Task UpdateTitle(string newName);
+
         Guid Id { get; set; }
 
         // returns true or false, if true the caller will know to do an action, if false, the caller does nothing.
         Task<bool> DoubleTap();
+
+
     }
 }

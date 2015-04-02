@@ -130,11 +130,11 @@ namespace BoeingSalesApp
             {
                 rating = "C";
             }
-            else if ((ratingC as RadioButton).IsChecked.Value)
+            else if ((ratingD as RadioButton).IsChecked.Value)
             {
                 rating = "D";
             }
-            else if ((ratingC as RadioButton).IsChecked.Value)
+            else if ((ratingF as RadioButton).IsChecked.Value)
             {
                 rating = "F";
             }
