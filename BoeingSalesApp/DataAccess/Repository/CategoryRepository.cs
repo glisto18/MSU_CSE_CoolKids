@@ -47,7 +47,7 @@ namespace BoeingSalesApp.DataAccess.Repository
             foreach (var category in categories)
             {
                 var displayCategory = new DisplayCategory(category);
-                displayCategory.SetNumOfChildren();
+                await displayCategory.SetNumOfChildren();
                 displayCategories.Add(displayCategory);
             }
             return displayCategories;

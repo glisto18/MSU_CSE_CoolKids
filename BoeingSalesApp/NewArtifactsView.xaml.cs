@@ -9,6 +9,7 @@ using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
 using System.Threading.Tasks;
+using Windows.Storage.Provider;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Navigation;
@@ -16,7 +17,9 @@ using BoeingSalesApp.DataAccess.Entities;
 using BoeingSalesApp.DataAccess.Repository;
 using BoeingSalesApp.Utility;
 using Microsoft.Office.Interop.Outlook;
+using Category = BoeingSalesApp.DataAccess.Entities.Category;
 
+// andys branch
 
 // The Basic Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234237
 
@@ -27,15 +30,31 @@ namespace BoeingSalesApp
     /// </summary>
     public sealed partial class NewArtifactsView : Page
     {
+        private enum PageState
+        {
+            All = 0,
+            Category = 1,
+            AllSalesBags = 2,
+            InSalesBag = 3
+        }
+
 
         private NavigationHelper navigationHelper;
         private ObservableDictionary defaultViewModel = new ObservableDictionary();
         
 
+        //DR - List for keeping track of selected artifacts between changing grid views
+        private List<IDisplayItem> _selectedItems = new List<IDisplayItem>();
+
         private DataAccess.Repository.CategoryRepository _categoryRepo;
         private DataAccess.Repository.ArtifactRepository _artifactRepo;
 
         private bool _isInCategory = false;
+        private DataAccess.Entities.Category _currentCategory = null;
+
+        private Enums.PageState _currentState = Enums.PageState.All;
+
+        private Guid _enteredSalesBag;
 
 
         /// <summary>
@@ -57,11 +76,21 @@ namespace BoeingSalesApp
 
         private async void onBack(object sender, RoutedEventArgs e)
         {
-            if (_isInCategory)
+            if (_currentState == Enums.PageState.Category || _currentState == Enums.PageState.AllSalesBags)
             {
-                _isInCategory = false;
+                _currentState = Enums.PageState.All;
+                _currentCategory = null;
                 lblCurrentCategory.Text = "All";
                 await UpdateUi();
+            }
+            else if(_currentState == Enums.PageState.InSalesBag)
+            {
+                _currentState = Enums.PageState.AllSalesBags;
+                _currentCategory = null;
+                lblCurrentCategory.Text = "Salesbags"; 
+                var salesbagRepo = new SalesBagRepository();
+                var displaySalesbags = DisplayConverter.ToDisplaySalebsag(await salesbagRepo.GetAllAsync());
+                ArtifactsGridView.ItemsSource = displaySalesbags;
             }
             else
             {
@@ -122,14 +151,13 @@ namespace BoeingSalesApp
             _categoryRepo = new DataAccess.Repository.CategoryRepository();
             _artifactRepo = new DataAccess.Repository.ArtifactRepository();
 
-
-            var foo = await _categoryRepo.Search("cat");
-
             navigationHelper.OnNavigatedTo(e);
 
-            await UpdateUi();
+            //await UpdateUi();
 
             await CheckForNewArtifacts();
+
+            await UpdateUi();
         }
 
         private async Task UpdateUi()
@@ -169,7 +197,7 @@ namespace BoeingSalesApp
         private void SetCategoryCombobox(List<DisplayCategory> categories)
         {
             // add each category to the combobox
-            UxCategoryBox.ItemsSource = categories;
+            //UxCategoryBox.ItemsSource = categories;
 
         }
 
@@ -205,6 +233,33 @@ namespace BoeingSalesApp
             lblCurrentCategory.Text = category.Name;
         }
 
+        private async Task FetchSalesBagContents(Guid salesBagId)
+        {
+            SalesBagRepository bagRepo = new SalesBagRepository();
+            SalesBag bag = await bagRepo.Get(salesBagId);
+ 
+            //DR - Fetch the category display items first and add them to the refreshed grid
+            SalesBag_CategoryRepository bagCatRepo = new SalesBag_CategoryRepository();
+            List<DataAccess.Entities.Category> catList = await bagCatRepo.GetAllSalesBagCategories(bag);
+            List<DisplayCategory> dispCatList = DisplayConverter.ToDisplayCategories(catList);
+            foreach (var cat in dispCatList)
+            {
+                await cat.SetNumOfChildren();
+            }
+
+            //DR - Fetch the artifact display items and add them to the grid after the categories
+            SalesBag_ArtifactRepository bagArtRepo = new SalesBag_ArtifactRepository();
+            List<Artifact> artList = await bagArtRepo.GetAllSalesBagArtifacts(bag);
+            List<DisplayArtifact> dispArtList = DisplayConverter.ToDisplayArtifacts(artList);
+
+            //DR - Jank way of concatenating two lists of disparate types.  Found at
+            //  http://stackoverflow.com/questions/5275366/combine-two-generic-lists-of-different-types
+            System.Collections.IEnumerable both = dispArtList.OfType<object>().Concat(dispCatList.OfType<object>());
+
+            ArtifactsGridView.ItemsSource = both;
+
+        }
+
         private async void Item_DoubleTapped(object sender, DoubleTappedRoutedEventArgs e)
         {
             var artifactPanel = (StackPanel) sender;
@@ -213,9 +268,24 @@ namespace BoeingSalesApp
 
             if (doSomething)
             {
+                //DR - It is the worst practice in the world to typecheck using string names, do not
+                //  ever do this in the real world.  If anyone has any suggestions for how to typecheck these
+                //  objects please let me know.  Cuz this makes me ashamed of myself.
+                var foo = displayItem.GetType().Name;
+                if (foo == "DisplayCategory")
+                {
                 // if doSomething in this context is true, show the Category on the page
                 await FetchCategoryContents(displayItem.Id);
-                _isInCategory = true;
+                //_isInCategory = true;
+                _currentState = Enums.PageState.Category;
+                _currentCategory = await _categoryRepo.Get(displayItem.Id);
+            }
+                else if(foo == "DisplaySalesbag")
+                {
+                    _currentState = Enums.PageState.InSalesBag;
+                    _enteredSalesBag = displayItem.Id;
+                    await FetchSalesBagContents(displayItem.Id);
+                }
             }
 
 
@@ -237,31 +307,6 @@ namespace BoeingSalesApp
             //    uxAppBar.IsOpen = false;
             //}
             
-        }
-
-        private async void Button_Click(object sender, RoutedEventArgs e)
-        {
-            //DR - On button click, we want to hide and display the listbox
-            //  If the listbox is visible, collapse it.  Otherwise...
-            if (this.SalesBagComboBox.Visibility == Windows.UI.Xaml.Visibility.Visible)
-                this.SalesBagComboBox.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
-            else
-            {
-                //DR - This is a bit hacky but in order to display a "New SalesBag" item in the listbox
-                //  we need to make a salesbag with the name "New SalesBag".  Since the bag isn't saved into
-                //  the database we can do this every time the listbox is made visible.
-                var emptyNewBag = new SalesBag();
-                emptyNewBag.Name = "[New SalesBag]";
-
-                //DR - emptySalesbag is made, make combobox visible, get the list of all salesbags
-                this.SalesBagComboBox.Visibility = Windows.UI.Xaml.Visibility.Visible;
-                List<SalesBag> salesBagList = await GetSalesBags();
-
-                //DR - Add the empty bag to the list and set as the box's item source
-                //  badabing badaboom
-                salesBagList.Add(emptyNewBag);
-                this.SalesBagComboBox.ItemsSource = salesBagList;
-            }
         }
 
         private async Task<List<SalesBag>> GetSalesBags()
@@ -291,7 +336,7 @@ namespace BoeingSalesApp
 
         private void UxCategoryBox_OnDragOver(object sender, DragEventArgs e)
         {
-            UxCategoryBox.IsDropDownOpen = true;
+            //UxCategoryBox.IsDropDownOpen = true;
         }
 
         private async void Item_OnDrop(object sender, DragEventArgs e)
@@ -306,12 +351,12 @@ namespace BoeingSalesApp
             var artifactCategoryRepo = new Artifact_CategoryRepository();
             foreach (IDisplayItem item in selectedItems)
             {
-                if (item.GetType() != typeof (DisplayArtifact))
+                if (item.GetType() == typeof (DisplayArtifact))
                 {
-                    return;
-                }
                 var artifact = ((DisplayArtifact)item).GetArtifact();
                 await artifactCategoryRepo.AddRelationship(artifact, destinationCategory);
+            }
+            
             }
             
             await UpdateUi();
@@ -319,7 +364,21 @@ namespace BoeingSalesApp
 
         private void ArtifactsGridView_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (ArtifactsGridView.SelectedItems.Count > 0 && _isInCategory == true)
+
+            //DR - Clear the contents of the selectd artifcats property and add each selected item to the property
+            //  soa as to access selected items after the grid is rebound
+            if (_currentState != Enums.PageState.AllSalesBags)
+            {
+                _selectedItems.Clear();
+                foreach (IDisplayItem item in ArtifactsGridView.SelectedItems)
+                {
+                    _selectedItems.Add(item);
+                }
+            }
+            
+
+            if (ArtifactsGridView.SelectedItems.Count > 0 && _currentState == Enums.PageState.Category)
+            //if (ArtifactsGridView.SelectedItems.Count > 0 && _isInCategory == true)
             {
                 uxRemoveFromCategory.Visibility = Visibility.Visible;
             }
@@ -340,7 +399,243 @@ namespace BoeingSalesApp
             dispitems.AddRange(fewcat);
             ArtifactsGridView.ItemsSource = dispitems;
             lblCurrentCategory.Text = "Search";
-            _isInCategory = true;
+            //_isInCategory = true;
+            _currentState = Enums.PageState.Category;
+        }
+
+        private async void AddToExistingSalesbag_Click(object sender, RoutedEventArgs e)
+        {
+            // if current state is not the salesbag, then we just want to view the existing salesbags
+            if (_currentState != Enums.PageState.AllSalesBags)
+            {
+                _currentState = Enums.PageState.AllSalesBags;
+                ArtifactsGridView.SelectedItems.Clear();
+                
+                var salesbagRepo = new SalesBagRepository();
+                var displaySalesbags = DisplayConverter.ToDisplaySalebsag( await salesbagRepo.GetAllAsync());
+                ArtifactsGridView.ItemsSource = displaySalesbags;
+            }
+            else // else means that we are already viewing the existing salesbags, and want to save the selected artifacts/categories to the selected salesbags.
+            {
+                _currentState = Enums.PageState.All;
+                // save categories and artifacts to salesbags here.
+                var categoriesToAdd = new List<DataAccess.Entities.Category>();
+                var artifactsToAdd = new List<Artifact>();
+                foreach (var item in _selectedItems)
+                {
+                    if (item.GetType() == typeof(DisplayCategory))
+                    {
+                        categoriesToAdd.Add(((DisplayCategory)item).GetCategory());
+                    } 
+                    else if(item.GetType() == typeof(DisplayArtifact))
+                    {
+                        artifactsToAdd.Add(((DisplayArtifact)item).GetArtifact());
+                    }
+                }
+
+                var salesbagArtifactRepo = new SalesBag_ArtifactRepository();
+                var salesbagCategoryRepo = new SalesBag_CategoryRepository();
+                foreach(var item in ArtifactsGridView.SelectedItems)
+                {
+                    if (item.GetType() == typeof(DisplaySalesbag))
+                    {
+                        var bag = ((DisplaySalesbag)item).GetSalesbag();
+                        
+                        foreach (var artifact in artifactsToAdd)
+                        {
+                            await salesbagArtifactRepo.AddArtifactToSalesbag(artifact, bag);
+                        }
+
+                        foreach (var category in categoriesToAdd)
+                        {
+                            await salesbagCategoryRepo.AddCategoryToSalesBag(category, bag);
+                        }
+                    } 
+                }
+
+                
+                await UpdateUi();
+            }
+            
+        }
+
+
+        private async void UxRemoveFromCategory_OnTapped(object sender, TappedRoutedEventArgs e)
+        {
+            if (ArtifactsGridView.SelectedItems.Count < 1)
+            {
+                return;
+            }
+            var artifactCategoryRepo = new Artifact_CategoryRepository();
+            foreach (var item in ArtifactsGridView.SelectedItems)
+            {
+                if (item.GetType() == typeof(DisplayArtifact))
+                {
+                    var artifact = ((DisplayArtifact)item).GetArtifact();
+                    await artifactCategoryRepo.RemoveArtifactFromCategory(artifact, _currentCategory);
+                    
+                }
+            }
+            await FetchCategoryContents(_currentCategory.ID);
+        }
+
+        private async void delete_OnTapped(object sender, TappedRoutedEventArgs e)
+        {
+            // call delete on repo
+            // use file store to delete the artifact from the machine
+
+            if (ArtifactsGridView.SelectedItems.Count < 1)
+            {
+                return;
+            }
+
+            foreach (var item in ArtifactsGridView.SelectedItems)
+            {
+                if (item.GetType() == typeof(DisplayArtifact))
+                {
+                    var artifact = ((DisplayArtifact)item).GetArtifact();
+                   
+                    // remove from artifact_category table
+                    var artifactCategoryRepo = new Artifact_CategoryRepository();
+                    await artifactCategoryRepo.DeleteAllArtifactReferences(artifact);
+
+                    // remove from salesbag_artifact table
+                    var salesbagArtifactRepo = new SalesBag_ArtifactRepository();
+                    await salesbagArtifactRepo.DeleteAllArtifactReferences(artifact);
+
+                    // remove from file system
+                    var fileStore = new FileStore();
+                    await fileStore.DeleteArtifact(artifact.Path);
+
+                    // remove from artifact table
+                    await _artifactRepo.DeleteAsync(artifact);
+                    } 
+                }
+
+                
+            if (_isInCategory)
+            {
+                await FetchCategoryContents(_currentCategory.ID);
+            }
+            else
+            {
+                await UpdateUi();
+            }
+            
+        }
+            
+        private async void AddToNewSalesBag_Click(object sender, RoutedEventArgs e)
+        {
+            NewBagButton.Flyout.Hide();
+
+            //DR - Create SalesBag object to be used for association
+            //  If we wanted to we could put this stuff in the constructor of a salesbag
+            //  I can't help but feel like it's bad practice to set it all manually
+            SalesBag newBag = new SalesBag();
+            newBag.Name = newBagName.Text;
+            newBag.Active = true;
+            newBag.DateCreated = DateTime.Now;
+            newBag.ID = Guid.NewGuid();
+
+            //DR - Save the new salesbag
+            SalesBagRepository salesBagRepo = new SalesBagRepository();
+            await salesBagRepo.SaveAsync(newBag);
+
+            //DR - If there are no selected items, simply add the salesbag to the database and return
+            if(ArtifactsGridView.SelectedItems == null)
+            {
+                return;
+            }
+            //DR - If there are selected items, iterate through them and associate them with the new salesbag
+            else
+            {
+                //DR - We need these to create the artifact's and category's associations with the salesbag
+                SalesBag_CategoryRepository bagCatRepo = new SalesBag_CategoryRepository();
+                SalesBag_ArtifactRepository bagArtRepo = new SalesBag_ArtifactRepository();
+
+                //DR - We need these to find the actual artifact and category objects to be used by the repo
+                //  for adding to the db
+                ArtifactRepository artRepo = new ArtifactRepository();
+                CategoryRepository catRepo = new CategoryRepository();
+                List<Artifact> artList = new List<Artifact>();
+
+                //DR - Note, there are two Category classes, one in the BoeingSalesApp and one in the outlook plugin
+                //  If we have time it would be convenient to refactor them so there is no ambiguity
+                List<BoeingSalesApp.DataAccess.Entities.Category> catList = new List<DataAccess.Entities.Category>();
+
+                //DR - This foreach iterates through each selected item on the grid and checks whether the item is a
+                //  category or an artifact and adds the item to a list.  Those two lists will be used to associate
+                //  objects with the salesbag.
+                foreach(IDisplayItem i in ArtifactsGridView.SelectedItems)
+                {
+                    if(i.GetType() == typeof(DisplayArtifact))
+                    {
+                        artList.Add(((DisplayArtifact)i).GetArtifact());
+                    }
+                    else if(i.GetType() == typeof(DisplayCategory))
+                    {
+                        catList.Add(((DisplayCategory)i).GetCategory());
+                    }
+                }
+
+                //DR - Iterate through the artifact list and add an association to the new Salesbag
+                foreach(Artifact i in artList)
+                {
+                    await bagArtRepo.AddArtifactToSalesbag(i, newBag);
+                }
+
+                //DR - Iterate through the category list and add an association to the new salesbag
+                foreach(BoeingSalesApp.DataAccess.Entities.Category i in catList)
+                {
+                    await bagCatRepo.AddCategoryToSalesBag(i, newBag);
+                }
+                return;
+            }
+        }
+
+        private async void EditButton_Click(object sender, RoutedEventArgs e)
+        {
+            //DR - Bind the grid to just the salesbags
+            _currentState = Enums.PageState.AllSalesBags;
+            ArtifactsGridView.SelectedItems.Clear();
+            _currentCategory = null;
+            lblCurrentCategory.Text = "Salesbags"; 
+            var salesbagRepo = new SalesBagRepository();
+            var displaySalesbags = DisplayConverter.ToDisplaySalebsag(await salesbagRepo.GetAllAsync());
+            ArtifactsGridView.ItemsSource = displaySalesbags;
+        }
+
+        private async void RemoveButton_Click(object sender, RoutedEventArgs e)
+        {
+            //DR - Presumably this button should only be visible when we're inside a salesbag
+            if(ArtifactsGridView.SelectedItems != null && _currentState == Enums.PageState.InSalesBag)
+            {
+                SalesBag_CategoryRepository bagCatRepo = new SalesBag_CategoryRepository();
+                SalesBag_ArtifactRepository bagArtRepo = new SalesBag_ArtifactRepository();
+                SalesBagRepository bagRepo = new SalesBagRepository();
+                SalesBag bag = await bagRepo.Get(_enteredSalesBag);
+
+                //DR - Iterate through the selected items and depending on type, remove that relationship
+                //  from the db
+                foreach(var i in ArtifactsGridView.SelectedItems)
+                {
+                    if(i.GetType().Name == "DisplayCategory")
+                    {
+                        DataAccess.Entities.Category cat = ((DisplayCategory)i).GetCategory();
+                        await bagCatRepo.RemoveCategoryFromSalesBag(cat, bag);
+                    }
+                    else if(i.GetType().Name == "DisplayArtifact")
+                    {
+                        Artifact art = ((DisplayArtifact)i).GetArtifact();
+                        await bagArtRepo.RemoveArtifactFromSalesBag(art, bag);
+                    }
+                }
+                await FetchSalesBagContents(bag.ID);
+            }
+            else
+            {
+                return;
+            }
         }
     }
 }

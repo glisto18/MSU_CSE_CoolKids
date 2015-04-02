@@ -12,6 +12,7 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
+using System.Threading.Tasks;
 
 namespace BoeingSalesApp
 {
@@ -23,14 +24,35 @@ namespace BoeingSalesApp
         private DataAccess.Repository.ArtifactRepository _artRepo;
         private DataAccess.Repository.CategoryRepository _catRepo;
         private DataAccess.Entities.Meeting launchmeet;
+        private DataAccess.Repository.SalesBag_CategoryRepository _categorySalesbagRepo;
         public PresPg()
         {
             this.InitializeComponent();
             _asalesbagRepo = new DataAccess.Repository.SalesBag_ArtifactRepository();
+            _categorySalesbagRepo = new DataAccess.Repository.SalesBag_CategoryRepository();
             _salesbagRepo = new DataAccess.Repository.SalesBagRepository();
             _meetingRepo = new DataAccess.Repository.MeetingRepository();
             _artRepo = new DataAccess.Repository.ArtifactRepository();
             _catRepo = new DataAccess.Repository.CategoryRepository();
+        }
+
+        private async Task ResetUi()
+        {
+            try
+            {
+                DataAccess.Entities.SalesBag salesbagChosen = await _salesbagRepo.Get(launchmeet.SalesBag);
+                var all = new List<Utility.IDisplayItem>();
+                var displayArtifacts = Utility.DisplayConverter.ToDisplayArtifacts(await _asalesbagRepo.GetAllSalesBagArtifacts(salesbagChosen));
+                var displayCategories = Utility.DisplayConverter.ToDisplayCategories(await _categorySalesbagRepo.GetAllSalesBagCategories(salesbagChosen));
+                foreach (var category in displayCategories)
+                {
+                    await category.SetNumOfChildren();
+                }
+                all.AddRange(displayArtifacts);
+                all.AddRange(displayCategories);
+                ArtView.ItemsSource = all;
+            }
+            catch (NullReferenceException) { }
         }
         /********************************************************************
          * Note field is the meeting unique ID + ".txt"
@@ -40,13 +62,7 @@ namespace BoeingSalesApp
         {
             launchmeet = (DataAccess.Entities.Meeting)e.Parameter;
             launchmeet.Note = launchmeet.ID.ToString() + ".txt";
-            try 
-            {
-                DataAccess.Entities.SalesBag salesbagChosen = await _salesbagRepo.Get(launchmeet.SalesBag);
-                List<DataAccess.Entities.Artifact> sa = await _asalesbagRepo.GetAllSalesBagArtifacts(salesbagChosen); 
-                ArtView.ItemsSource = sa;
-            }
-            catch (NullReferenceException) { }
+            await ResetUi();
         }
         /*****************************************************************************
          * Creates file from "Note" field if not existed
@@ -88,12 +104,12 @@ namespace BoeingSalesApp
         {
             FlyoutBase.ShowAttachedFlyout((FrameworkElement)sender);
         }
-        
+        /*******************************************************************
+         * Displays all artifacts and categories based on any string
+         *      currently in "magicmaker"
+         **********************************************************************/
         private async void onFind(object sender, RoutedEventArgs e)
         {
-            botBar.Visibility = Visibility.Collapsed;
-            var allarts = await _artRepo.GetAllAsync();
-            ArtView.ItemsSource = allarts;
             var fewarts = Utility.DisplayConverter.ToDisplayArtifacts(await _artRepo.Search(magicmaker.Text));
             var fewcat = Utility.DisplayConverter.ToDisplayCategories(await _catRepo.Search(magicmaker.Text));
             var dispitems = new List<Utility.IDisplayItem>();
@@ -101,5 +117,43 @@ namespace BoeingSalesApp
             dispitems.AddRange(fewcat);
             ArtView.ItemsSource = dispitems;
         }
+
+        private async Task FetchCategoryContents(Guid categoryId)
+        {
+            var artifactCategoryRepo = new DataAccess.Repository.Artifact_CategoryRepository();
+            var category = await _catRepo.Get(categoryId);
+            var allArtifacts = await artifactCategoryRepo.GetAllDisplayArtifactsForCategory(category);
+
+            ArtView.ItemsSource = allArtifacts;
+        }
+
+        private async void Item_DoubleTapped(object sender, DoubleTappedRoutedEventArgs e)
+        {
+            var artifactPanel = (StackPanel)sender;
+            var displayItem = (Utility.IDisplayItem)artifactPanel.DataContext;
+            var doSomething = await displayItem.DoubleTap();
+
+            if (doSomething)
+            {
+                // if doSomething in this context is true, show the Category on the page
+                await FetchCategoryContents(displayItem.Id);
+                backbut.Visibility = Visibility.Visible;
+            }
+        }
+        /**********************************************
+         * initialize base case view and launch flyout
+         ************************************************/
+        private void onFindTap(object sender, RoutedEventArgs e)
+        {
+            onFind(sender, e);
+            showFlyout(sender, e);
+        }
+
+        private async void onBack(object sender, RoutedEventArgs e)
+        {
+            backbut.Visibility = Visibility.Collapsed;
+            await ResetUi();
+        }
+
     }
 }

@@ -112,6 +112,9 @@
     <Compile Include="BagCreationView.xaml.cs">
       <DependentUpon>BagCreationView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="SurveyView.xaml.cs">
+      <DependentUpon>SurveyView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="DataAccess\Entities\SalesBag_Category.cs" />
     <Compile Include="DataAccess\Repository\ISalesBag_CategoryRepository.cs" />
     <Compile Include="DataAccess\Repository\SalesBag_CategoryRepository.cs" />
@@ -176,9 +179,13 @@
     <Compile Include="TESTMeetingsView.xaml.cs">
       <DependentUpon>TESTMeetingsView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Utility\PdfGenerator.cs" />
     <Compile Include="Utility\DisplayArtifact.cs" />
     <Compile Include="Utility\DisplayCategory.cs" />
     <Compile Include="Utility\DisplayConverter.cs" />
+    <Compile Include="Utility\DisplayMeeting.cs" />
+    <Compile Include="Utility\DisplaySalesbag.cs" />
+    <Compile Include="Utility\Enums.cs" />
     <Compile Include="Utility\IDisplayItem.cs" />
     <Compile Include="Utility\FakeSeeder.cs" />
     <Compile Include="Utility\FileStore.cs" />
@@ -222,6 +229,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="BagCreationView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="SurveyView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
