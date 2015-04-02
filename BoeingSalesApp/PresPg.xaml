@@ -77,7 +77,7 @@
                 HorizontalContentAlignment="Left" Name="botBar">
             <StackPanel Orientation="Horizontal">
                 <AppBarButton Name="backbut" Icon="Back" Visibility="Collapsed"
-                              Tapped="onBack" Label="Back">
+                              Tapped="onBack" Label="Return">
                 </AppBarButton>
                 <AppBarButton Name="Noter" Label="Note" Icon="Pin"
                               Tapped="addNote" FlyoutBase.AttachedFlyout="{StaticResource enterNote}">
