@@ -14,7 +14,8 @@ namespace BoeingSalesApp.Utility
             All = 0,
             Category = 1,
             AllSalesBags = 2,
-            InSalesBag = 3
+            InSalesBag = 3,
+            AddToSalesBag = 4
         }
     }
 }

@@ -200,11 +200,13 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Assets\Artifact.scale-100.png" />
+    <Content Include="Assets\ArtifactsWhite.png" />
     <Content Include="Assets\Artifacts.scale-100.png" />
     <Content Include="Assets\BoeingLogo.scale-100.png" />
     <Content Include="Assets\image100x100.png" />
     <Content Include="Assets\Logo.scale-100.png" />
     <Content Include="Assets\Meetings.scale-100.png" />
+    <Content Include="Assets\MeetingsWhite.png" />
     <Content Include="Assets\pdf100x100.png" />
     <Content Include="Assets\Plus.scale-100.png" />
     <Content Include="Assets\Plus_Black.scale-100.png" />
