@@ -116,6 +116,7 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
             <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,30">
                 <TextBlock FontSize="24" Text="Primary Contact" 
@@ -137,14 +138,19 @@
             </StackPanel>
 
             <StackPanel Grid.Row="2" Orientation="Vertical" Margin="0,0,0,30">
+                <TextBlock FontSize="24" Text="Action Items ..." Foreground="{StaticResource BoeingBlue}" FontWeight="Bold"/>
+                <TextBlock FontSize="24" Text="Key Takeaways ..." Foreground="{StaticResource BoeingBlue}" FontWeight="Bold" Margin="0,20,0,0"/>
+            </StackPanel>
+            
+            <StackPanel Grid.Row="3" Orientation="Vertical" Margin="0,0,0,30">
                 <TextBlock FontSize="24" Text="Comment" Foreground="{StaticResource BoeingBlue}" FontWeight="Bold"/>
-                <TextBox x:Name="CommentBox" Width="1000" Height="200" HorizontalAlignment="Left" Margin="30,0,0,0" BorderBrush="{StaticResource BoeingBlue}"/>
+                <RichEditBox x:Name="CommentBox" Width="1000" Height="200" 
+                         HorizontalAlignment="Left" Margin="30,0,0,0" BorderBrush="{StaticResource BoeingBlue}"
+                         TextWrapping="Wrap" AcceptsReturn="True" />
             </StackPanel>
 
-        
-            <Button x:Name="Submit" Background="{StaticResource BoeingBlue}" Foreground="White" 
-                    Content="Submit" Grid.Row="3" Tapped="Submit_Tapped" />
-
+            <Button x:Name="Submit" Grid.Row="4" Background="{StaticResource BoeingBlue}" Foreground="White" 
+                    Content="Submit" Tapped="Submit_Tapped" />
         </Grid>
     </Grid>
 </Page>
