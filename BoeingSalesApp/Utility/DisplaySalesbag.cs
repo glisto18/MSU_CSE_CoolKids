@@ -11,6 +11,7 @@ namespace BoeingSalesApp.Utility
     class DisplaySalesbag : IDisplayItem
     {
         private SalesBag _salesbag;
+        private int size;
 
         public Guid Id
         {
@@ -28,7 +29,10 @@ namespace BoeingSalesApp.Utility
 
         public string DisplayInfo
         {
-            get { return ""; }
+            get 
+            {
+                return size.ToString() + " Artifacts"; 
+            }
             set{}
         }
 
@@ -52,6 +56,13 @@ namespace BoeingSalesApp.Utility
         {
             SalesBagRepository bagRepo = new SalesBagRepository();
             await bagRepo.UpdateTitle(_salesbag.ID, newName);
+        }
+
+        public async Task getArtNum()
+        {
+            SalesBag_ArtifactRepository bagArtRepo = new SalesBag_ArtifactRepository();
+            List<Artifact> artList = await bagArtRepo.GetAllSalesBagArtifacts(_salesbag);
+            size = artList.Count;
         }
     }
 }

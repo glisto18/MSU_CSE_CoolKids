@@ -76,7 +76,7 @@ namespace BoeingSalesApp
 
         private async void onBack(object sender, RoutedEventArgs e)
         {
-            if (_currentState == Enums.PageState.Category || _currentState == Enums.PageState.AllSalesBags)
+            if (_currentState == Enums.PageState.Category || _currentState == Enums.PageState.AllSalesBags || _currentState == Enums.PageState.AddToSalesBag)
             {
                 _currentState = Enums.PageState.All;
                 _currentCategory = null;
@@ -90,6 +90,9 @@ namespace BoeingSalesApp
                 uxPageTitle.Text = "Salesbags"; 
                 var salesbagRepo = new SalesBagRepository();
                 var displaySalesbags = DisplayConverter.ToDisplaySalebsag(await salesbagRepo.GetAllAsync());
+
+                await DisplayConverter.ToSetArtNums(displaySalesbags);
+
                 ArtifactsGridView.ItemsSource = displaySalesbags;
             }
             else
@@ -342,6 +345,9 @@ namespace BoeingSalesApp
             {
                 var salesbagRepo = new SalesBagRepository();
                 var displaySalesbags = DisplayConverter.ToDisplaySalebsag(await salesbagRepo.GetAllAsync());
+
+                await DisplayConverter.ToSetArtNums(displaySalesbags);
+
                 ArtifactsGridView.ItemsSource = displaySalesbags;
             }
         }
@@ -446,6 +452,9 @@ namespace BoeingSalesApp
                 
                 var salesbagRepo = new SalesBagRepository();
                 var displaySalesbags = DisplayConverter.ToDisplaySalebsag( await salesbagRepo.GetAllAsync());
+
+                await DisplayConverter.ToSetArtNums(displaySalesbags);
+
                 ArtifactsGridView.ItemsSource = displaySalesbags;
             }
             else // else means that we are already viewing the existing salesbags, and want to save the selected artifacts/categories to the selected salesbags.
@@ -635,6 +644,9 @@ namespace BoeingSalesApp
             uxPageTitle.Text = "Edit Salesbags"; 
             var salesbagRepo = new SalesBagRepository();
             var displaySalesbags = DisplayConverter.ToDisplaySalebsag(await salesbagRepo.GetAllAsync());
+
+            await DisplayConverter.ToSetArtNums(displaySalesbags);
+
             ArtifactsGridView.ItemsSource = displaySalesbags;
         }
 
