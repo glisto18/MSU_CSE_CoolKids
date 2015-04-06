@@ -394,15 +394,14 @@ namespace BoeingSalesApp
 
             //DR - Clear the contents of the selectd artifcats property and add each selected item to the property
             //  soa as to access selected items after the grid is rebound
-            if (_currentState != Enums.PageState.AllSalesBags)
+            if (_currentState == Enums.PageState.All)
             {
                 _selectedItems.Clear();
                 foreach (IDisplayItem item in ArtifactsGridView.SelectedItems)
                 {
                     _selectedItems.Add(item);
                 }
-            }
-            
+            }            
 
             if (ArtifactsGridView.SelectedItems.Count > 0 && _currentState == Enums.PageState.Category)
             //if (ArtifactsGridView.SelectedItems.Count > 0 && _isInCategory == true)
