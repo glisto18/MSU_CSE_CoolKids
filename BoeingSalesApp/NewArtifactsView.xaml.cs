@@ -385,7 +385,9 @@ namespace BoeingSalesApp
                 titler.Visibility = Visibility.Visible;
                 deleter.Visibility = Visibility.Visible;
                 addtoexist.Visibility = Visibility.Visible;
-                EditButton.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
+                EditButton.Visibility = Visibility.Collapsed;
+                EditText.Visibility = Visibility.Collapsed;
+                AddText.Visibility = Visibility.Visible;
             }
             else if(ArtifactsGridView.SelectedItems.Count > 1)
             {
@@ -393,6 +395,8 @@ namespace BoeingSalesApp
                 deleter.Visibility = Visibility.Visible;
                 addtoexist.Visibility = Visibility.Visible;
                 EditButton.Visibility = Visibility.Collapsed;
+                EditText.Visibility = Visibility.Collapsed;
+                AddText.Visibility = Visibility.Visible;
             }
             else
             {
@@ -400,6 +404,8 @@ namespace BoeingSalesApp
                 deleter.Visibility = Visibility.Collapsed;
                 addtoexist.Visibility = Visibility.Collapsed;
                 EditButton.Visibility = Visibility.Visible;
+                EditText.Visibility = Visibility.Visible;
+                AddText.Visibility = Visibility.Collapsed;
             }
 
             //DR - Clear the contents of the selectd artifcats property and add each selected item to the property

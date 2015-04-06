@@ -188,10 +188,10 @@
                 </StackPanel>
             </Button> -->
 
-            <TextBlock Grid.Column="3" VerticalAlignment="Bottom" Text="Add" HorizontalAlignment="center"  FontFamily="Segoe UI" Margin="0,0,0,10"/>
+            <TextBlock x:Name="AddText" Grid.Column="3" VerticalAlignment="Bottom" Text="Add" Visibility="Collapsed" HorizontalAlignment="center"  FontFamily="Segoe UI" Margin="0,0,0,10"/>
             <TextBlock Grid.Column="4" VerticalAlignment="Bottom" Text="New" HorizontalAlignment="center"  FontFamily="Segoe UI" Margin="0,0,0,10"/>
-            <TextBlock Grid.Column="5" VerticalAlignment="Bottom" Text="Edit" HorizontalAlignment="Center" FontFamily="Segoe UI" Margin="0,0,0,10"/>
-            <TextBlock Grid.Column="6" VerticalAlignment="Bottom" Text="Remove" HorizontalAlignment="center" FontFamily="Segoe UI" Margin="0,0,0,10"/>
+            <TextBlock x:Name="EditText" Grid.Column="5" VerticalAlignment="Bottom" Text="Edit" HorizontalAlignment="Center" FontFamily="Segoe UI" Margin="0,0,0,10"/>
+<!--            <TextBlock Grid.Column="6" VerticalAlignment="Bottom" Text="Remove" HorizontalAlignment="center" FontFamily="Segoe UI" Margin="0,0,0,10"/> -->
                 
             <!--            <ComboBox Grid.Column="4" Name="UxCategoryBox" PlaceholderText="Select Category"
                       
