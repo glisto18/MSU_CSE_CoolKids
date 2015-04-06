@@ -62,6 +62,23 @@
                          TextWrapping="Wrap" Width="500" TextChanged="onFind"/>
             </StackPanel>
         </Flyout>
+
+        <Flyout x:Name="newCategory" x:Key="catMaker">
+            <Flyout.FlyoutPresenterStyle>
+                <Style TargetType="FlyoutPresenter">
+                    <Setter Property="Background" Value="{StaticResource BoeingBlue}"/>
+                    <Setter Property="MaxWidth" Value="550"/>
+                    <Setter Property="MaxHeight" Value="300"/>
+                    <Setter Property="BorderBrush" Value="{StaticResource BoeingBlue}"/>
+                </Style>
+            </Flyout.FlyoutPresenterStyle>
+            <StackPanel>
+                <TextBox PlaceholderText="Category Name" x:Name="catName" BorderBrush="{StaticResource BoeingBlue}"
+                         TextWrapping="Wrap" Width="500"/>
+                <Button Name="createBut" HorizontalAlignment="Right" Tapped="newCat_Tapped"
+                        Content="Create"/>
+            </StackPanel>
+        </Flyout>
     </Page.Resources>
 
         <Page.BottomAppBar>
@@ -69,8 +86,8 @@
                 BorderBrush="{StaticResource BoeingBlue}" Name="uxAppBar">
             <StackPanel Orientation="Horizontal">
                 <AppBarButton Name="newCat" Label="New Category" 
-                              Icon="Add"
-                              Tapped="newCat_Tapped">
+                              Icon="Add" FlyoutBase.AttachedFlyout="{StaticResource catMaker}"
+                              Tapped="launchme">
                     <Popup Name="myPopup"
                            >
                         <TextBlock Text="Name:"/>

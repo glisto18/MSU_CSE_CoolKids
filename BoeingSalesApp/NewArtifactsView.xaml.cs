@@ -76,7 +76,7 @@ namespace BoeingSalesApp
 
         private async void onBack(object sender, RoutedEventArgs e)
         {
-            if (_currentState == Enums.PageState.Category || _currentState == Enums.PageState.AllSalesBags || _currentState == Enums.PageState.AddToSalesBag)
+            if (_currentState == Enums.PageState.Category || _currentState == Enums.PageState.AllSalesBags)
             {
                 _currentState = Enums.PageState.All;
                 _currentCategory = null;
@@ -211,19 +211,17 @@ namespace BoeingSalesApp
 
         #endregion
 
-        private void newCat_Tapped(object sender, TappedRoutedEventArgs e)
+        private async void newCat_Tapped(object sender, TappedRoutedEventArgs e)
         {
-            //newCategoryPopup.
-            /*if (myPopup != null) 
-            {
-
-                double height = System.Windows.SystemParameters.FullPrimaryScreenHeight;
-                double screenWidth = System.Windows.SystemParameters.FullPrimaryScreenWidth;
-
-                
-                //myPopup.IsOpen = true;
-            }*/
-                
+            if(await _categoryRepo.DoesExist(catName.Text))
+                return;
+            var newCategory = new DataAccess.Entities.Category();
+            newCategory.Name = catName.Text;
+            await _categoryRepo.SaveAsync(newCategory);
+            _currentState = Enums.PageState.All;
+            _currentCategory = null;
+            uxPageTitle.Text = "Artifacts";
+            await UpdateUi();
         }
 
         private async Task FetchCategoryContents(Guid categoryId)
