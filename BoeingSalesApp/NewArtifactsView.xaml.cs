@@ -279,7 +279,7 @@ namespace BoeingSalesApp
                 {
                 // if doSomething in this context is true, show the Category on the page
                 await FetchCategoryContents(displayItem.Id);
-                //_isInCategory = true;
+                _isInCategory = true;
                 _currentState = Enums.PageState.Category;
                 _currentCategory = await _categoryRepo.Get(displayItem.Id);
             }
