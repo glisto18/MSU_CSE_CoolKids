@@ -76,7 +76,7 @@ namespace BoeingSalesApp
 
         private async void onBack(object sender, RoutedEventArgs e)
         {
-            if (_currentState == Enums.PageState.Category || _currentState == Enums.PageState.AllSalesBags)
+            if (_currentState == Enums.PageState.Category || _currentState == Enums.PageState.AllSalesBags || _currentState == Enums.PageState.AddToSalesBag)
             {
                 _currentState = Enums.PageState.All;
                 _currentCategory = null;
@@ -380,16 +380,22 @@ namespace BoeingSalesApp
             {
                 titler.Visibility = Visibility.Visible;
                 deleter.Visibility = Visibility.Visible;
+                addtoexist.Visibility = Visibility.Visible;
+                EditButton.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
             }
             else if(ArtifactsGridView.SelectedItems.Count > 1)
             {
                 titler.Visibility = Visibility.Collapsed;
                 deleter.Visibility = Visibility.Visible;
+                addtoexist.Visibility = Windows.UI.Xaml.Visibility.Visible;
+                EditButton.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
             }
             else
             {
                 titler.Visibility = Visibility.Collapsed;
                 deleter.Visibility = Visibility.Collapsed;
+                addtoexist.Visibility = Visibility.Collapsed;
+                EditButton.Visibility = Visibility.Visible;
             }
 
             //DR - Clear the contents of the selectd artifcats property and add each selected item to the property
