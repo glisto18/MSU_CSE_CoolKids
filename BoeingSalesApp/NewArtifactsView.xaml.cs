@@ -387,8 +387,8 @@ namespace BoeingSalesApp
             {
                 titler.Visibility = Visibility.Collapsed;
                 deleter.Visibility = Visibility.Visible;
-                addtoexist.Visibility = Windows.UI.Xaml.Visibility.Visible;
-                EditButton.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
+                addtoexist.Visibility = Visibility.Visible;
+                EditButton.Visibility = Visibility.Collapsed;
             }
             else
             {
