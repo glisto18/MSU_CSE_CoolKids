@@ -146,6 +146,7 @@ namespace BoeingSalesApp
             String comment = (CommentBox as TextBox).Text;
             String contact = (ContactField as TextBox).Text;
             genpdf(rating, comment, contact);
+            this.Frame.Navigate(typeof(TESTMeetingsView));
         }
 
         private void backButton_Tapped(object sender, TappedRoutedEventArgs e)
