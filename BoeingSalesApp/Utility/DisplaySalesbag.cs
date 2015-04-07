@@ -63,6 +63,14 @@ namespace BoeingSalesApp.Utility
             SalesBag_ArtifactRepository bagArtRepo = new SalesBag_ArtifactRepository();
             List<Artifact> artList = await bagArtRepo.GetAllSalesBagArtifacts(_salesbag);
             size = artList.Count;
+            Artifact_CategoryRepository artCatRepo = new Artifact_CategoryRepository();
+            SalesBag_CategoryRepository bagCatRepo = new SalesBag_CategoryRepository();
+            List<Category> catList = await bagCatRepo.GetAllSalesBagCategories(_salesbag);
+            foreach(var salesCategory in catList)
+            {
+                artList = await artCatRepo.GetAllArtifactsForCategory(salesCategory);
+                size += artList.Count;
+            }
         }
     }
 }
