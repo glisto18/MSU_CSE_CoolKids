@@ -47,7 +47,9 @@ namespace BoeingSalesApp.Utility
         {
             this.logo();
             
-            // move args from gen to here, then set _CONTENT
+            //
+            // Populate the content array
+            //
             _CONTENT.Add("St.Louis, MO");
             _CONTENT.Add("5/5/15 10:03 AM CT");
             _CONTENT.Add("5/5/15 11:00 AM CT");
@@ -60,7 +62,7 @@ namespace BoeingSalesApp.Utility
             _CONTENT.Add("--");
 
        
-            // Generate pathname from meeting time and date (will need to pass as args)
+            // TOOD - Generate pathname from meeting time and date (will need to pass as args)
         }
 
 
