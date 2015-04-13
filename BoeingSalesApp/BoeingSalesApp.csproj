@@ -207,6 +207,7 @@
     <Content Include="Assets\BoeingLogo.scale-100.png" />
     <Content Include="Assets\editexisting.png" />
     <Content Include="Assets\editsales2.png" />
+    <Content Include="Assets\homePageImage.jpg" />
     <Content Include="Assets\image100x100.png" />
     <Content Include="Assets\Logo.scale-100.png" />
     <Content Include="Assets\Meetings.scale-100.png" />
