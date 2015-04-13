@@ -25,25 +25,26 @@
         </Style>
     </Page.Resources>
 
-    <Grid>
-        <Grid.Background>
-            <ImageBrush Stretch="UniformToFill" ImageSource="Assets/wurld.jpg"
-                        Opacity=".9"/>
-        </Grid.Background>
+    <Grid Background="White">
         <Grid.RowDefinitions>
-            <RowDefinition Height="109*" />
-            <RowDefinition Height="403*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <Image Grid.Row="0" 
-               Source="Assets/BoeingLogo.png" 
-               Height="97" Width="358" Margin="40,20,0,0" 
-               VerticalAlignment="Top" HorizontalAlignment="Left" Grid.RowSpan="2"/>
 
-        <TextBlock FontWeight="Bold" FontSize="50" Margin="0,30,60,0" Text="Electronic" Foreground="#0038A9" HorizontalAlignment="Right"></TextBlock>
-        <TextBlock FontWeight="Bold" FontSize="50" Margin="0,80,50,0" Text="SalesBag" Foreground="#0038A9" HorizontalAlignment="Right"></TextBlock>
+        <StackPanel Orientation="Horizontal" Grid.Row="0">
+            <Image  
+                   Source="Assets/BoeingLogo.png" 
+                   Height="97" Width="358" Margin="40,20,0,0" 
+                   VerticalAlignment="Top" HorizontalAlignment="Left"/>
 
-        <StackPanel x:Name="stackPanel" Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center"
+            <TextBlock Grid.Row="0" FontWeight="Bold" FontSize="50" Margin="0,30,60,0" 
+                       Text="Electronic SalesBag" Foreground="#0038A9" HorizontalAlignment="Right" />
+        </StackPanel>
+        
+        <StackPanel x:Name="stackPanel" Grid.Row="1" 
+                    Orientation="Horizontal" HorizontalAlignment="Center"
                     Margin="0,0,0,50">
             <StackPanel.Resources>
                 <Style TargetType="Button" BasedOn="{StaticResource MyButtonStyle}" />
@@ -62,8 +63,18 @@
                     <TextBlock Text="Meetings" />
                 </StackPanel>
             </Button>
+            <Button Background="White" x:Name="SalesBagsButton" Tapped="onMeetings">
+                <StackPanel Orientation="Vertical">
+                    <Image Source="Assets/SalesBag.png" />
+                    <TextBlock Text="Sales Bags" />
+                </StackPanel>
+            </Button>
+        </StackPanel>
 
-            <!--<Grid Width="{Binding ActualWidth, ElementName=stackPanel}" Name="btnHolder">
+        <StackPanel Grid.Row="2" >
+            <Image Source="Assets/homePageImage.jpg"></Image>
+        </StackPanel>
+        <!--<Grid Width="{Binding ActualWidth, ElementName=stackPanel}" Name="btnHolder">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="300" />
                     <RowDefinition Height="*"  />
@@ -92,7 +103,7 @@
                 </Button>
             </Grid>-->
 
-        </StackPanel>
+        
 
         <!--<StackPanel Grid.Row="2">
             <HyperlinkButton Tapped="goToSurvey">Exit Survey</HyperlinkButton>
