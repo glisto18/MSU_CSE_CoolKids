@@ -46,7 +46,7 @@ namespace BoeingSalesApp.Utility
         public PdfGenerator(String survey_rating, String survey_comment, String survey_contact)
         {
             this.logo();
-
+            
             //
             // Populate the content array
             //
@@ -61,7 +61,7 @@ namespace BoeingSalesApp.Utility
             _CONTENT.Add("--");
             _CONTENT.Add("--");
 
-
+       
             // TOOD - Generate pathname from meeting time and date (will need to pass as args)
         }
 
@@ -70,7 +70,7 @@ namespace BoeingSalesApp.Utility
         private async Task file()
         {
             var fileStore = new Utility.FileStore();
-
+            
             Windows.Storage.StorageFolder folder = await fileStore.GetArtifactFolder();
 
             bool fileExists = false;
@@ -128,9 +128,9 @@ namespace BoeingSalesApp.Utility
             cell.PaddingBottom = 5f;
             docHeader.AddCell(cell);
 
-
+            
             // Create table with two columns
-            PdfPTable table = new PdfPTable(2);
+            PdfPTable table = new PdfPTable(2); 
             table.DefaultCell.Border = Rectangle.NO_BORDER;
             table.SpacingBefore = 20.0f;
             int[] columnWidths = new int[] { 20, 60 };
@@ -150,7 +150,7 @@ namespace BoeingSalesApp.Utility
             writer.Close();
         }
 
-
+        
         private void populateTable(ref PdfPTable table)
         {
             for (int i = 0; i < _HEADERS.Count; i++)
