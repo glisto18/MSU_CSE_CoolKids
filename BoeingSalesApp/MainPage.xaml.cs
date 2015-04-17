@@ -85,7 +85,8 @@ namespace BoeingSalesApp
 
         private void onSalesBags(object sender, RoutedEventArgs e)
         {
-            this.Frame.Navigate(typeof(SalesBagsView));
+            object x = 5;
+            this.Frame.Navigate(typeof(NewArtifactsView), x);
         }
 
         private void DBTestLink_Click(object sender, RoutedEventArgs e)

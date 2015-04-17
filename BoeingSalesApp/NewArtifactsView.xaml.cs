@@ -156,11 +156,23 @@ namespace BoeingSalesApp
 
             navigationHelper.OnNavigatedTo(e);
 
-            //await UpdateUi();
+            if(e.Parameter.ToString() == "5")
+            {
+                _currentState = Enums.PageState.AllSalesBags;
+                _currentCategory = null;
+                uxPageTitle.Text = "Salesbags";
+                var salesbagRepo = new SalesBagRepository();
+                var displaySalesbags = DisplayConverter.ToDisplaySalebsag(await salesbagRepo.GetAllAsync());
 
-            await CheckForNewArtifacts();
+                await DisplayConverter.ToSetArtNums(displaySalesbags);
 
-            await UpdateUi();
+                ArtifactsGridView.ItemsSource = displaySalesbags;
+            }
+            else
+            {
+                await CheckForNewArtifacts();
+                await UpdateUi();
+            }
         }
 
         private async Task UpdateUi()

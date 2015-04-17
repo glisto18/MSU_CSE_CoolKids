@@ -63,7 +63,7 @@
                     <TextBlock Text="Meetings" />
                 </StackPanel>
             </Button>
-            <Button Background="White" x:Name="SalesBagsButton" Tapped="onMeetings">
+            <Button Background="White" x:Name="SalesBagsButton" Tapped="onSalesBags">
                 <StackPanel Orientation="Vertical">
                     <Image Source="Assets/SalesBag.png" />
                     <TextBlock Text="Sales Bags" />
