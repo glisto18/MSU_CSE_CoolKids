@@ -84,6 +84,15 @@ namespace BoeingSalesApp.DataAccess.Repository
             }
         }
 
+        public async Task RemoveAllCategories(SalesBag salesbag)
+        {
+            List<Category> allSalesbags = await this.GetAllSalesBagCategories(salesbag);
+            foreach(var cat in allSalesbags)
+            {
+                await this.RemoveCategoryFromSalesBag(cat, salesbag);
+            }
+        }
+
         public async Task<bool> DoesExist(Category category, SalesBag salesbag)
         {
             var relationships = await _database.Table<SalesBag_Category>().Where(x => (x.Category == category.ID) && (x.SalesBag == salesbag.ID)).CountAsync();

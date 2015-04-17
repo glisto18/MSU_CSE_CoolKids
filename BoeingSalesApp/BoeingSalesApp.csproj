@@ -206,6 +206,7 @@
     <Content Include="Assets\Artifacts.scale-100.png" />
     <Content Include="Assets\artifactWHITE.png" />
     <Content Include="Assets\BoeingLogo.scale-100.png" />
+    <Content Include="Assets\duplicateSalesbag.png" />
     <Content Include="Assets\editexisting.png" />
     <Content Include="Assets\editsales2.png" />
     <Content Include="Assets\homePageImage.jpg" />
