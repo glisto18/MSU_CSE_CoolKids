@@ -31,6 +31,9 @@ namespace BoeingSalesApp
     /// </summary>
     public sealed partial class MainPage : Page
     {
+        private SolidColorBrush white = new SolidColorBrush(Windows.UI.Color.FromArgb(255, 255, 255, 255));
+        private SolidColorBrush blue = new SolidColorBrush(Windows.UI.Color.FromArgb(255, 0, 93, 171));
+
         public MainPage()
         {
             this.InitializeComponent();
@@ -42,6 +45,8 @@ namespace BoeingSalesApp
             uxArtifactsImageAfter.Visibility = Visibility.Visible;
             uxArtifactsImageBefore.Visibility = Visibility.Collapsed;
 
+            ArtifactsButton.Background = white;
+            ArtifactsLabel.Foreground = blue;
         }
 
         private void artifactsNotPointed(object sender, RoutedEventArgs e)
@@ -50,22 +55,49 @@ namespace BoeingSalesApp
             uxArtifactsImageAfter.Visibility = Visibility.Collapsed;
             uxArtifactsImageBefore.Visibility = Visibility.Visible;
 
+            ArtifactsButton.Background = blue;
+            ArtifactsLabel.Foreground = white;
         }
-        
-        private void meetingPointed(object sender, RoutedEventArgs e)
+
+        private void meetingsPointed(object sender, RoutedEventArgs e)
         {
             //theWindowMaker(sender, e);
             uxMeetingImageAfter.Visibility = Visibility.Visible;
             uxMeetingImageBefore.Visibility = Visibility.Collapsed;
 
+            MeetingsButton.Background = white;
+            MeetingsLabel.Foreground = blue;
         }
 
-        private void meetingNotPointed(object sender, RoutedEventArgs e)
+        private void meetingsNotPointed(object sender, RoutedEventArgs e)
         {
             //theWindowMaker(sender, e);
             uxMeetingImageAfter.Visibility = Visibility.Collapsed;
             uxMeetingImageBefore.Visibility = Visibility.Visible;
+           
+            MeetingsButton.Background = blue;
+            MeetingsLabel.Foreground = white;
 
+        }
+
+        private void bagsPointed(object sender, RoutedEventArgs e)
+        {
+            //theWindowMaker(sender, e);
+            uxBagImageAfter.Visibility = Visibility.Visible;
+            uxBagImageBefore.Visibility = Visibility.Collapsed;
+
+            BagsButton.Background = white;
+            BagsLabel.Foreground = blue;
+        }
+
+        private void bagsNotPointed(object sender, RoutedEventArgs e)
+        {
+            //theWindowMaker(sender, e);
+            uxBagImageAfter.Visibility = Visibility.Collapsed;
+            uxBagImageBefore.Visibility = Visibility.Visible;
+
+            BagsButton.Background = blue;
+            BagsLabel.Foreground = white;
         }
 
         private void onMeetings(object sender, RoutedEventArgs e)

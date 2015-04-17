@@ -13,10 +13,10 @@
         <Flyout x:Name="MeetingsAdd" x:Key="CreateFlyout1">
             <Flyout.FlyoutPresenterStyle>
                 <Style TargetType="FlyoutPresenter">
-                    <Setter Property="Background" Value="#0038A9"/>
+                    <Setter Property="Background" Value="#003889"/>
                     <Setter Property="MinHeight" Value="300"/>
                     <Setter Property="MinWidth" Value="300"/>
-                    <Setter Property="BorderBrush" Value="#0038A9"/>
+                    <Setter Property="BorderBrush" Value="#003889"/>
                 </Style>
             </Flyout.FlyoutPresenterStyle>
 
@@ -88,11 +88,11 @@
                     <Setter Property="Background" Value="White"/>
                     <Setter Property="MaxWidth" Value="1200"/>
                     <Setter Property="MaxHeight" Value="800"/>
-                    <Setter Property="BorderBrush" Value="#0038A9"/>
+                    <Setter Property="BorderBrush" Value="#003889"/>
                 </Style>
             </Flyout.FlyoutPresenterStyle>
             <StackPanel>
-                <Grid Grid.Row="0" Background="#0038A9" Height="100" Margin="0,0,0,10">
+                <Grid Grid.Row="0" Background="#003889" Height="100" Margin="0,0,0,10">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="*"/>
@@ -101,14 +101,7 @@
                               Margin="20,30,0,0" Foreground="White" Grid.Column="0"/>
                     <Button Name="impPlus" HorizontalAlignment="Right" Tapped="ImportSelected"
                         Width="80" Margin="20" Background="Transparent" Grid.Column="1">
-                        <Button.Template>
-                            <ControlTemplate TargetType="Button">
-                                <Grid>
-                                    <Ellipse Fill="Transparent"/>
-                                    <Image Source="Assets/Plus.png"/>
-                                </Grid>
-                            </ControlTemplate>
-                        </Button.Template>
+                        <Image Source="Assets/Plus.png"/>
                     </Button>
                 </Grid>
                 <Grid x:Name="ImportGrid" MaxWidth="1200" MaxHeight="800">
@@ -125,27 +118,20 @@
                     <Setter Property="Background" Value="White"/>
                     <Setter Property="MaxWidth" Value="1200"/>
                     <Setter Property="MaxHeight" Value="800"/>
-                    <Setter Property="BorderBrush" Value="#0038A9"/>
+                    <Setter Property="BorderBrush" Value="#003889"/>
                 </Style>
             </Flyout.FlyoutPresenterStyle>
             <StackPanel>
-                <Grid Grid.Row="0" Background="#0038A9" Height="100" Margin="0,0,0,10">
+                <Grid Grid.Row="0" Background="#003889" Height="100" Margin="0,0,0,10">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
                     <TextBlock Text="Select a Salesbag" Style="{StaticResource HeaderTextBlockStyle}"
                               Margin="20,30,0,0" Foreground="White" Grid.Column="0"/>
-                    <Button HorizontalAlignment="Right" Tapped="onConnect" Background="#0038A9" Width="80"
-                            Margin="20" Grid.Column="1" x:Name="datButton" >
-                        <Button.Template>
-                            <ControlTemplate TargetType="Button">
-                                <Grid>
-                                    <Ellipse Fill="Transparent"/>
-                                    <Image Source="Assets/Plus.png"/>
-                                </Grid>
-                            </ControlTemplate>
-                        </Button.Template>
+                    <Button HorizontalAlignment="Right" Tapped="onConnect" Background="#003889" Width="80"
+                            Margin="20" Grid.Column="1">
+                        <Image Source="Assets/Plus.png"/>
                     </Button>
                 </Grid>
                 <Grid x:Name="conMeet">
@@ -172,7 +158,7 @@
 
     </Page.Resources>
 
-    <Grid Background="#0038A9">
+    <Grid Background="#003889">
 
         <!-- Back button and "Sales Bags" header -->
         <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,10,0,-10">
@@ -197,7 +183,7 @@
         </StackPanel>
 
         <!-- Left-side pane with Import/Delete/Launch Meeting Buttons -->
-        <StackPanel Grid.Column="0" Orientation="Vertical" Margin="0,115,0,0" Background="#0038A9">
+        <StackPanel Grid.Column="0" Orientation="Vertical" Margin="0,115,0,0" Background="#003889">
             <Button Tapped="onImport" FlyoutBase.AttachedFlyout="{StaticResource CreateFlyout2}" 
                     Content="Import Meetings" Height="108" Width="238"/>
             <Button Tapped="onRemove" Name="remBut" Content="Remove Meeting" 

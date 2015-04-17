@@ -107,8 +107,8 @@ namespace BoeingSalesApp
         {
             try
             {
-                var generator = new Utility.PdfGenerator(); 
-                await generator.gen(rating, comment, contact);
+                var generator = new Utility.PdfGenerator(rating, comment, contact); 
+                await generator.gen();
             }
             catch
             {

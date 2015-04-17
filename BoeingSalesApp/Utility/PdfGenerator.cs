@@ -12,29 +12,99 @@ namespace BoeingSalesApp.Utility
 {
     class PdfGenerator
     {
-        public async Task gen(String survey_rating, String survey_comment, String survey_contact)
-        {
-            string path = "ExportPDF.pdf";
+        BaseColor _BoeingBlue = new BaseColor(1, 84, 160);
 
+        //
+        // Vertical headers for the table
+        //
+        List<String> _HEADERS = new List<String>(new String[] {
+       "Location", "Start Time", "End Time", "Duration", "Primary Contact", "Event Rating",
+        "Overall Assessment", "Comments", "Key Takeaways", "Action Items"
+        });
+
+        //
+        // Content to write to pdf
+        //
+        List<String> _CONTENT = new List<String>();
+
+        //
+        // Boeing logo to draw in the pdf
+        //
+        Image _BoeingLogo = null;
+
+        //
+        // Path to pdf file
+        //
+        string _Path = "ExportPDF.pdf";
+
+        //
+        // File object used to open file stream 
+        //
+        Windows.Storage.StorageFile _File = null;
+
+
+        public PdfGenerator(String survey_rating, String survey_comment, String survey_contact)
+        {
+            this.logo();
+            
+            //
+            // Populate the content array
+            //
+            _CONTENT.Add("St.Louis, MO");
+            _CONTENT.Add("5/5/15 10:03 AM CT");
+            _CONTENT.Add("5/5/15 11:00 AM CT");
+            _CONTENT.Add("57 mins");
+            _CONTENT.Add(survey_contact);
+            _CONTENT.Add(survey_rating);
+            _CONTENT.Add("--");
+            _CONTENT.Add(survey_comment);
+            _CONTENT.Add("--");
+            _CONTENT.Add("--");
+
+       
+            // TOOD - Generate pathname from meeting time and date (will need to pass as args)
+        }
+
+
+        // Get PDF file if it exists, else create one
+        private async Task file()
+        {
             var fileStore = new Utility.FileStore();
             
             Windows.Storage.StorageFolder folder = await fileStore.GetArtifactFolder();
-            Windows.Storage.StorageFile file = null;
 
             bool fileExists = false;
 
             try
             {
-                file = await folder.GetFileAsync(path);
+                _File = await folder.GetFileAsync(_Path);
                 fileExists = true;
             }
             catch (System.IO.FileNotFoundException)
             {
             }
             if (!fileExists)
-                file = await folder.CreateFileAsync(path);
+                _File = await folder.CreateFileAsync(_Path);
 
-            var stream = await file.OpenAsync(Windows.Storage.FileAccessMode.ReadWrite);
+            return;
+        }
+
+        // Get Boeing Logo from PNG in "Assets" folder
+        private async void logo()
+        {
+            var folder = await Windows.ApplicationModel.Package.Current.InstalledLocation.GetFolderAsync("Assets");
+            String path_to_logo = (await folder.GetFileAsync("BoeingLogo.scale-100.png")).Path;
+
+            _BoeingLogo = iTextSharp.text.Image.GetInstance(path_to_logo);
+            _BoeingLogo.Alignment = Element.ALIGN_LEFT;
+            _BoeingLogo.ScalePercent(2f);
+        }
+
+        public async Task gen()
+        {
+            await this.file();
+
+            var stream = await _File.OpenAsync(Windows.Storage.FileAccessMode.ReadWrite);
 
             Document document = new Document(PageSize.A4);
 
@@ -42,86 +112,35 @@ namespace BoeingSalesApp.Utility
             // Writer class using the document and the filestrem in the constructor.
             PdfWriter writer = PdfWriter.GetInstance(document, stream.AsStream());
 
-    
             // Open the document to enable you to write to the document
             document.Open();
 
-            // Create Boeing Logo
-            var _folder = await Windows.ApplicationModel.Package.Current.InstalledLocation.GetFolderAsync("Assets");
-            String path_to_logo = (await _folder.GetFileAsync("BoeingLogo.scale-100.png")).Path;
-
-            iTextSharp.text.Image logo = iTextSharp.text.Image.GetInstance(path_to_logo);
-            logo.Alignment = iTextSharp.text.Element.ALIGN_LEFT;//iTextSharp.text.Element.ALIGN_CENTER;
-            logo.ScalePercent(5f);
-
             // Create document header
-            Font headerFont = FontFactory.GetFont(FontFactory.TIMES_ROMAN, 26, Font.NORMAL, new BaseColor(0, 0, 0));
-            Chunk headerChunk = new Chunk("Exit Survey Summary", headerFont);
-            headerChunk.SetUnderline(0.5f, -1.5f);
-            Paragraph header = new Paragraph();
-            header.Add(headerChunk);
-            header.Alignment = iTextSharp.text.Element.ALIGN_CENTER;
-            header.SpacingBefore = 15.0f;
+            Font headerFont = FontFactory.GetFont(FontFactory.TIMES_ROMAN, 26, Font.BOLD, BaseColor.WHITE);
+            Phrase headerContent = new Phrase("Meeting Summary", headerFont);
+            PdfPTable docHeader = new PdfPTable(1);
+            docHeader.SpacingBefore = 15.0f;
+            docHeader.DefaultCell.Border = Rectangle.NO_BORDER;
+            PdfPCell cell = new PdfPCell(headerContent);
+            cell.FixedHeight = 35f;
+            cell.BackgroundColor = _BoeingBlue;
+            cell.HorizontalAlignment = Element.ALIGN_CENTER;
+            cell.PaddingBottom = 5f;
+            docHeader.AddCell(cell);
 
-            Font font = FontFactory.GetFont(FontFactory.TIMES_ROMAN, 12, Font.NORMAL, new BaseColor(0, 0, 0));
             
-
-            // Table vertical headers
-            Phrase header_loc = new Phrase("Location", font);
-            Phrase header_beginTime = new Phrase("Start Time", font);
-            Phrase header_endTime = new Phrase("End Time", font);
-            Phrase header_duration = new Phrase("Duration", font);
-            Phrase header_contact = new Phrase("Primary Contact", font);
-            Phrase header_rating = new Phrase("Event Rating", font);
-            Phrase header_assess = new Phrase("Overall Assessment", font);
-            Phrase header_comment = new Phrase("Comments", font);
-            Phrase header_takeaways = new Phrase("Key Takeaways", font);
-            Phrase header_actionItems = new Phrase("Action Items", font);
-
-            // Content of cell
-            Phrase loc = new Phrase("St.Louis, MO", font);
-            Phrase beginTime = new Phrase("5/5/15 10:03 AM CT", font);
-            Phrase endTime = new Phrase("5/5/15 11:00 AM CT", font);
-            Phrase duration = new Phrase("57 mins", font);
-            Phrase contact = new Phrase(survey_contact, font);
-            Phrase meetingRating = new Phrase(survey_rating, font);
-            Phrase assess = new Phrase("--", font);
-            Phrase comment = new Phrase(survey_comment, font);
-            Phrase takeaways = new Phrase("--", font);
-            Phrase actionItems = new Phrase("--", font);
-
-            // Create table with two cols
+            // Create table with two columns
             PdfPTable table = new PdfPTable(2); 
             table.DefaultCell.Border = Rectangle.NO_BORDER;
             table.SpacingBefore = 20.0f;
             int[] columnWidths = new int[] { 20, 60 };
             table.SetWidths(columnWidths);
 
-            // Cells are added to table from left to right and top to bottom
-            table.AddCell(header_loc);
-            table.AddCell(loc);
-            table.AddCell(header_beginTime);
-            table.AddCell(beginTime);
-            table.AddCell(header_endTime);
-            table.AddCell(endTime);
-            table.AddCell(header_duration);
-            table.AddCell(duration);
-            table.AddCell(header_contact);
-            table.AddCell(contact);
-            table.AddCell(header_rating);
-            table.AddCell(meetingRating);
-            table.AddCell(header_assess);
-            table.AddCell(assess);
-            table.AddCell(header_comment);
-            table.AddCell(comment);
-            table.AddCell(header_takeaways);
-            table.AddCell(takeaways);
-            table.AddCell(header_actionItems);
-            table.AddCell(actionItems);
+            this.populateTable(ref table);
 
             // Add element to document
-            document.Add(logo);
-            document.Add(header);
+            document.Add(_BoeingLogo);
+            document.Add(docHeader);
             document.Add(table);
 
             // Close the document
@@ -129,6 +148,19 @@ namespace BoeingSalesApp.Utility
 
             // Close the writer instance
             writer.Close();
+        }
+
+        
+        private void populateTable(ref PdfPTable table)
+        {
+            for (int i = 0; i < _HEADERS.Count; i++)
+            {
+                Phrase header = new Phrase(_HEADERS[i]);
+                Phrase content = new Phrase(_CONTENT[i]);
+
+                table.AddCell(header);
+                table.AddCell(content);
+            }
         }
     }
 }
