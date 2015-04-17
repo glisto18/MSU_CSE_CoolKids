@@ -51,6 +51,7 @@ namespace BoeingSalesApp
             try
             {
                 var salesbags = Utility.DisplayConverter.ToDisplaySalebsag(await _salesbagRepo.GetAllAsync());
+                await Utility.DisplayConverter.ToSetArtNums(salesbags);
                 GridView gridView = (GridView)this.FindName("DatabaseSalesBag");
                 gridView.ItemsSource = salesbags;
             }
@@ -460,6 +461,11 @@ namespace BoeingSalesApp
                 await _meetingRepo.DeleteAsync(selectdelete);
             }
             await FetchMeetings();
+        }
+
+        private void Button_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+
         }
     }
 }

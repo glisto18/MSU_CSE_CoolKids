@@ -116,6 +116,7 @@ namespace BoeingSalesApp
             dispitems.AddRange(fewarts);
             dispitems.AddRange(fewcat);
             ArtView.ItemsSource = dispitems;
+            backbut.Visibility = Visibility.Visible;
         }
 
         private async Task FetchCategoryContents(Guid categoryId)

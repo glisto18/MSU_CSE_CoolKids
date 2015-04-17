@@ -20,5 +20,6 @@ namespace BoeingSalesApp.DataAccess.Entities
         public string Name { get; set; }
 
         public DateTime DateRemoved { get; set; }
+
     }
 }

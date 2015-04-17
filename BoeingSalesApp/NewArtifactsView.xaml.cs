@@ -76,7 +76,7 @@ namespace BoeingSalesApp
 
         private async void onBack(object sender, RoutedEventArgs e)
         {
-            if (_currentState == Enums.PageState.Category || _currentState == Enums.PageState.AllSalesBags)
+            if (_currentState == Enums.PageState.Category || _currentState == Enums.PageState.AllSalesBags || _currentState == Enums.PageState.AddToSalesBag)
             {
                 _currentState = Enums.PageState.All;
                 _currentCategory = null;
@@ -90,6 +90,9 @@ namespace BoeingSalesApp
                 uxPageTitle.Text = "Salesbags"; 
                 var salesbagRepo = new SalesBagRepository();
                 var displaySalesbags = DisplayConverter.ToDisplaySalebsag(await salesbagRepo.GetAllAsync());
+
+                await DisplayConverter.ToSetArtNums(displaySalesbags);
+
                 ArtifactsGridView.ItemsSource = displaySalesbags;
             }
             else
@@ -208,19 +211,17 @@ namespace BoeingSalesApp
 
         #endregion
 
-        private void newCat_Tapped(object sender, TappedRoutedEventArgs e)
+        private async void newCat_Tapped(object sender, TappedRoutedEventArgs e)
         {
-            //newCategoryPopup.
-            /*if (myPopup != null) 
-            {
-
-                double height = System.Windows.SystemParameters.FullPrimaryScreenHeight;
-                double screenWidth = System.Windows.SystemParameters.FullPrimaryScreenWidth;
-
-                
-                //myPopup.IsOpen = true;
-            }*/
-                
+            if(await _categoryRepo.DoesExist(catName.Text))
+                return;
+            var newCategory = new DataAccess.Entities.Category();
+            newCategory.Name = catName.Text;
+            await _categoryRepo.SaveAsync(newCategory);
+            _currentState = Enums.PageState.All;
+            _currentCategory = null;
+            uxPageTitle.Text = "Artifacts";
+            await UpdateUi();
         }
 
         private async Task FetchCategoryContents(Guid categoryId)
@@ -342,6 +343,9 @@ namespace BoeingSalesApp
             {
                 var salesbagRepo = new SalesBagRepository();
                 var displaySalesbags = DisplayConverter.ToDisplaySalebsag(await salesbagRepo.GetAllAsync());
+
+                await DisplayConverter.ToSetArtNums(displaySalesbags);
+
                 ArtifactsGridView.ItemsSource = displaySalesbags;
             }
         }
@@ -380,29 +384,49 @@ namespace BoeingSalesApp
             {
                 titler.Visibility = Visibility.Visible;
                 deleter.Visibility = Visibility.Visible;
+                addtoexist.Visibility = Visibility.Visible;
+                EditButton.Visibility = Visibility.Collapsed;
+                EditText.Visibility = Visibility.Collapsed;
+                AddText.Visibility = Visibility.Visible;
+                if (_currentState == Enums.PageState.AllSalesBags)
+                {
+                    DupButton.Visibility = Visibility.Visible;
+                    DupText.Visibility = Visibility.Visible;
+                }
             }
             else if(ArtifactsGridView.SelectedItems.Count > 1)
             {
                 titler.Visibility = Visibility.Collapsed;
                 deleter.Visibility = Visibility.Visible;
+                addtoexist.Visibility = Visibility.Visible;
+                EditButton.Visibility = Visibility.Collapsed;
+                EditText.Visibility = Visibility.Collapsed;
+                AddText.Visibility = Visibility.Visible;
+                DupButton.Visibility = Visibility.Collapsed;
+                DupText.Visibility = Visibility.Collapsed;
             }
             else
             {
                 titler.Visibility = Visibility.Collapsed;
                 deleter.Visibility = Visibility.Collapsed;
+                addtoexist.Visibility = Visibility.Collapsed;
+                EditButton.Visibility = Visibility.Visible;
+                EditText.Visibility = Visibility.Visible;
+                AddText.Visibility = Visibility.Collapsed;
+                DupButton.Visibility = Visibility.Collapsed;
+                DupText.Visibility = Visibility.Collapsed;
             }
 
             //DR - Clear the contents of the selectd artifcats property and add each selected item to the property
             //  soa as to access selected items after the grid is rebound
-            if (_currentState != Enums.PageState.AllSalesBags)
+            if (_currentState == Enums.PageState.All)
             {
                 _selectedItems.Clear();
                 foreach (IDisplayItem item in ArtifactsGridView.SelectedItems)
                 {
                     _selectedItems.Add(item);
                 }
-            }
-            
+            }            
 
             if (ArtifactsGridView.SelectedItems.Count > 0 && _currentState == Enums.PageState.Category)
             //if (ArtifactsGridView.SelectedItems.Count > 0 && _isInCategory == true)
@@ -446,6 +470,9 @@ namespace BoeingSalesApp
                 
                 var salesbagRepo = new SalesBagRepository();
                 var displaySalesbags = DisplayConverter.ToDisplaySalebsag( await salesbagRepo.GetAllAsync());
+
+                await DisplayConverter.ToSetArtNums(displaySalesbags);
+
                 ArtifactsGridView.ItemsSource = displaySalesbags;
             }
             else // else means that we are already viewing the existing salesbags, and want to save the selected artifacts/categories to the selected salesbags.
@@ -521,6 +548,11 @@ namespace BoeingSalesApp
             {
                 return;
             }
+            
+            var salesbagArtifactRepo = new SalesBag_ArtifactRepository();
+            var salesbagRepo = new SalesBagRepository();
+            var salesbagCategoryRepo = new SalesBag_CategoryRepository();
+            var artifactCategoryRepo = new Artifact_CategoryRepository();
 
             foreach (var item in ArtifactsGridView.SelectedItems)
             {
@@ -529,11 +561,9 @@ namespace BoeingSalesApp
                     var artifact = ((DisplayArtifact)item).GetArtifact();
                    
                     // remove from artifact_category table
-                    var artifactCategoryRepo = new Artifact_CategoryRepository();
                     await artifactCategoryRepo.DeleteAllArtifactReferences(artifact);
 
                     // remove from salesbag_artifact table
-                    var salesbagArtifactRepo = new SalesBag_ArtifactRepository();
                     await salesbagArtifactRepo.DeleteAllArtifactReferences(artifact);
 
                     // remove from file system
@@ -542,19 +572,39 @@ namespace BoeingSalesApp
 
                     // remove from artifact table
                     await _artifactRepo.DeleteAsync(artifact);
-                    } 
+                    }
+                else if(item.GetType() == typeof(DisplayCategory))
+                {
+                    var category = ((DisplayCategory)item).GetCategory();
+                    var allbags = await salesbagRepo.GetAllAsync();
+                    foreach(var bag in allbags)
+                    {
+                        if (await salesbagCategoryRepo.DoesExist(category, bag))
+                            await salesbagCategoryRepo.RemoveCategoryFromSalesBag(category,bag);
+                    }
                 }
+                else if(item.GetType() == typeof(DisplaySalesbag))
+                {
+                    var salesbag = ((DisplaySalesbag)item).GetSalesbag();
+                    await salesbagRepo.DeleteAsync(salesbag);
+                }
+            }
 
                 
             if (_isInCategory)
             {
                 await FetchCategoryContents(_currentCategory.ID);
             }
-            else
+            else if (_currentState == Enums.PageState.All)
             {
                 await UpdateUi();
             }
-            
+            else
+            {
+                var displaySalesbags = DisplayConverter.ToDisplaySalebsag(await salesbagRepo.GetAllAsync());
+                await DisplayConverter.ToSetArtNums(displaySalesbags);
+                ArtifactsGridView.ItemsSource = displaySalesbags;
+            }
         }
             
         private async void AddToNewSalesBag_Click(object sender, RoutedEventArgs e)
@@ -635,6 +685,9 @@ namespace BoeingSalesApp
             uxPageTitle.Text = "Edit Salesbags"; 
             var salesbagRepo = new SalesBagRepository();
             var displaySalesbags = DisplayConverter.ToDisplaySalebsag(await salesbagRepo.GetAllAsync());
+
+            await DisplayConverter.ToSetArtNums(displaySalesbags);
+
             ArtifactsGridView.ItemsSource = displaySalesbags;
         }
 
@@ -669,6 +722,37 @@ namespace BoeingSalesApp
             {
                 return;
             }
+        }
+
+        private async void DuplicateBag (object sender, RoutedEventArgs e)
+        {
+            DisplaySalesbag selectedBag = (DisplaySalesbag)ArtifactsGridView.SelectedItem;
+            var salesbagArtifactRepo = new SalesBag_ArtifactRepository();
+            var bag = selectedBag.GetSalesbag();
+            var salesBagArtifacts = await salesbagArtifactRepo.GetAllSalesBagArtifacts(bag);
+            var newBag = new SalesBag
+            {
+                Name = bag.Name + " - Copy",
+                DateCreated = DateTime.Now,
+                Active = true
+            };
+            var salesbagRepo = new SalesBagRepository();
+            await salesbagRepo.SaveAsync(newBag);
+
+            foreach (var artifact in salesBagArtifacts)
+            {
+                await salesbagArtifactRepo.AddArtifactToSalesbag(artifact, newBag);
+            }
+            var salesbagCatRepo = new SalesBag_CategoryRepository();
+            var salesBagCat = await salesbagCatRepo.GetAllSalesBagCategories(bag);
+            foreach(var cat in salesBagCat)
+            {
+                await salesbagCatRepo.AddCategoryToSalesBag(cat, newBag);
+            }
+            
+            var displaySalesbags = DisplayConverter.ToDisplaySalebsag(await salesbagRepo.GetAllAsync());
+            await DisplayConverter.ToSetArtNums(displaySalesbags);
+            ArtifactsGridView.ItemsSource = displaySalesbags;
         }
     }
 }
