@@ -51,7 +51,6 @@ namespace BoeingSalesApp
             try
             {
                 var salesbags = Utility.DisplayConverter.ToDisplaySalebsag(await _salesbagRepo.GetAllAsync());
-                await Utility.DisplayConverter.ToSetArtNums(salesbags);
                 GridView gridView = (GridView)this.FindName("DatabaseSalesBag");
                 gridView.ItemsSource = salesbags;
             }
