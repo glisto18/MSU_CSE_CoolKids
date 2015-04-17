@@ -85,7 +85,7 @@
         <AppBar Background="{StaticResource BoeingBlue}" HorizontalContentAlignment="Left" 
                 BorderBrush="{StaticResource BoeingBlue}" Name="uxAppBar">
             <StackPanel Orientation="Horizontal">
-                <AppBarButton Name="newCat" Label="New Category" 
+                <AppBarButton Name="newCat" Label="New Category" Visibility="Collapsed"
                               Icon="Add" FlyoutBase.AttachedFlyout="{StaticResource catMaker}"
                               Tapped="launchme">
                     <Popup Name="myPopup"
@@ -181,7 +181,7 @@
                     </StackPanel>
                 </Button>
 
-            <Button x:Name="DupButton" Grid.Column="5" HorizontalAlignment="Center" Height="82" Visibility="Collapsed" 
+            <Button x:Name="DupButton" Grid.Column="3" HorizontalAlignment="Center" Height="82" Visibility="Collapsed" 
                      VerticalAlignment="Center" Width="97" BorderBrush="Transparent" Tapped="DuplicateBag">
                 <StackPanel>
                     <Image Source="Assets/duplicateSalesbag.png"/>
@@ -198,7 +198,7 @@
             <TextBlock x:Name="AddText" Grid.Column="3" VerticalAlignment="Bottom" Text="Add" Visibility="Collapsed" HorizontalAlignment="center"  FontFamily="Segoe UI" Margin="0,0,0,10"/>
             <TextBlock Grid.Column="4" VerticalAlignment="Bottom" Text="New" HorizontalAlignment="center"  FontFamily="Segoe UI" Margin="0,0,0,10"/>
             <TextBlock x:Name="EditText" Grid.Column="3" VerticalAlignment="Bottom" Text="Edit" HorizontalAlignment="Center" FontFamily="Segoe UI" Margin="0,0,0,10"/>
-            <TextBlock x:Name="DupText" Grid.Column="5" VerticalAlignment="Bottom" Visibility="Collapsed"
+            <TextBlock x:Name="DupText" Grid.Column="3" VerticalAlignment="Bottom" Visibility="Collapsed"
                        Text="Duplicate" HorizontalAlignment="Center" FontFamily="Segoe UI" Margin="0,0,0,10"/>
 <!--            <TextBlock Grid.Column="6" VerticalAlignment="Bottom" Text="Remove" HorizontalAlignment="center" FontFamily="Segoe UI" Margin="0,0,0,10"/> -->
                 
