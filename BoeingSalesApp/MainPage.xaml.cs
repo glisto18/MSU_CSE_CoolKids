@@ -137,10 +137,10 @@ namespace BoeingSalesApp
 
         
         private void goToSurvey(object sender, TappedRoutedEventArgs e)
-        {
+            {
             this.Frame.Navigate(typeof(SurveyView));
-        }
-        
+            }
+
 
         /*
         private void theWindowMaker(object sender, RoutedEventArgs e)

@@ -188,7 +188,7 @@ namespace BoeingSalesApp
                     "Edit New Artifacts.", null
                     ));
                 msg.Commands.Add(new Windows.UI.Popups.UICommand(
-                    "Use Defualt Artifacts Attributes.", null
+                    "Use Default Artifacts Attributes.", null
                     ));
                 await msg.ShowAsync();
             }
