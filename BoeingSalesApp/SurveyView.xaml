@@ -132,8 +132,6 @@
                     <RadioButton x:Name="ratingA" FontSize="24" Foreground="Black" Content="A" Style="{StaticResource RadioButtonStyle1}"/>
                     <RadioButton x:Name="ratingB" FontSize="24" Foreground="Black" Content="B" Style="{StaticResource RadioButtonStyle1}"/>
                     <RadioButton x:Name="ratingC" FontSize="24" Foreground="Black" Content="C" Style="{StaticResource RadioButtonStyle1}"/>
-                    <RadioButton x:Name="ratingD" FontSize="24" Foreground="Black" Content="D" Style="{StaticResource RadioButtonStyle1}"/>
-                    <RadioButton x:Name="ratingF" FontSize="24" Foreground="Black" Content="F" Style="{StaticResource RadioButtonStyle1}"/>
                 </StackPanel>
             </StackPanel>
 

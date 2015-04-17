@@ -27,27 +27,27 @@
 
         <x:String x:Key="PageName">Artifacts</x:String>
 
-            <DataTemplate x:Key="GridTemplate">
-                <StackPanel x:Name="GridItemContainer" Orientation="Horizontal" Width="250" Height="60" 
+        <DataTemplate x:Key="GridTemplate">
+            <StackPanel x:Name="GridItemContainer" Orientation="Horizontal" Width="250" Height="60" 
                         DoubleTapped="Item_DoubleTapped"
                         Drop="Item_OnDrop" AllowDrop="True"
                         Tapped="Item_OnTapped">
-                    <Border Width="90" 
+                <Border Width="90" 
                         Height="{Binding Height, ElementName=GridItemContainer}"
                         Margin="10,0,0,0" 
                         Background="#e4f1fe">
-                        <Image Source="{Binding DisplayIcon}" Width="90" Height="60" />
-                    </Border>
-                    <StackPanel Orientation="Vertical" 
+                    <Image Source="{Binding DisplayIcon}" Width="90" Height="60" />
+                </Border>
+                <StackPanel Orientation="Vertical" 
                             VerticalAlignment="Center" 
                             Background="#e4f1fe"
                             Height="60"
                             >
-                        <TextBlock Text="{Binding DisplayName}"  Margin="5,0,0,0" Width="170" Height="20" TextTrimming="WordEllipsis" Foreground="Black" />
-                        <TextBlock Text="{Binding DisplayInfo}" Margin="5,0,0,0" Width="170" Height="20" TextTrimming="WordEllipsis" Foreground="Black"/>
-                    </StackPanel>
+                    <TextBlock Text="{Binding DisplayName}"  Margin="5,0,0,0" Width="170" Height="20" TextTrimming="WordEllipsis" Foreground="Black" />
+                    <TextBlock Text="{Binding DisplayInfo}" Margin="5,0,0,0" Width="170" Height="20" TextTrimming="WordEllipsis" Foreground="Black"/>
                 </StackPanel>
-            </DataTemplate>
+            </StackPanel>
+        </DataTemplate>
 
         <Flyout x:Name="finder" x:Key="artlookup">
             <Flyout.FlyoutPresenterStyle>
@@ -62,15 +62,32 @@
                          TextWrapping="Wrap" Width="500" TextChanged="onFind"/>
             </StackPanel>
         </Flyout>
+
+        <Flyout x:Name="newCategory" x:Key="catMaker">
+            <Flyout.FlyoutPresenterStyle>
+                <Style TargetType="FlyoutPresenter">
+                    <Setter Property="Background" Value="{StaticResource BoeingBlue}"/>
+                    <Setter Property="MaxWidth" Value="550"/>
+                    <Setter Property="MaxHeight" Value="300"/>
+                    <Setter Property="BorderBrush" Value="{StaticResource BoeingBlue}"/>
+                </Style>
+            </Flyout.FlyoutPresenterStyle>
+            <StackPanel>
+                <TextBox PlaceholderText="Category Name" x:Name="catName" BorderBrush="{StaticResource BoeingBlue}"
+                         TextWrapping="Wrap" Width="500"/>
+                <Button Name="createBut" HorizontalAlignment="Right" Tapped="newCat_Tapped"
+                        Content="Create"/>
+            </StackPanel>
+        </Flyout>
     </Page.Resources>
 
-        <Page.BottomAppBar>
+    <Page.BottomAppBar>
         <AppBar Background="{StaticResource BoeingBlue}" HorizontalContentAlignment="Left" 
                 BorderBrush="{StaticResource BoeingBlue}" Name="uxAppBar">
             <StackPanel Orientation="Horizontal">
                 <AppBarButton Name="newCat" Label="New Category" 
-                              Icon="Add"
-                              Tapped="newCat_Tapped">
+                              Icon="Add" FlyoutBase.AttachedFlyout="{StaticResource catMaker}"
+                              Tapped="launchme">
                     <Popup Name="myPopup"
                            >
                         <TextBlock Text="Name:"/>
@@ -117,7 +134,7 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            
+
             <Button Grid.Column="0" x:Name="backButton" Margin="39,59,39,0" 
                     Tapped="onBack"
                     Style="{StaticResource NavigationBackButtonNormalStyle}"
@@ -135,47 +152,56 @@
                        Margin="0,0,30,0"/>
             <!--<TextBlock Grid.Column="2" Name="lblCurrentCategory" Text="All" FontSize="48" FontStyle="Italic" HorizontalAlignment="Left" VerticalAlignment="Center" FontFamily="Segoe UI"/>-->
 
-            <Button Grid.Column="3" x:Name="addtoexist" HorizontalAlignment="Center" Height="82" 
+            <Button Grid.Column="3" x:Name="addtoexist" HorizontalAlignment="Center" Height="82" Visibility="Collapsed"
                      VerticalAlignment="Center" Width="97" BorderBrush="Transparent" Click="AddToExistingSalesbag_Click">
                 <StackPanel>
-                    <Image Source="Assets/addtoexist.png"/>
+                    <Image Source="Assets/addtoexist2.png"/>
                 </StackPanel>
             </Button>
-                
-                <Button x:Name="NewBagButton" Grid.Column="4" HorizontalAlignment="center" Height="82" 
+
+            <Button x:Name="NewBagButton" Grid.Column="4" HorizontalAlignment="center" Height="82" 
                      VerticalAlignment="Center" Width="97" BorderBrush="Transparent">
                 <StackPanel>
-                    <Image Source="Assets/newsales.png"/>
-                    </StackPanel>
-                    <Button.Flyout>
-                        <Flyout>
-                            <StackPanel Height="71" Width="152">
-                                <TextBox x:Name="newBagName" SelectedText="Name?"/>
-                                <Button Click="AddToNewSalesBag_Click" Content="Create" Height="36" Width="90"/>
-                            </StackPanel>
-                        </Flyout>
-                    </Button.Flyout>
-                </Button>
-                    
-                <Button x:Name="EditButton" Grid.Column="5" HorizontalAlignment="Center" Height="82" 
-                     VerticalAlignment="Center" Width="97" BorderBrush="Transparent" Click="EditButton_Click">
-                    <StackPanel>
-                        <Image Source="Assets/editexisting.png"/>
-                    </StackPanel>
-                </Button>
+                    <Image Source="Assets/newsales2.png"/>
+                </StackPanel>
+                <Button.Flyout>
+                    <Flyout>
+                        <StackPanel Height="71" Width="152">
+                            <TextBox x:Name="newBagName" SelectedText="Name?"/>
+                            <Button Click="AddToNewSalesBag_Click" Content="Create" Height="36" Width="90"/>
+                        </StackPanel>
+                    </Flyout>
+                </Button.Flyout>
+            </Button>
 
-            <Button x:Name="RemoveButton" Grid.Column="6" HorizontalAlignment="center" Height="82" 
+            <Button x:Name="EditButton" Grid.Column="3" HorizontalAlignment="Center" Height="82" 
+                     VerticalAlignment="Center" Width="97" BorderBrush="Transparent" Click="EditButton_Click">
+                <StackPanel>
+                    <Image Source="Assets/editsales2.png"/>
+                </StackPanel>
+            </Button>
+
+            <Button x:Name="DupButton" Grid.Column="5" HorizontalAlignment="Center" Height="82" Visibility="Collapsed" 
+                     VerticalAlignment="Center" Width="97" BorderBrush="Transparent" Tapped="DuplicateBag">
+                <StackPanel>
+                    <Image Source="Assets/duplicateSalesbag.png"/>
+                </StackPanel>
+            </Button>
+
+            <!-- <Button x:Name="RemoveButton" Grid.Column="6" HorizontalAlignment="center" Height="82" 
                      VerticalAlignment="Center" Width="97" BorderBrush="Transparent" Click="RemoveButton_Click">
                 <StackPanel>
                     <Image Source="Assets/SalesBag.Scale-100.png"/>
                 </StackPanel>
-            </Button>
+            </Button> -->
 
-            <!--<TextBlock Grid.Column="3" VerticalAlignment="Bottom" Text="Add to Existing" FontStyle="Italic" HorizontalAlignment="center"  FontFamily="Segoe UI"/>
-            <TextBlock Grid.Column="4" VerticalAlignment="Bottom" Text="Add to New" FontStyle="Italic" HorizontalAlignment="center"  FontFamily="Segoe UI" />
-            <TextBlock Grid.Column="5" VerticalAlignment="Bottom" Text="Edit Existing" FontStyle="Italic" HorizontalAlignment="Center" FontFamily="Segoe UI"/>
-            <TextBlock Grid.Column="6" VerticalAlignment="Bottom" Text="Remove" FontStyle="Italic" HorizontalAlignment="center" FontFamily="Segoe UI" />-->
-                
+            <TextBlock x:Name="AddText" Grid.Column="3" VerticalAlignment="Bottom" Text="Add" Visibility="Collapsed" HorizontalAlignment="center"  FontFamily="Segoe UI" Margin="0,0,0,10"/>
+            <TextBlock Grid.Column="4" VerticalAlignment="Bottom" Text="New" HorizontalAlignment="center"  FontFamily="Segoe UI" Margin="0,0,0,10"/>
+            <TextBlock x:Name="EditText" Grid.Column="3" VerticalAlignment="Bottom" Text="Edit" HorizontalAlignment="Center" FontFamily="Segoe UI" Margin="0,0,0,10"/>
+            <TextBlock x:Name="DupText" Grid.Column="5" VerticalAlignment="Bottom" Visibility="Collapsed"
+                       Text="Duplicate" HorizontalAlignment="Center" FontFamily="Segoe UI" Margin="0,0,0,10"/>
+            <!--            <TextBlock Grid.Column="6" VerticalAlignment="Bottom" Text="Remove" HorizontalAlignment="center" FontFamily="Segoe UI" Margin="0,0,0,10"/> -->
+
             <!--            <ComboBox Grid.Column="4" Name="UxCategoryBox" PlaceholderText="Select Category"
                       
             <ComboBox x:Name="SalesBagComboBox" 
