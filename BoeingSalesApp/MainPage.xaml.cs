@@ -74,7 +74,7 @@ namespace BoeingSalesApp
             //theWindowMaker(sender, e);
             uxMeetingImageAfter.Visibility = Visibility.Collapsed;
             uxMeetingImageBefore.Visibility = Visibility.Visible;
-           
+
             MeetingsButton.Background = blue;
             MeetingsLabel.Foreground = white;
 
@@ -103,7 +103,7 @@ namespace BoeingSalesApp
         private void onMeetings(object sender, RoutedEventArgs e)
         {
             //theWindowMaker(sender, e);
-            
+
             this.Frame.Navigate(typeof(TESTMeetingsView));
         }
 
@@ -111,8 +111,8 @@ namespace BoeingSalesApp
         {
             //this.Frame.Navigate(typeof(ArtifactsView));
             this.Frame.Navigate(typeof(NewArtifactsView));
-             ;
-            
+            ;
+
         }
 
         private void onSalesBags(object sender, RoutedEventArgs e)
@@ -135,11 +135,11 @@ namespace BoeingSalesApp
            Core.CoreApplicationView newView = Core.CoreApplication.CreateNewView();
         }*/
 
-        
+
         private void goToSurvey(object sender, TappedRoutedEventArgs e)
-            {
+        {
             this.Frame.Navigate(typeof(SurveyView));
-            }
+        }
 
 
         /*

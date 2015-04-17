@@ -107,8 +107,6 @@
                     <Image Source="Assets/Artifacts_blue.png" Name="uxArtifactsImageAfter"  Visibility="Collapsed"/>
                     <Image Source="Assets/Artifacts.png" Name="uxArtifactsImageBefore" />
                 </StackPanel>
-
-
             </Button>
             <Button Grid.Row="2" Height="auto" 
                         Background="#003889"

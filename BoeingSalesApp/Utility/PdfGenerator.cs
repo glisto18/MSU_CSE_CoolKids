@@ -12,7 +12,7 @@ namespace BoeingSalesApp.Utility
 {
     class PdfGenerator
     {
-        BaseColor _BoeingBlue = new BaseColor(1, 84, 160);
+        BaseColor _BoeingBlue = new BaseColor(0, 93, 171);
 
         //
         // Vertical headers for the table
