@@ -65,13 +65,20 @@ namespace BoeingSalesApp.Utility
             // TOOD - Generate pathname from meeting time and date (will need to pass as args)
         }
 
+        public void UpdateName(string newName)
+        {
+            _Path = newName;
+        }
+
 
         // Get PDF file if it exists, else create one
         private async Task file()
         {
             var fileStore = new Utility.FileStore();
             
-            Windows.Storage.StorageFolder folder = await fileStore.GetArtifactFolder();
+            //Windows.Storage.StorageFolder folder = await fileStore.GetArtifactFolder();
+
+            Windows.Storage.StorageFolder folder = await fileStore.GetSurveryFolder();
 
             bool fileExists = false;
 
