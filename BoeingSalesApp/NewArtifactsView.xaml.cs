@@ -234,7 +234,7 @@ namespace BoeingSalesApp
 
         private async void newCat_Tapped(object sender, TappedRoutedEventArgs e)
         {
-            if(await _categoryRepo.DoesExist(catName.Text))
+            if(await _categoryRepo.DoesExist(catName.Text) || catName.Text == "")
                 return;
             var newCategory = new DataAccess.Entities.Category();
             newCategory.Name = catName.Text;
@@ -348,6 +348,8 @@ namespace BoeingSalesApp
 
         private async void titleChange(object sender, RoutedEventArgs e)
         {
+            if(newtitle.Text == "")
+            { return; }
             string arttit = newtitle.Text;
             var selectItem = (IDisplayItem)ArtifactsGridView.SelectedItem;
             await selectItem.UpdateTitle(arttit);
@@ -673,6 +675,11 @@ namespace BoeingSalesApp
             
         private async void AddToNewSalesBag_Click(object sender, RoutedEventArgs e)
         {
+            if(newBagName.Text == "")
+            {
+                MessageBox(sender, e, 3, 0);
+                return;
+            }
             NewBagButton.Flyout.Hide();
 
             //DR - Create SalesBag object to be used for association
@@ -841,6 +848,10 @@ namespace BoeingSalesApp
                         md.Content = "Item successfully added to new Salesbag!";
                     else
                         md.Content = "Successfully added " + number.ToString() + " items to new Salesbag!";
+                    break;
+
+                case 3:
+                    md.Content = "A new salesbag must have a name.";
                     break;
             }
             await md.ShowAsync();

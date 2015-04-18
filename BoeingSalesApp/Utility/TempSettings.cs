@@ -9,7 +9,7 @@ namespace BoeingSalesApp.Utility
 {
     static class TempSettings
     {
-        public static string DbName = "DB_test_1";
+        public static string DbName = "DB_test_2";
 
         public static StorageFolder LocalFolder = Windows.Storage.ApplicationData.Current.LocalFolder;
 
