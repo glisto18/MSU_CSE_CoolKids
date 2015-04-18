@@ -42,7 +42,7 @@ namespace BoeingSalesApp.Utility
         public DisplayCategory(DataAccess.Entities.Category category)
         {
             _category = category;
-            DisplayIcon = "Assets/Artifacts.png";
+            DisplayIcon = "Assets/Artifacts_blue.png";
         }
 
         public async Task SetNumOfChildren()

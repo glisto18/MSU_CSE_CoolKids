@@ -6,7 +6,7 @@
 
     <Application.Resources>
         <ResourceDictionary>
-            <SolidColorBrush x:Key="BoeingBlue" Color="#0038A9"/>
+            <SolidColorBrush x:Key="BoeingBlue" Color="#005DAB"/>
         </ResourceDictionary>
     </Application.Resources>
 </Application>

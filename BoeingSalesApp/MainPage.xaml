@@ -21,7 +21,10 @@
         </Style>
         <Style x:Key="MyTextStyle" TargetType="TextBlock">
             <Setter Property="FontSize" Value="40" />
-            <Setter Property="Foreground" Value="#005DAB" />
+            <Setter Property="Foreground" Value="White" />
+        </Style>
+        <Style x:Key="MyStackStyle" TargetType="StackPanel">
+            <Setter Property="Width" Value="300" />
         </Style>
     </Page.Resources>
 
@@ -32,78 +35,90 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-
-        <StackPanel Orientation="Horizontal" Grid.Row="0">
-            <Image  
-                   Source="Assets/BoeingLogo.png" 
-                   Height="97" Width="358" Margin="40,20,0,0" 
-                   VerticalAlignment="Top" HorizontalAlignment="Left"/>
-
-            <TextBlock Grid.Row="0" FontWeight="Bold" FontSize="50" Margin="0,30,60,0" 
-                       Text="Electronic SalesBag" Foreground="#0038A9" HorizontalAlignment="Right" />
+        <StackPanel Orientation="Horizontal" Grid.Row="0" >
+            <Image Source="Assets/BoeingLogo.png" 
+                   Height="97" Width="358" Margin="40,5,0,0" 
+                   VerticalAlignment="Top" />
+            <TextBlock Text="Electronic Sales Bag" 
+            	Foreground="{StaticResource BoeingBlue}" FontSize="60" FontFamily="Segoe UI" 
+            HorizontalAlignment="Right" Height="80" 
+            VerticalAlignment="Top" Margin="400,0,0,0"  />
         </StackPanel>
         
-        <StackPanel x:Name="stackPanel" Grid.Row="1" 
-                    Orientation="Horizontal" HorizontalAlignment="Center"
-                    Margin="0,0,0,50">
+        <StackPanel x:Name="stackPanel" Grid.Row="1" Orientation="Horizontal" 
+                    HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0">
             <StackPanel.Resources>
                 <Style TargetType="Button" BasedOn="{StaticResource MyButtonStyle}" />
                 <Style TargetType="Image" BasedOn="{StaticResource MyImgStyle}" />
                 <Style TargetType="TextBlock" BasedOn="{StaticResource MyTextStyle}" />
             </StackPanel.Resources>
-            <Button Background="White" x:Name="ArtifactsButton" Tapped="onArtifacts">
+
+            <!-- Artifacts button -->
+            <Button x:Name="ArtifactsButton" Tapped="onArtifacts" 
+                    Background="{StaticResource BoeingBlue}" 
+                    Width="300" PointerEntered="artifactsPointed" PointerExited="artifactsNotPointed">
                 <StackPanel Orientation="Vertical">
-                    <Image Source="Assets/Artifacts.png" />
-                    <TextBlock Text="Artifacts"/>
+                    <Image Source="Assets/Artifacts.png" Name="uxArtifactsImageBefore" />
+                    <Image Source="Assets/Artifacts_blue.png" Name="uxArtifactsImageAfter" Visibility="Collapsed"/>
+                    <TextBlock Name="ArtifactsLabel" Text="Artifacts"/>
                 </StackPanel>
             </Button>
-            <Button Background="White" x:Name="MeetingsButton" Tapped="onMeetings">
+
+
+            <!-- Meetings button -->
+            <Button x:Name="MeetingsButton" Tapped="onMeetings" 
+                    Background="{StaticResource BoeingBlue}"
+                    Width="300" PointerEntered="meetingsPointed" PointerExited="meetingsNotPointed">
                 <StackPanel Orientation="Vertical">
-                    <Image Source="Assets/Meetings.png" />
-                    <TextBlock Text="Meetings" />
+                    <Image Source="Assets/Meetings.png" Name="uxMeetingImageBefore" />
+                    <Image Source="Assets/Meetings_blue.png" Name="uxMeetingImageAfter" Visibility="Collapsed" />
+                    <TextBlock Name="MeetingsLabel" Text="Meetings" />
                 </StackPanel>
             </Button>
-            <Button Background="White" x:Name="SalesBagsButton" Tapped="onSalesBags">
+
+            <!-- Sales Bags button -->
+            <Button x:Name="BagsButton" Tapped="onSalesBags" 
+                    Background="{StaticResource BoeingBlue}"
+                    Width="300" PointerEntered="bagsPointed" PointerExited="bagsNotPointed">
                 <StackPanel Orientation="Vertical">
-                    <Image Source="Assets/SalesBag.png" />
-                    <TextBlock Text="Sales Bags" />
+                    <Image Source="Assets/SalesBag.png" Name="uxBagImageBefore"/>
+                    <Image Source="Assets/SalesBag_blue.png" Name="uxBagImageAfter" Visibility="Collapsed" />
+                    <TextBlock Name="BagsLabel" Text="Sales Bags"/>
                 </StackPanel>
             </Button>
         </StackPanel>
 
-        <StackPanel Grid.Row="2" >
-            <Image Source="Assets/homePageImage.jpg"></Image>
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Grid.Row="2">
+            <Image Source="Assets/photoband.jpg"/>
         </StackPanel>
+
+
         <!--<Grid Width="{Binding ActualWidth, ElementName=stackPanel}" Name="btnHolder">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="300" />
                     <RowDefinition Height="*"  />
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
-                <Button Grid.Row="1" Height="auto" Background="#0038A9"
+            <Button Grid.Row="1" Height="auto" Background="#003889"
                         PointerEntered="artifactsPointed"
                         PointerExited="artifactsNotPointed"
                         Tapped="onArtifacts">
                     <StackPanel>
-                        <Image Source="Assets/Artifacts.png" Name="uxArtifactsImageAfter"  Visibility="Collapsed"/>
-                        <Image Source="Assets/ArtifactsWhite.png" Name="uxArtifactsImageBefore" />
+                    <Image Source="Assets/Artifacts_blue.png" Name="uxArtifactsImageAfter"  Visibility="Collapsed"/>
+                    <Image Source="Assets/Artifacts.png" Name="uxArtifactsImageBefore" />
                     </StackPanel>
-
-
                 </Button>
                 <Button Grid.Row="2" Height="auto" 
-                        Background="#0038A9"
+                        Background="#003889"
                         PointerEntered="meetingPointed"
                         PointerExited="meetingNotPointed"
                         Tapped="onMeetings">
                     <StackPanel>
-                        <Image Source="Assets/Meetings.png" Name="uxMeetingImageAfter" Visibility="Collapsed"/>
-                        <Image Source="Assets/MeetingsWhite.png" Name="uxMeetingImageBefore"/>
+                    <Image Source="Assets/Meetings_blue.png" Name="uxMeetingImageAfter" Visibility="Collapsed"/>
+                    <Image Source="Assets/Meetings.png" Name="uxMeetingImageBefore"/>
                     </StackPanel>
                 </Button>
             </Grid>-->
-
-        
 
         <!--<StackPanel Grid.Row="2">
             <HyperlinkButton Tapped="goToSurvey">Exit Survey</HyperlinkButton>

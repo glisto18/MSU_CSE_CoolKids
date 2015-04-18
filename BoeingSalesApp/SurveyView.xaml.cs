@@ -1,17 +1,8 @@
 ﻿using BoeingSalesApp.Common;
 using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
-using Windows.UI.Xaml;
+using System.Text.RegularExpressions;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
 // The Basic Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234237
@@ -26,6 +17,7 @@ namespace BoeingSalesApp
 
         private NavigationHelper navigationHelper;
         private ObservableDictionary defaultViewModel = new ObservableDictionary();
+        private string _meetingName;
 
         /// <summary>
         /// This can be changed to a strongly typed view model.
@@ -86,13 +78,14 @@ namespace BoeingSalesApp
         /// NavigationHelper to respond to the page's navigation methods.
         /// 
         /// Page specific logic should be placed in event handlers for the  
-        /// <see cref="GridCS.Common.NavigationHelper.LoadState"/>
-        /// and <see cref="GridCS.Common.NavigationHelper.SaveState"/>.
+        /// <see cref="Common.NavigationHelper.LoadState"/>
+        /// and <see cref="Common.NavigationHelper.SaveState"/>.
         /// The navigation parameter is available in the LoadState method 
         /// in addition to page state preserved during an earlier session.
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
+            _meetingName = (string)e.Parameter;
             navigationHelper.OnNavigatedTo(e);
         }
 
@@ -107,8 +100,11 @@ namespace BoeingSalesApp
         {
             try
             {
-                var generator = new Utility.PdfGenerator(); 
-                await generator.gen(rating, comment, contact);
+                var generator = new Utility.PdfGenerator(rating, comment, contact);
+                var meetingNameForFileName = Regex.Replace(_meetingName, @"[^a-zA-Z0-9]", "");
+                var pdfName = string.Format("{0}_Survey_{1:yy-MM-dd_hh_mm}.pdf", meetingNameForFileName, DateTime.Now);
+                generator.UpdateName(pdfName);
+                await generator.gen();
             }
             catch
             {

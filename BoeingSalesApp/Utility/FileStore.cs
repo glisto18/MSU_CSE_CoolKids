@@ -27,6 +27,8 @@ namespace BoeingSalesApp.Utility
 
         private StorageFolder _artifactFolder;
 
+        private const string _surveyFolderName = "Surveys";
+
         #endregion
 
         public FileStore()
@@ -82,7 +84,10 @@ namespace BoeingSalesApp.Utility
             var subFolders = await _artifactFolder.GetFoldersAsync();
             foreach (StorageFolder folder in subFolders)
             {
-                 newArtifacts.AddRange(await CheckSubFolders(folder));
+                if (folder.Name != _surveyFolderName)
+                {
+                    newArtifacts.AddRange(await CheckSubFolders(folder));
+                }  
             }
 
             return newArtifacts;
@@ -180,6 +185,21 @@ namespace BoeingSalesApp.Utility
                 await CheckForNewArtifacts();
                 return await GetArtifactFolder();
             }
+        }
+
+        public async Task<StorageFolder> GetSurveryFolder()
+        {
+            var artifactFolder = await GetArtifactFolder();
+            try
+            {
+                return await artifactFolder.GetFolderAsync(_surveyFolderName);
+            }
+            catch (Exception)
+            {
+                artifactFolder.CreateFolderAsync(_surveyFolderName);
+            }
+           
+            return await artifactFolder.GetFolderAsync(_surveyFolderName);
         }
 
         /// <summary>

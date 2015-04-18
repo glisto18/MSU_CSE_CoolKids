@@ -31,47 +31,79 @@ namespace BoeingSalesApp
     /// </summary>
     public sealed partial class MainPage : Page
     {
+        private SolidColorBrush white = new SolidColorBrush(Windows.UI.Color.FromArgb(255, 255, 255, 255));
+        private SolidColorBrush blue = new SolidColorBrush(Windows.UI.Color.FromArgb(255, 0, 93, 171));
+
         public MainPage()
         {
             this.InitializeComponent();
         }
 
-        //private void artifactsPointed(object sender, RoutedEventArgs e)
-        //{
-        //    //theWindowMaker(sender, e);
-        //    uxArtifactsImageAfter.Visibility = Visibility.Visible;
-        //    uxArtifactsImageBefore.Visibility = Visibility.Collapsed;
+        private void artifactsPointed(object sender, RoutedEventArgs e)
+        {
+            //theWindowMaker(sender, e);
+            uxArtifactsImageAfter.Visibility = Visibility.Visible;
+            uxArtifactsImageBefore.Visibility = Visibility.Collapsed;
 
-        //}
+            ArtifactsButton.Background = white;
+            ArtifactsLabel.Foreground = blue;
+        }
 
-        //private void artifactsNotPointed(object sender, RoutedEventArgs e)
-        //{
-        //    //theWindowMaker(sender, e);
-        //    uxArtifactsImageAfter.Visibility = Visibility.Collapsed;
-        //    uxArtifactsImageBefore.Visibility = Visibility.Visible;
+        private void artifactsNotPointed(object sender, RoutedEventArgs e)
+        {
+            //theWindowMaker(sender, e);
+            uxArtifactsImageAfter.Visibility = Visibility.Collapsed;
+            uxArtifactsImageBefore.Visibility = Visibility.Visible;
 
-        //}
-        
-        //private void meetingPointed(object sender, RoutedEventArgs e)
-        //{
-        //    //theWindowMaker(sender, e);
-        //    uxMeetingImageAfter.Visibility = Visibility.Visible;
-        //    uxMeetingImageBefore.Visibility = Visibility.Collapsed;
+            ArtifactsButton.Background = blue;
+            ArtifactsLabel.Foreground = white;
+        }
 
-        //}
+        private void meetingsPointed(object sender, RoutedEventArgs e)
+        {
+            //theWindowMaker(sender, e);
+            uxMeetingImageAfter.Visibility = Visibility.Visible;
+            uxMeetingImageBefore.Visibility = Visibility.Collapsed;
 
-        //private void meetingNotPointed(object sender, RoutedEventArgs e)
-        //{
-        //    //theWindowMaker(sender, e);
-        //    uxMeetingImageAfter.Visibility = Visibility.Collapsed;
-        //    uxMeetingImageBefore.Visibility = Visibility.Visible;
+            MeetingsButton.Background = white;
+            MeetingsLabel.Foreground = blue;
+        }
 
-        //}
+        private void meetingsNotPointed(object sender, RoutedEventArgs e)
+        {
+            //theWindowMaker(sender, e);
+            uxMeetingImageAfter.Visibility = Visibility.Collapsed;
+            uxMeetingImageBefore.Visibility = Visibility.Visible;
+
+            MeetingsButton.Background = blue;
+            MeetingsLabel.Foreground = white;
+
+        }
+
+        private void bagsPointed(object sender, RoutedEventArgs e)
+        {
+            //theWindowMaker(sender, e);
+            uxBagImageAfter.Visibility = Visibility.Visible;
+            uxBagImageBefore.Visibility = Visibility.Collapsed;
+
+            BagsButton.Background = white;
+            BagsLabel.Foreground = blue;
+        }
+
+        private void bagsNotPointed(object sender, RoutedEventArgs e)
+        {
+            //theWindowMaker(sender, e);
+            uxBagImageAfter.Visibility = Visibility.Collapsed;
+            uxBagImageBefore.Visibility = Visibility.Visible;
+
+            BagsButton.Background = blue;
+            BagsLabel.Foreground = white;
+        }
 
         private void onMeetings(object sender, RoutedEventArgs e)
         {
             //theWindowMaker(sender, e);
-            
+
             this.Frame.Navigate(typeof(TESTMeetingsView));
         }
 
@@ -79,8 +111,8 @@ namespace BoeingSalesApp
         {
             //this.Frame.Navigate(typeof(ArtifactsView));
             this.Frame.Navigate(typeof(NewArtifactsView));
-             ;
-            
+            ;
+
         }
 
         private void onSalesBags(object sender, RoutedEventArgs e)
@@ -104,12 +136,12 @@ namespace BoeingSalesApp
            Core.CoreApplicationView newView = Core.CoreApplication.CreateNewView();
         }*/
 
-        
+
         private void goToSurvey(object sender, TappedRoutedEventArgs e)
         {
             this.Frame.Navigate(typeof(SurveyView));
         }
-        
+
 
         /*
         private void theWindowMaker(object sender, RoutedEventArgs e)
