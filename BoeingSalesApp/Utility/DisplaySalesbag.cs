@@ -44,7 +44,7 @@ namespace BoeingSalesApp.Utility
         public DisplaySalesbag(SalesBag salesbag)
         {
             _salesbag = salesbag;
-            DisplayIcon = "Assets/SalesBag.scale-100.png";
+            DisplayIcon = "Assets/SalesBag_blue.png";
         }
 
         public async Task<bool> DoubleTap()

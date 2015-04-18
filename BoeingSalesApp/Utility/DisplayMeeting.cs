@@ -57,7 +57,7 @@ namespace BoeingSalesApp.Utility
         public DisplayMeeting(Meeting meeting)
         {
             _meeting = meeting;
-            DisplayIcon = "Assets/Meetings.png";
+            DisplayIcon = "Assets/Meetings_blue.png";
         }
 
         public async Task<bool> DoubleTap()
