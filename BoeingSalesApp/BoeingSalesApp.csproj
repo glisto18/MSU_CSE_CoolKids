@@ -200,17 +200,21 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Assets\addtoexist.png" />
+    <Content Include="Assets\addtoexist2.png" />
     <Content Include="Assets\Artifact.scale-100.png" />
     <Content Include="Assets\Artifacts.scale-100.png" />
     <Content Include="Assets\Artifacts_blue.scale-100.png" />
     <Content Include="Assets\BoeingLogo.scale-100.png" />
+    <Content Include="Assets\duplicateSalesbag.png" />
     <Content Include="Assets\editexisting.png" />
+    <Content Include="Assets\editsales2.png" />
     <Content Include="Assets\greenCircle.png" />
     <Content Include="Assets\image100x100.png" />
     <Content Include="Assets\Logo.scale-100.png" />
     <Content Include="Assets\Meetings.scale-100.png" />
     <Content Include="Assets\Meetings_blue.scale-100.png" />
     <Content Include="Assets\newsales.png" />
+    <Content Include="Assets\newsales2.png" />
     <Content Include="Assets\pdf100x100.png" />
     <Content Include="Assets\photoband.jpg" />
     <Content Include="Assets\Plus.scale-100.png" />
