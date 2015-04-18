@@ -543,7 +543,7 @@ namespace BoeingSalesApp
                     } 
                 }
 
-                MessageBox(sender, e, 1, ArtifactsGridView.SelectedItems.Count);
+                MessageBox(sender, e, 1, _selectedItems.Count);
                 await UpdateUi();
             }
             
