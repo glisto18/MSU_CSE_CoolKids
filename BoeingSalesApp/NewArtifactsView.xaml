@@ -85,6 +85,7 @@
         <AppBar Background="{StaticResource BoeingBlue}" HorizontalContentAlignment="Left" 
                 BorderBrush="{StaticResource BoeingBlue}" Name="uxAppBar">
             <StackPanel Orientation="Horizontal">
+                <AppBarButton Name="HomeBut" Label="Home" Icon="Home" Tapped="GoHome"></AppBarButton>
                 <AppBarButton Name="newCat" Label="New Category" Visibility="Collapsed"
                               Icon="Add" FlyoutBase.AttachedFlyout="{StaticResource catMaker}"
                               Tapped="launchme">

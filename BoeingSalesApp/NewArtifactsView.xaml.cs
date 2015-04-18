@@ -561,12 +561,12 @@ namespace BoeingSalesApp
             var salesbagArtifacts = new SalesBag_ArtifactRepository();
             var salesbagCategory = new SalesBag_CategoryRepository();
             var salesbagRepo = new SalesBagRepository();
-            SalesBag salesbag = await salesbagRepo.Get(_enteredSalesBag);
 
             foreach (var item in ArtifactsGridView.SelectedItems)
             {
                 if(_currentState == Enums.PageState.InSalesBag)
                 {
+                    SalesBag salesbag = await salesbagRepo.Get(_enteredSalesBag);
                     if (item.GetType() == typeof(DisplayArtifact))
                     {
                         var artifact = ((DisplayArtifact)item).GetArtifact();
@@ -592,7 +592,8 @@ namespace BoeingSalesApp
             switch(check)
             {
                 case 1:
-                    await FetchSalesBagContents(salesbag.ID);
+                    SalesBag salesbag2 = await salesbagRepo.Get(_enteredSalesBag);
+                    await FetchSalesBagContents(salesbag2.ID);
                     break;
                 case 2:
                     await FetchCategoryContents(_currentCategory.ID);
@@ -843,6 +844,11 @@ namespace BoeingSalesApp
                     break;
             }
             await md.ShowAsync();
+        }
+
+        private void GoHome(object sender, RoutedEventArgs e)
+        {
+            this.Frame.Navigate(typeof(MainPage));
         }
     }
 }

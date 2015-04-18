@@ -42,7 +42,7 @@
         </Flyout>
 
         <DataTemplate x:Key="GridTemplate">
-            <StackPanel x:Name="GridItemContainer" Orientation="Horizontal" Width="250" Height="80" >
+            <StackPanel x:Name="GridItemContainer" Orientation="Horizontal" Width="300" Height="80" >
 
                 <Border Width="90" 
                         Height="{Binding Height, ElementName=GridItemContainer}"
@@ -55,10 +55,10 @@
                             Background="#e4f1fe"
                             Height="80"
                             >
-                    <TextBlock Text="{Binding DisplayTime}"  Margin="5,0,0,0" Width="170" Height="20" TextTrimming="WordEllipsis" Foreground="Black" />
-                    <TextBlock Text="{Binding DisplaySubject}"  Margin="5,0,0,0" Width="170" Height="20" TextTrimming="WordEllipsis" Foreground="Black" />
-                    <TextBlock Text="{Binding DisplayLocation}"  Margin="5,0,0,0" Width="170" Height="20" TextTrimming="WordEllipsis" Foreground="Black" />
-                    <TextBlock Text="{Binding DisplayName}" Margin="5,0,0,0" Width="170" Height="20" TextTrimming="WordEllipsis" Foreground="Black"/>
+                    <TextBlock Text="{Binding DisplayTime}"  Margin="5,0,0,0" Width="210" Height="20" TextTrimming="WordEllipsis" Foreground="Black" />
+                    <TextBlock Text="{Binding DisplaySubject}"  Margin="5,0,0,0" Width="210" Height="20" TextTrimming="WordEllipsis" Foreground="Black" />
+                    <TextBlock Text="{Binding DisplayLocation}"  Margin="5,0,0,0" Width="210" Height="20" TextTrimming="WordEllipsis" Foreground="Black" />
+                    <TextBlock Text="{Binding DisplayName}" Margin="5,0,0,0" Width="210" Height="20" TextTrimming="WordEllipsis" Foreground="Black"/>
                 </StackPanel>
             </StackPanel>
         </DataTemplate>

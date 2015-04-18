@@ -143,7 +143,7 @@ namespace BoeingSalesApp
 
             public string DisplayIcon
             {
-                get { return "Assets/Meetings.png"; }
+                get { return "Assets/Meetings_blue.png"; }
                 set { }
             }
 

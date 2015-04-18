@@ -44,9 +44,9 @@
             HorizontalAlignment="Right" Height="80" 
             VerticalAlignment="Top" Margin="400,0,0,0"  />
         </StackPanel>
-        
-        <StackPanel x:Name="stackPanel" Grid.Row="1" Orientation="Horizontal" 
-                    HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0">
+
+        <StackPanel x:Name="stackPanel" Orientation="Horizontal" 
+                    HorizontalAlignment="Center" VerticalAlignment="Top" Margin="143,246,143,0" Grid.RowSpan="2">
             <StackPanel.Resources>
                 <Style TargetType="Button" BasedOn="{StaticResource MyButtonStyle}" />
                 <Style TargetType="Image" BasedOn="{StaticResource MyImgStyle}" />
@@ -88,7 +88,7 @@
             </Button>
         </StackPanel>
 
-        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Grid.Row="2">
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Grid.Row="1" Margin="97,246,97,10" Grid.RowSpan="2">
             <Image Source="Assets/photoband.jpg"/>
         </StackPanel>
 
