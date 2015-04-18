@@ -18,6 +18,7 @@ using BoeingSalesApp.DataAccess.Repository;
 using BoeingSalesApp.Utility;
 using Microsoft.Office.Interop.Outlook;
 using Category = BoeingSalesApp.DataAccess.Entities.Category;
+using Windows.UI.Popups;
 
 // andys branch
 
@@ -448,7 +449,7 @@ namespace BoeingSalesApp
 
             //DR - Clear the contents of the selectd artifcats property and add each selected item to the property
             //  soa as to access selected items after the grid is rebound
-            if (_currentState == Enums.PageState.All)
+            if (_currentState == Enums.PageState.All || _currentState == Enums.PageState.Category)
             {
                 _selectedItems.Clear();
                 foreach (IDisplayItem item in ArtifactsGridView.SelectedItems)
@@ -542,7 +543,7 @@ namespace BoeingSalesApp
                     } 
                 }
 
-                
+                MessageBox(sender, e, 1, ArtifactsGridView.SelectedItems.Count);
                 await UpdateUi();
             }
             
@@ -551,6 +552,7 @@ namespace BoeingSalesApp
 
         private async void UxRemoveFromCategory_OnTapped(object sender, TappedRoutedEventArgs e)
         {
+            int check = 0;
             if (ArtifactsGridView.SelectedItems.Count < 1)
             {
                 return;
@@ -559,11 +561,12 @@ namespace BoeingSalesApp
             var salesbagArtifacts = new SalesBag_ArtifactRepository();
             var salesbagCategory = new SalesBag_CategoryRepository();
             var salesbagRepo = new SalesBagRepository();
+            SalesBag salesbag = await salesbagRepo.Get(_enteredSalesBag);
+
             foreach (var item in ArtifactsGridView.SelectedItems)
             {
                 if(_currentState == Enums.PageState.InSalesBag)
                 {
-                    SalesBag salesbag = await salesbagRepo.Get(_enteredSalesBag);
                     if (item.GetType() == typeof(DisplayArtifact))
                     {
                         var artifact = ((DisplayArtifact)item).GetArtifact();
@@ -574,6 +577,7 @@ namespace BoeingSalesApp
                         var category = ((DisplayCategory)item).GetCategory();
                         await salesbagCategory.RemoveCategoryFromSalesBag(category, salesbag);
                     }
+                    check = 1;
                 }
                 else
                 {
@@ -581,11 +585,19 @@ namespace BoeingSalesApp
                     {
                         var artifact = ((DisplayArtifact)item).GetArtifact();
                         await artifactCategoryRepo.RemoveArtifactFromCategory(artifact, _currentCategory);
-                    
+                        check = 2;
                     }
                 }
             }
-            await FetchCategoryContents(_currentCategory.ID);
+            switch(check)
+            {
+                case 1:
+                    await FetchSalesBagContents(salesbag.ID);
+                    break;
+                case 2:
+                    await FetchCategoryContents(_currentCategory.ID);
+                    break;
+            }
         }
 
         private async void delete_OnTapped(object sender, TappedRoutedEventArgs e)
@@ -678,6 +690,7 @@ namespace BoeingSalesApp
             //DR - If there are no selected items, simply add the salesbag to the database and return
             if(ArtifactsGridView.SelectedItems == null)
             {
+                MessageBox(sender, e, 2, 0);
                 return;
             }
             //DR - If there are selected items, iterate through them and associate them with the new salesbag
@@ -723,6 +736,8 @@ namespace BoeingSalesApp
                 {
                     await bagCatRepo.AddCategoryToSalesBag(i, newBag);
                 }
+                MessageBox(sender, e, 2, ArtifactsGridView.SelectedItems.Count);
+                ArtifactsGridView.SelectedItems.Clear();
                 return;
             }
         }
@@ -805,6 +820,29 @@ namespace BoeingSalesApp
             var displaySalesbags = DisplayConverter.ToDisplaySalebsag(await salesbagRepo.GetAllAsync());
             await DisplayConverter.ToSetArtNums(displaySalesbags);
             ArtifactsGridView.ItemsSource = displaySalesbags;
+        }
+
+        private async void MessageBox(object sender, RoutedEventArgs e, int x, int number)
+        {
+            MessageDialog md = new MessageDialog("");
+            switch (x)
+            {
+                case 1:
+                    if(number==1)
+                        md.Content = "Item added auccessfully!";
+                    else
+                        md.Content = "Successfully added " + number.ToString() + " items!";
+                    break;
+                case 2:
+                    if(number==0)
+                        md.Content = "New salesbag created!";
+                    else if(number==1)
+                        md.Content = "Item successfully added to new Salesbag!";
+                    else
+                        md.Content = "Successfully added " + number.ToString() + " items to new Salesbag!";
+                    break;
+            }
+            await md.ShowAsync();
         }
     }
 }

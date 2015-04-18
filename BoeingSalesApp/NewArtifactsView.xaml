@@ -100,7 +100,7 @@
                               Visibility="Collapsed" Name="deleter"/>
                 <AppBarButton Label="Change Title" Icon="Edit" Tapped="launchme" Visibility="Collapsed"
                              Name="titler" FlyoutBase.AttachedFlyout="{StaticResource enterTit}"/>
-                <AppBarButton Label="Remove From Category" Tapped="UxRemoveFromCategory_OnTapped"
+                <AppBarButton Label="Remove" Tapped="UxRemoveFromCategory_OnTapped"
                               Icon="Remove" Visibility="Collapsed" Name="uxRemoveFromCategory" />
             </StackPanel>
         </AppBar>
