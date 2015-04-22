@@ -214,7 +214,7 @@ namespace BoeingSalesApp
                 msg.Commands.Add(new Windows.UI.Popups.UICommand(
                     "Use Default Artifacts Attributes.", null
                     ));
-                await msg.ShowAsync();
+                //await msg.ShowAsync();
             }
         }
 
